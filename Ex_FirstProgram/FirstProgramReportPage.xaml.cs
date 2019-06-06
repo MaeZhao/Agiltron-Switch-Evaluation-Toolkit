@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Ex_FirstProgram
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for FirstProgramReportPage.xaml
     /// </summary>
-    public partial class MainWindow : NavigationWindow
+    public partial class FirstProgramReportPage : Page
     {
-        public MainWindow()
+        public FirstProgramReportPage()
         {
             InitializeComponent();
         }

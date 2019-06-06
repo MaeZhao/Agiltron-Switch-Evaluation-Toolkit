@@ -1,0 +1,34 @@
+﻿<Page x:Class="Ex_FirstProgram.FirstProgramHome"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Ex_FirstProgram"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="FirstProgram - Home">
+
+    <Grid Margin=" 10,0,10,10">
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition />
+            <!--What if there was no Columns defined?-->
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!--People List-->
+        <Border Grid.Column="0" Grid.Row="0" Height="35" Padding="5" Background="AliceBlue">
+            <Label VerticalAlignment="Center" Foreground="White">Names</Label>
+        </Border>
+        <ListBox Name ="peopleListBox" Grid.Column="0" Grid.Row="1">
+            <ListBoxItem>Mike</ListBoxItem>
+            <ListBoxItem>Lisa</ListBoxItem>
+            <ListBoxItem>John</ListBoxItem>
+            <ListBoxItem>Mary</ListBoxItem>
+        </ListBox>
+        <!--View report Button-->
+        <Button Grid.Row="2" Margin="0,10,0,0" Width="125" Height="25" HorizontalAlignment="Right">View</Button>
+    </Grid>
+</Page>
