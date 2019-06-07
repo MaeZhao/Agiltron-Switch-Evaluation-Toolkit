@@ -17,8 +17,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Name = "back" Grid.Column="0" HorizontalAlignment="Right" Width="50" Margin="0,0,20,0">Cancle</Button>
-            <Button Name = "cont" Grid.Column="1" HorizontalAlignment="Left" Width="50" Margin="20,0,0,0">OK</Button>
+            <Button Name = "cancel" Grid.Column="0" HorizontalAlignment="Right" Width="50" Margin="0,0,20,0" Click="Cancel_Click">Cancel</Button>
+            <Button Name = "ok" Grid.Column="1" HorizontalAlignment="Left" Width="50" Margin="20,0,0,0" Click="Ok_Click">OK</Button>
 
         </Grid>
     </Grid>

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:SW20190530_Ver3"
         mc:Ignorable="d"
                  Background="WhiteSmoke"
+                 Icon="agiltronLogo.ico"
         Title="Agiltron Switch Evaluation Program" Height="500" Width="500" Source="Program_Ini.xaml">
 
 </NavigationWindow>

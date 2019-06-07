@@ -32,13 +32,17 @@ namespace SW20190530_Ver3
         //Continue Button
         private void Button_Click_Continue(object sender, RoutedEventArgs e)
         {
-            
+            this.IsEnabled = false;
             if (offlineButton.IsChecked.Value)
-            {
-                /// TODO: find out how offline specifically changes any of the data
+            { 
+                OffStartUpWindow offStart = new OffStartUpWindow(this);
+                offStart.Show();
             }
             else
-                Console.WriteLine(false);
+            {
+                ///TODO
+            }
+               
         }
 
        

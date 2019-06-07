@@ -17,11 +17,40 @@ namespace SW20190530_Ver3
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class OffStartUpWindow : Window
     {
-        public Window1()
+
+        Program_Ini call;
+        public OffStartUpWindow(Program_Ini c )
         {
-            InitializeComponent();
+           InitializeComponent();
+            call = c;
         }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Start(false);
+        }
+
+        private void Ok_Click(object sender, RoutedEventArgs e)
+        {
+            Start(true);
+        }
+
+        private void Start(bool def)
+        {
+            if(def == true)
+            {
+                ///TODO
+            }
+            else
+            {
+                call.IsEnabled = true;
+            }
+
+            this.Close();
+        }
+
+        
     }
 }
