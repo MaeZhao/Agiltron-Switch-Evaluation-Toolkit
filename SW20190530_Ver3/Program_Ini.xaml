@@ -1,0 +1,74 @@
+﻿<Page x:Class="SW20190530_Ver3.Program_Ini"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SW20190530_Ver3"
+      mc:Ignorable="d" 
+      Title="Configuration" Width="400"  d:DesignHeight="400">
+
+    <Grid Background="WhiteSmoke">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Center" Margin="124,70,124,0" Height="244" VerticalAlignment="Top">
+            <TextBlock Margin="0,0,0,0" FontSize="15">Serial Port</TextBlock>
+            <ComboBox Name="sp" Margin="0,0,0,30">
+                <ComboBoxItem IsSelected="True">Com 1</ComboBoxItem>
+                <ComboBoxItem>Com 2</ComboBoxItem>
+                <ComboBoxItem>Com 3</ComboBoxItem>
+                <ComboBoxItem>Com 4</ComboBoxItem>
+                <ComboBoxItem>Com 5</ComboBoxItem>
+                <ComboBoxItem>Com 6</ComboBoxItem>
+                <ComboBoxItem>Com 7</ComboBoxItem>
+                <ComboBoxItem>Com 8</ComboBoxItem>
+                <ComboBoxItem>Com 9</ComboBoxItem>
+                <ComboBoxItem>Com 10</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock Margin="0,0,0,0" FontSize="15">Switch Group Selection</TextBlock>
+            <ComboBox Name="group" Margin="0,0,0,30">
+                <ComboBoxItem IsSelected="True">1 X N</ComboBoxItem>
+                <ComboBoxItem>N X 1</ComboBoxItem>
+                <ComboBoxItem>M X N</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock Margin="0,0,0,0" FontSize="15">Switch Type Selection</TextBlock>
+            <ComboBox Name="type" Margin="0,0,0,25">
+                <ComboBoxItem>CL 1X2 (N)</ComboBoxItem>
+                <ComboBoxItem>CL 1X4 (N)</ComboBoxItem>
+                <ComboBoxItem>CL 1X8 (N)</ComboBoxItem>
+                <ComboBoxItem>(N)</ComboBoxItem>
+                <ComboBoxItem>LB 1X2 (N)</ComboBoxItem>
+                <ComboBoxItem>LB 1X4 (N)</ComboBoxItem>
+                <ComboBoxItem>LB 1X8 (N)</ComboBoxItem>
+                <ComboBoxItem>(N)?</ComboBoxItem>
+                <!--Uh should I delete this?-->
+                <ComboBoxItem IsSelected="True">CL 1X16 (Y)</ComboBoxItem>
+                <ComboBoxItem>CL 1X2PM (N)</ComboBoxItem>
+                <ComboBoxItem>CL 1X4PM (N)</ComboBoxItem>
+                <ComboBoxItem>CL 1X8MN (N)</ComboBoxItem>
+                <ComboBoxItem>CL 1X8PM (N)</ComboBoxItem>
+                <ComboBoxItem>LB 1X16 (N)</ComboBoxItem>
+                <ComboBoxItem>LB 1X17 (N)</ComboBoxItem>
+                <ComboBoxItem>1X12 (N)</ComboBoxItem>
+            </ComboBox>
+
+            <CheckBox Name="offlineButton"  HorizontalAlignment="Center" Margin="0,10,0,0">Run Offline</CheckBox>
+        </StackPanel>
+
+        <Grid Grid.Column="0" Margin="0,320,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" HorizontalAlignment="Right" Margin="0,10,30,20" Width="55" Click="Button_Click_Exit">Exit</Button>
+            <Button Grid.Column="1" HorizontalAlignment="Left" Margin="30,10,0,20" Width="75" Click="Button_Click_Continue">Connect</Button>
+        </Grid>
+    </Grid>
+</Page>
