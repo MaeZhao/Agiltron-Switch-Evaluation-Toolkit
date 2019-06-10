@@ -114,5 +114,14 @@
   <ItemGroup>
     <Resource Include="AgiltronBanner.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconExit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconMin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconMax.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

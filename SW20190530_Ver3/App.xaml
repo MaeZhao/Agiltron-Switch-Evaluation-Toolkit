@@ -22,7 +22,7 @@
 
 
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#2C4392"  />
+            <Setter Property="Background" Value="#1A2855"  />
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="5"/>
             <Setter Property="BorderThickness" Value="0"></Setter>

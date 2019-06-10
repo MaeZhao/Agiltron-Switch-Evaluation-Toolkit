@@ -27,6 +27,14 @@ namespace SW20190530_Ver3
 
         //Exit Button
         private void Button_Click_Exit(object sender, RoutedEventArgs e) => Application.Current.Shutdown(99);
+        //Min Button
+        private void Button_Min_Exit(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
+        //Draggable
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
 
         //Continue Button
         private void Button_Click_Continue(object sender, RoutedEventArgs e)
