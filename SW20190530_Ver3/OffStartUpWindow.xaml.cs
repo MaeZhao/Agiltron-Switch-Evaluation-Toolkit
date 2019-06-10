@@ -20,11 +20,11 @@ namespace SW20190530_Ver3
     public partial class OffStartUpWindow : Window
     {
 
-        Program_Ini call;
-        public OffStartUpWindow(Program_Ini c )
+        MainWindow call;
+        public OffStartUpWindow(MainWindow c )
         {
            InitializeComponent();
-            call = c;
+           call = c;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
