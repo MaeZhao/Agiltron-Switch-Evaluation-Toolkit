@@ -42,6 +42,9 @@ namespace SW20190530_Ver3
             if(def == true)
             {
                 ///TODO
+                OpticalSwitchControlSequence op = new OpticalSwitchControlSequence(call);
+                op.Show();
+                this.Close();
             }
             else
             {

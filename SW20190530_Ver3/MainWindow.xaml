@@ -5,22 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SW20190530_Ver3"
         mc:Ignorable="d"
-                 Background="WhiteSmoke"
-                 Icon="agiltronLogo.ico"
-      
-                 
-        Title="Agiltron Switch Evaluation Program" Height="500" Width="500">
-    <Grid Background="WhiteSmoke">
+        WindowStyle="None"
+        AllowsTransparency="False"
+        Icon="agiltronLogo.ico"
+        Title="Agiltron Switch Evaluation Program" Height="500" Width="600"
+        ResizeMode="NoResize"
+        Background="Transparent">
+
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition  Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel HorizontalAlignment="Center" Margin="124,70,124,0" Height="250" VerticalAlignment="Top">
-            <TextBlock Margin="0,0,0,0" FontSize="15">Serial Port</TextBlock>
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Background="#345CA0" Grid.RowSpan="2">
+            <Grid Height="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Margin="10,5,0,0" >
+                    <Image.Source>
+                        <BitmapImage UriSource="AgiltronBanner.png" />
+                    </Image.Source>
+                </Image>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Width="190">Agiltron Switch Evaluation Program</TextBlock>
+            </Grid>
+
+        </DockPanel>
+
+        <!--The background-->
+        <Border Grid.Row="2" Grid.ColumnSpan="2"  BorderThickness="0">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                    <GradientStop Color="#345CA0" Offset="0.1"/>
+                    <GradientStop Color="#050767" Offset="0.5"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="169,80,169,0" Height="250" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="162" >
+            <TextBlock Foreground="White" Margin="0,0,0,0" FontSize="15">Serial Port</TextBlock>
             <ComboBox Name="sp" Margin="0,0,0,30">
                 <ComboBoxItem IsSelected="True">Com 1</ComboBoxItem>
                 <ComboBoxItem>Com 2</ComboBoxItem>
@@ -34,24 +67,22 @@
                 <ComboBoxItem>Com 10</ComboBoxItem>
             </ComboBox>
 
-            <TextBlock Margin="0,0,0,0" FontSize="15">Switch Group Selection</TextBlock>
+            <TextBlock Foreground="White" FontSize="15">Switch Group Selection</TextBlock>
             <ComboBox Name="group" Margin="0,0,0,30">
                 <ComboBoxItem IsSelected="True">1 X N</ComboBoxItem>
                 <ComboBoxItem>N X 1</ComboBoxItem>
                 <ComboBoxItem>M X N</ComboBoxItem>
             </ComboBox>
 
-            <TextBlock Margin="0,0,0,0" FontSize="15">Switch Type Selection</TextBlock>
+            <TextBlock Foreground="White" Margin="0,0,0,0" FontSize="15">Switch Type Selection</TextBlock>
             <ComboBox Name="type" Margin="0,0,0,25">
                 <ComboBoxItem>CL 1X2 (N)</ComboBoxItem>
                 <ComboBoxItem>CL 1X4 (N)</ComboBoxItem>
                 <ComboBoxItem>CL 1X8 (N)</ComboBoxItem>
-                <ComboBoxItem>(N)</ComboBoxItem>
                 <ComboBoxItem>LB 1X2 (N)</ComboBoxItem>
                 <ComboBoxItem>LB 1X4 (N)</ComboBoxItem>
                 <ComboBoxItem>LB 1X8 (N)</ComboBoxItem>
-                <ComboBoxItem>(N)?</ComboBoxItem>
-                <!--Uh should I delete this?-->
+
                 <ComboBoxItem IsSelected="True">CL 1X16 (Y)</ComboBoxItem>
                 <ComboBoxItem>CL 1X2PM (N)</ComboBoxItem>
                 <ComboBoxItem>CL 1X4PM (N)</ComboBoxItem>
@@ -62,17 +93,19 @@
                 <ComboBoxItem>1X12 (N)</ComboBoxItem>
             </ComboBox>
 
-            <CheckBox Name="offlineButton"  HorizontalAlignment="Center" Margin="0,10,0,0">Run Offline</CheckBox>
+            <CheckBox Name="offlineButton" Foreground="White"  HorizontalAlignment="Center" Margin="0,10,0,0">Run Offline</CheckBox>
         </StackPanel>
 
-        <Grid Grid.Column="0" Margin="0,320,0,10">
+        <Grid Grid.Row="2" Grid.Column="0" Margin="0,340,0,45" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+
             <Button Grid.Column="0" HorizontalAlignment="Right" Margin="0,10,30,20" Width="55" Click="Button_Click_Exit">Exit</Button>
             <Button Grid.Column="1" HorizontalAlignment="Left" Margin="30,10,0,20" Width="75" Click="Button_Click_Continue">Connect</Button>
         </Grid>
+
     </Grid>
 
 </Window>

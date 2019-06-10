@@ -74,8 +74,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="OpticalSwitchControlSequence.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OpticalSwitchControlSequence.xaml.cs">
+      <DependentUpon>OpticalSwitchControlSequence.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -103,6 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="agiltronLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="AgiltronBanner.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
