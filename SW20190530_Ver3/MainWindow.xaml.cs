@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace SW20190530_Ver3
 {
     /// <summary>
@@ -41,7 +42,6 @@ namespace SW20190530_Ver3
         {
             this.IsEnabled = false;
 
-
             if (offlineButton.IsChecked.Value)
             {
                 OffStartUpWindow offStart = new OffStartUpWindow(this);
@@ -54,7 +54,41 @@ namespace SW20190530_Ver3
                 op.Show();
                 this.Close();
             }
+        }
+        //Change in group selection
+        private void Group_Changed(object sender, RoutedEventArgs e)
+        {
+            if(group.SelectedIndex == 0)
+            {
+                return;
+            }
+            else if (group.SelectedIndex == 1)
+            {
+                type.Items.Clear();
+                Add_Items(type, new[]{"CL 2X1 (Y)", "CL 8X1 (Y)", " CL 8X1MN (Y)",
+                    "LB 2X1 (Y)", "LB 4X1 (Y)", "LB 8X1 (Y)" });
+                
+                type.SelectedIndex= 0;
+            }
+            else if(group.SelectedIndex == 2)
+            {
+                type.Items.Clear();
+                Add_Items(type, new[]{"CL 4X4 (Y)", "LB 4X4 (Y)", "DD 4BIT (Y)",
+                    "DD 5BIT (Y)", "DD 6BIT (Y)", "CL 2X2 (Y)","LB 2X2 (Y)"});
+                
+                type.SelectedIndex = 0;
+            }
+        }
 
+        // probably should make a form
+        private void Add_Items(ComboBox c, string[] l)
+        {
+            for (int i = 0; i < l.GetLength(0); i++)
+            {
+                c.Items.Add(l[i]);
+            }
         }
     }
+
 }
+    

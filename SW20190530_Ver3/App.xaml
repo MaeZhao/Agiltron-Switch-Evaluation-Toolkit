@@ -4,32 +4,25 @@
              xmlns:local="clr-namespace:SW20190530_Ver3"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!--<Style TargetType="Window" x:Key="TransparentWindowStyle">
-            <Setter Property="WindowStyle" Value="None" />
-            <Setter Property="Visibility" Value="Visible"/>
-            <Setter Property="AllowsTransparency" Value="True" />
-            <Setter Property="Background" Value="transparent" />
-            
-        </Style>-->
-        
+
 
         <!--<Style TargetType="NavigationWindow">
-            <Setter Property="WindowStyle" Value="None" />
+            <Setter Property="WindowStyle" Value="None""#1A2855" />
             <Setter Property="ResizeMode" Value="CanResize" />
-            <Setter Property="AllowsTransparency" Value="True" />
+            <Setter Property="AllowsTransparency" Value="True"  />
         </Style>-->
 
 
 
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#1A2855"  />
+            <Setter Property="Background" Value="#223C69"   />
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="5"/>
             <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
 
         <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-            <Setter Property="Foreground" Value="#131D3E"/>
+            <Setter Property="Foreground" Value= "#131D3E"/>
             <Setter Property="Padding" Value="5"/>
         </Style>
 
