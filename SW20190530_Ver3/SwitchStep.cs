@@ -9,9 +9,21 @@ using System.Diagnostics;
 
 namespace SW20190530_Ver3
 {
+    /// <summary>
+    /// Represents each step used in OpticalSwitchControlSequence 
+    /// </summary>
     class SwitchStep
     {
-        int Time;
+        double Time;
         int Index;
+        
+        public SwitchStep(double time, int index)
+        {
+            Time = time;
+            Index = index;
+        }
+
+        public double Time1 { get => Time; set => Time = value; }
+        public int Index1 { get => Index; set => Index = value; }
     }
 }

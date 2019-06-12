@@ -58,21 +58,32 @@ namespace SW20190530_Ver3
         //Change in group selection
         private void Group_Changed(object sender, RoutedEventArgs e)
         {
-            if(group.SelectedIndex == 0)
+            if(type == null)
             {
-                return;
+                type = new ComboBox();
+            }
+            type.Items.Clear();
+            if (group.SelectedIndex == 0)
+            {
+                
+                Add_Items(type, new[]{ "CL 1X2 (N)", "CL 1X4 (N)", "CL 1X8 (N)", "LB 1X2 (N)",
+                    "LB 1X4 (N)","LB 1X8 (N)", "CL 1X16 (Y)", "CL 1X2PM (N)", "CL 1X4PM (N)",
+                    "CL 1X8MN (N)", "CL 1X8PM (N)", "LB 1X16 (N)", "LB 1X17 (N)", "1X12 (N)" });
+
+                type.SelectedIndex = 6;
+
+                
             }
             else if (group.SelectedIndex == 1)
             {
-                type.Items.Clear();
-                Add_Items(type, new[]{"CL 2X1 (Y)", "CL 8X1 (Y)", " CL 8X1MN (Y)",
+                Add_Items(type, new[]{"CL 2X1 (Y)", "CL 8X1 (Y)", "CL 8X1MN (Y)",
                     "LB 2X1 (Y)", "LB 4X1 (Y)", "LB 8X1 (Y)" });
                 
                 type.SelectedIndex= 0;
             }
             else if(group.SelectedIndex == 2)
             {
-                type.Items.Clear();
+                
                 Add_Items(type, new[]{"CL 4X4 (Y)", "LB 4X4 (Y)", "DD 4BIT (Y)",
                     "DD 5BIT (Y)", "DD 6BIT (Y)", "CL 2X2 (Y)","LB 2X2 (Y)"});
                 

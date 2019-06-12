@@ -59,6 +59,7 @@
       <DependentUpon>OffStartUpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SwitchStep.cs" />
+    <Compile Include="SwitchTable.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

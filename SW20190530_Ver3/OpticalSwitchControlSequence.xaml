@@ -24,8 +24,8 @@
             <Border Height="{Binding ElementName=win,Path=Height}" HorizontalAlignment="Left" Width="{Binding ElementName=win,Path=Width}" >
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
-                        <GradientStop Color="#050767" Offset="0.1"/>
-                        <GradientStop Color="#345CA0" Offset="0.5"/>
+                        <GradientStop Color="#345CA0" Offset="0.1"/>
+                        <GradientStop Color="#050767" Offset="0.5"/>
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
