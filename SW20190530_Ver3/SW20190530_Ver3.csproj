@@ -102,6 +102,40 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Logic_PTH\CL1X2-old.PTH" />
+    <None Include="Logic_PTH\CL1X2.PTH" />
+    <None Include="Logic_PTH\CL1X2PM.PTH" />
+    <None Include="Logic_PTH\CL1X3.PTH" />
+    <None Include="Logic_PTH\CL1X4.PTH" />
+    <None Include="Logic_PTH\CL1X4PM.PTH" />
+    <None Include="Logic_PTH\CL1X8.PTH" />
+    <None Include="Logic_PTH\CL1X8MN.PTH" />
+    <None Include="Logic_PTH\CL1X8PM.PTH" />
+    <None Include="Logic_PTH\CL2X1.PTH" />
+    <None Include="Logic_PTH\CL2X2.PTH" />
+    <None Include="Logic_PTH\CL3X1.PTH" />
+    <None Include="Logic_PTH\CL4X1.PTH" />
+    <None Include="Logic_PTH\CL4X4.PTH" />
+    <None Include="Logic_PTH\CL8X1.PTH" />
+    <None Include="Logic_PTH\CL8X1MN.PTH" />
+    <None Include="Logic_PTH\DD4BIT.PTH" />
+    <None Include="Logic_PTH\DD5BIT.PTH" />
+    <None Include="Logic_PTH\DD6BIT.PTH" />
+    <None Include="Logic_PTH\DD8BIT.PTH" />
+    <None Include="Logic_PTH\LB1X1.PTH" />
+    <None Include="Logic_PTH\LB1X12.PTH" />
+    <None Include="Logic_PTH\LB1X16.PTH" />
+    <None Include="Logic_PTH\LB1X2.PTH" />
+    <None Include="Logic_PTH\LB1X4.PTH" />
+    <None Include="Logic_PTH\LB1X7.PTH" />
+    <None Include="Logic_PTH\LB1X8.PTH" />
+    <None Include="Logic_PTH\LB2X1.PTH" />
+    <None Include="Logic_PTH\LB2X2.PTH" />
+    <None Include="Logic_PTH\LB4X1.PTH" />
+    <None Include="Logic_PTH\LB4X4.PTH" />
+    <None Include="Logic_PTH\LB8X1.PTH" />
+    <None Include="Logic_PTH\MEMS1X2.PTH" />
+    <None Include="Logic_PTH\NS4X1.PTH" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -111,19 +145,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="agiltronLogo.ico" />
+    <Resource Include="Images+Icons\agiltronLogo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="AgiltronBanner.png" />
+    <Resource Include="Images+Icons\AgiltronBanner.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="IconExit.png" />
+    <Resource Include="Images+Icons\IconExit.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="IconMin.png" />
+    <Resource Include="Images+Icons\IconMin.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconMax.png" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,7 +9,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip"
-        Icon="agiltronLogo.ico"
+        Icon="Images+Icons\agiltronLogo.ico"
         Title="Agiltron Switch Evaluation Program" Height="580" Width="750"
        
         Name="MainWin"
@@ -50,11 +50,11 @@
 
                     <Button Name="ExitButton" Background="#345CA0" Grid.Column="2" VerticalAlignment="Top"
                             HorizontalAlignment="Right" Click="Button_Click_Exit">
-                        <Image Source="IconExit.png" Height="20"/>
+                        <Image Source="Images+Icons\IconExit.png" Height="20"/>
                     </Button>
                     <Button Name="MinButton" Background="#345CA0" Grid.Column="1" VerticalAlignment="Top"
                             HorizontalAlignment="Right"  Click="Button_Min_Exit">
-                        <Image Source="IconMin.png" Height="20"/>
+                        <Image Source="Images+Icons\IconMin.png" Height="20"/>
                     </Button>
                     
                 </Grid>
@@ -64,7 +64,7 @@
 
                 <Image Grid.RowSpan="2"  Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Margin="10,5,0,0" >
                     <Image.Source>
-                        <BitmapImage UriSource="AgiltronBanner.png" />
+                        <BitmapImage UriSource="Images+Icons\AgiltronBanner.png" />
                     </Image.Source>
                 </Image>
             </Grid>

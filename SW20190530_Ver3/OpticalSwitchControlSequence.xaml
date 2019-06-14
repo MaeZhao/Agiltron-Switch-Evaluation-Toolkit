@@ -8,10 +8,10 @@
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip"
-        Icon="agiltronLogo.ico"
+        Icon="Images+Icons\agiltronLogo.ico"
         Name ="win"
         Title="Optical Switch Control Sequence" Height="450" Width="800">
-        <Grid>
+        <Grid  Name="Main">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
@@ -45,7 +45,7 @@
             <!--Logo-->
             <Image Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Margin="10,0,0,0">
                 <Image.Source>
-                    <BitmapImage UriSource="AgiltronBanner.png" />
+                    <BitmapImage UriSource="Images+Icons\AgiltronBanner.png" />
                 </Image.Source>
             </Image>
             <!--Dock Panel Menu-->
@@ -84,11 +84,11 @@
                     </Grid.ColumnDefinitions>
                     <Button Name="ExitButton" Background="#345CA0" Grid.Column="1" VerticalAlignment="Top"
                                 HorizontalAlignment="Right" Click="Button_Click_Exit" >
-                        <Image Source="IconExit.png" Height="15"/>
+                        <Image Source="Images+Icons\IconExit.png" Height="15"/>
                     </Button>
                     <Button Name="MinButton" Background="#345CA0" Grid.Column="0" VerticalAlignment="Top"
                                         HorizontalAlignment="Right" Click="Button_Min_Exit">
-                        <Image Source="IconMin.png" Height="15"/>
+                        <Image Source="Images+Icons\IconMin.png" Height="15"/>
                     </Button>
                 </Grid>
                 <!--Page Title-->
@@ -101,11 +101,8 @@
             </Grid>
         </Grid>
          <!--Excel Configuration Chart-->
-        <Grid Grid.Row="1">
-            <DataGrid Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Name="IO" 
-                      ItemsSource="{Binding}">
-            </DataGrid>
-        </Grid>
+        <!--<Grid Grid.Row="1" Name="ControlTable" >
+        </Grid>-->
            
           
     </Grid>

@@ -1,0 +1,22 @@
+[PROGRAM]
+Title=AGILTRON OPTICAL SWITCH BOARD DEMO SOFTWARE
+BoardConfiguration=1
+TotalSwitchCount=2
+TotalPathCount=3
+Mode=99
+PulseWidth=200
+[Switch Labels]
+SW1=SW 1
+SW2=SW 2
+[PATH1]
+LABEL=In-1
+SWC1=U
+SWC2=U
+[PATH2]
+LABEL=In-2
+SWC1=L
+SWC2=L
+[PATH3]
+LABEL=In-3
+SWC1=L
+SWC2=U
