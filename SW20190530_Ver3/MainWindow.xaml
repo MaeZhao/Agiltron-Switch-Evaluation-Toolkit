@@ -120,6 +120,7 @@
                 <ComboBoxItem>LB 1X17 (N)</ComboBoxItem>
                 <ComboBoxItem>1X12 (N)</ComboBoxItem>
             </ComboBox>
+            
 
             <CheckBox FontSize="15" Name="offlineButton" Foreground="White"  HorizontalAlignment="Center" Margin="0,10,0,5">Run Offline</CheckBox>
         </StackPanel>
