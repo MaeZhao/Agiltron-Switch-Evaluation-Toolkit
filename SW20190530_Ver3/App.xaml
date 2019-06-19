@@ -4,16 +4,11 @@
              xmlns:local="clr-namespace:SW20190530_Ver3"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
-
-        <!--<Style TargetType="NavigationWindow">
-            <Setter Property="WindowStyle" Value="None""#1A2855" />
-            <Setter Property="ResizeMode" Value="CanResize" />
-            <Setter Property="AllowsTransparency" Value="True"  />
-        </Style>-->
-
-
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+       
         <Style TargetType="Button">
             <Setter Property="Background" Value="#223C69"   />
             <Setter Property="Foreground" Value="White"/>
@@ -35,6 +30,8 @@
             <Setter Property="Foreground" Value="Black" />
 
         </Style>
-
+        </ResourceDictionary>
     </Application.Resources>
+    
+   
 </Application>

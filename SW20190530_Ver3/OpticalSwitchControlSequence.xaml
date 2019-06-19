@@ -11,7 +11,7 @@
         Icon="Images+Icons\agiltronLogo.ico"
         Name ="win"
         Title="Optical Switch Control Sequence" Height="450" Width="800">
-        <Grid  Name="Main">
+    <Grid  Name="Main">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
@@ -100,11 +100,11 @@
                     Optical Switch Control Sequence</TextBlock>
             </Grid>
         </Grid>
-         <!--Excel Configuration Chart-->
+        <!--Excel Configuration Chart-->
         <!--<Grid Grid.Row="1" Name="ControlTable" >
         </Grid>-->
-           
-          
+
+
     </Grid>
 
 </Window>
