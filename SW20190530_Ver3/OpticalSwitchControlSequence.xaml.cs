@@ -35,10 +35,14 @@ namespace SW20190530_Ver3
         private String type;
         private Boolean offline;
         private Notifier notifier; //From ToastNotifications v2 nuget pkg:
+        private bool running;
+        private bool pause;
 
         public OpticalSwitchControlSequence(MainWin input)
         {
             InitializeComponent();
+            running = false;
+            pause = false;
             Application.Current.MainWindow = this;
             //Initializes general notifier settings
             notifier = new Notifier(cfg =>
@@ -62,8 +66,20 @@ namespace SW20190530_Ver3
             int numOut = System.Convert.ToInt32(type.Substring(type.IndexOf("X")).Replace("X", String.Empty));
             int numChannel = System.Convert.ToInt32(type.Substring(2, type.IndexOf("X") - 1).Replace("X", String.Empty));
 
+            TextBlock TableTitle = new TextBlock
+            {
+                Text = "" + numChannel + " - " + numOut + " Switch Control Table",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                FontSize = 20,
+                Foreground = Brushes.White,
+                //FontWeight = FontWeights.Medium
+            };
+            Grid.SetRow(TableTitle, 1);
+            Main.Children.Add(TableTitle);
+
             Grid grid = Load_Grid(numOut, numChannel, 6, new int[] { });
-            Grid.SetRow(grid, 1);
+            Grid.SetRow(grid, 2);
             Grid.SetColumnSpan(grid, 2);
             grid.Margin = new Thickness(10, 10, 10, 10);
             Main.Children.Add(grid);
@@ -92,10 +108,10 @@ namespace SW20190530_Ver3
             #endregion
             //TODO load presets
             //TODO do soemthing with the port
-
+            ProgressBar_ValueChanged(new object(), new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
         }
 
-        // Loads ON OFF grid
+        // Loads ON OFF Table Grid
         public Grid Load_Grid(int outP, int channelNum, int steps, int[] runtime)
         {
 
@@ -104,7 +120,7 @@ namespace SW20190530_Ver3
             switchGrid.VerticalAlignment = VerticalAlignment.Top;
             switchGrid.Background = Brushes.White;
 
-            GridLength WxH = new GridLength(2, GridUnitType.Auto);
+            GridLength WxH = new GridLength(2, GridUnitType.Star);
 
             ColumnDefinition stepNum = new ColumnDefinition();
             stepNum.Width = WxH;
@@ -119,6 +135,7 @@ namespace SW20190530_Ver3
             outNum.Height = WxH;
             switchGrid.RowDefinitions.Add(chanNum);
             switchGrid.RowDefinitions.Add(outNum);
+
 
             //Run title
             TextBox runT = new TextBox();
@@ -145,12 +162,13 @@ namespace SW20190530_Ver3
             switchGrid.Children.Add(stepT);
 
             //Generating Output Lables
-            int currOutSt = 2;
+            int currOutSt = 1;
             int currChanSt = 2;
-            for (int c = 1; c <= channelNum; c++)
+            for (int c = 0; c < channelNum; c++)
             {
-                for (int o = 1; o <= outP; o++)
+                for (int o = 0; o < outP; o++)
                 {
+                    currOutSt++;
                     ColumnDefinition cOut = new ColumnDefinition();
                     cOut.Width = WxH;
                     switchGrid.ColumnDefinitions.Add(cOut);
@@ -160,24 +178,17 @@ namespace SW20190530_Ver3
                     //outLable.BorderThickness = new Thickness(2);
                     outLable.IsReadOnly = true;
                     outLable.FontSize = 14;
-                    outLable.Text = c + "-" + o;
+                    outLable.Text = (c + 1) + "-" + (o + 1);
                     Grid.SetColumn(outLable, currOutSt);
                     Grid.SetRow(outLable, 1);
                     switchGrid.Children.Add(outLable);
-                    currOutSt++;
                 }
-
-                //Generating Channel Sections
-                ColumnDefinition cCol = new ColumnDefinition();
-                cCol.Width = WxH;
-                switchGrid.ColumnDefinitions.Add(cCol);
-
                 TextBox chanLable = new TextBox();
                 chanLable.BorderBrush = System.Windows.Media.Brushes.Black;
                 // chanLable.BorderThickness = new Thickness(2);
                 chanLable.IsReadOnly = true;
                 chanLable.FontSize = 14;
-                chanLable.Text = "Channel " + (c);
+                chanLable.Text = "Channel " + (c + 1);
                 Grid.SetColumn(chanLable, currChanSt);
                 Grid.SetRow(chanLable, 0);
                 Grid.SetColumnSpan(chanLable, outP);
@@ -185,17 +196,17 @@ namespace SW20190530_Ver3
                 currChanSt += outP;
             }
 
-            AddStepsButtonRT_UI(switchGrid, steps, runtime);
+            AddStepsButtonRT_UI(switchGrid, steps, outP * channelNum, runtime);
 
             return switchGrid;
         }
 
         //Adds Steps, or Rows of buttons to the ON OFF table
         //initializes RunTime cell and ON OFF buttons user interface
-        public void AddStepsButtonRT_UI(Grid gSteps, int rows, int[] runTime)
+        public void AddStepsButtonRT_UI(Grid gSteps, int rows, int col, int[] runTime)
         {
             GridLength WxH = new GridLength(2, GridUnitType.Auto);
-            int currRows = gSteps.RowDefinitions.Count;
+
 
             //Default time if runTime is not specified:
             if (runTime.Length != rows)
@@ -209,6 +220,8 @@ namespace SW20190530_Ver3
 
                 runTime = Enumerable.Repeat<int>(100, rows).ToArray<int>();
             }
+
+            int currRows = gSteps.RowDefinitions.Count;
             for (int i = 1; i <= rows; i++)
             {
                 RowDefinition nRow = new RowDefinition();
@@ -220,7 +233,7 @@ namespace SW20190530_Ver3
                 //stepLable.BorderThickness = new Thickness(2);
                 stepLable.IsReadOnly = true;
                 stepLable.FontSize = 14;
-                stepLable.Text = "" + (currRows);
+                stepLable.Text = "" + (currRows - 1);
                 Grid.SetColumn(stepLable, 0);
                 Grid.SetRow(stepLable, currRows);
                 gSteps.Children.Add(stepLable);
@@ -235,7 +248,7 @@ namespace SW20190530_Ver3
                 gSteps.Children.Add(times);
                 times.LostFocus += RunTimeCell_UI; //initializes runtime UI
                                                    //Adds the ON OFF buttons
-                for (int b = 2; b < gSteps.ColumnDefinitions.Count - 1; b++)
+                for (int b = 0; b < col; b++)
                 {
                     //ON OFF button generation
                     Button onOff = new Button
@@ -243,42 +256,32 @@ namespace SW20190530_Ver3
                         FontSize = 17,
                         VerticalAlignment = VerticalAlignment.Stretch,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Content = "OFF"
+                        Content = "OFF",
+                        BorderBrush = new SolidColorBrush(Colors.Black),
+                        BorderThickness = new Thickness(1)
                     };
                     //ON OFF button Click UI + Logic
-
+                    //TODO button logic
                     onOff.Click += (sender, e) =>
                     {
-                        int r = Grid.GetRow(onOff);
-                        onOff.Content = "ON";
+                        if ((string)onOff.Content == "OFF")
+                        {
+                            onOff.Content = "ON";
+                            onOff.Background = Brushes.Green;
+                        }
+                        else
+                        {
+                            onOff.Content = "OFF";
+                            onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#223C69"));
+                        }
+
                     };
                     Grid.SetRow(onOff, currRows);
-                    Grid.SetColumn(onOff, b);
+                    Grid.SetColumn(onOff, b + 2);
                     gSteps.Children.Add(onOff);
-
-
-                    //Style onStyle = new Style(typeof(Button), onOff.Style);
-                    //Trigger tON = new Trigger();
-                    //tON.Property = Button.ClickModeProperty;
-                    //tON.Value = "ON";
-                    //Setter sON = new Setter();
-                    //sON.Property = Button.BackgroundProperty;
-                    //sON.Value = Brushes.Green;
-                    //tON.Setters.Add(sON);
-                    //onStyle.Triggers.Add(tON);
-
-                    //onOff.Style = onStyle;
-
-
-
-
                 }
-
-
-
-
+                currRows++;
             }
-            currRows++;
         }
 
 
@@ -396,6 +399,43 @@ namespace SW20190530_Ver3
 #line default
         #endregion
 
+        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //TODO Have the progress update live
+            if (running == false)
+            {
+                progressBar.Value = 100;
+                progressBar.Foreground = Brushes.Red;
+            }
+            else if (running == true && pause == false)
+            {
+                progressBar.Value = 10;
+                progressBar.Foreground = Brushes.Green;
+            }
+            else
+            {
+                progressBar.Foreground = Brushes.Red;
+            }
+        }
+
+        private void Button_Click_Run(object sender, RoutedEventArgs e)
+        {
+            //TODO
+            running = true;
+            ProgressBar_ValueChanged(sender, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+        }
+        private void Button_Click_Pause(object sender, RoutedEventArgs e)
+        {
+            //TODO
+            pause = !pause;
+            ProgressBar_ValueChanged(sender, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+        }
+        private void Button_Click_Stop(object sender, RoutedEventArgs e)
+        {
+            //TODO
+            running = false;
+            ProgressBar_ValueChanged(sender, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+        }
     }
 
 

@@ -17,10 +17,12 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--Backgroud Fade-->
-        <Grid Grid.RowSpan="2">
+        <Grid Grid.RowSpan="4">
             <Border Height="{Binding ElementName=win,Path=Height}" HorizontalAlignment="Left" Width="{Binding ElementName=win,Path=Width}" >
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
@@ -58,7 +60,7 @@
                         <MenuItem Header="_Save As" />
                     </MenuItem>
                     <MenuItem Header="_Edit" Foreground="White">
-                        <MenuItem Header="_Add Step" />
+                        <MenuItem Header="_Add Step"/>
                         <MenuItem Header="_Delete Step" />
                     </MenuItem>
                     <MenuItem Header="_Configure" Foreground="White">
@@ -100,9 +102,23 @@
                     Optical Switch Control Sequence</TextBlock>
             </Grid>
         </Grid>
-        <!--Excel Configuration Chart-->
-        <!--<Grid Grid.Row="1" Name="ControlTable" >
-        </Grid>-->
+        <!--Bottom Buttons-->
+        <Grid Grid.Row="3" VerticalAlignment="Center"  Margin="15">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition />
+                <ColumnDefinition Width= "Auto" />
+                <ColumnDefinition Width= "Auto"/>
+                <ColumnDefinition Width= "Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Margin="20,0" Grid.Column="1" HorizontalAlignment="Right" FontSize="17" Width="80" Click="Button_Click_Run">Run</Button>
+            <StatusBar Foreground="White" BorderThickness="0" Background="Transparent" Margin="20,0" Grid.Column="2" HorizontalAlignment="Right" FontSize="14" >Progress:
+                <ProgressBar Name ="progressBar"  Width="100" Height="15" Background="#050767" ValueChanged="ProgressBar_ValueChanged"  />
+            </StatusBar>
+            <Button Margin="20,0" Grid.Column="3" HorizontalAlignment="Left" FontSize="16" Width="85" Click="Button_Click_Pause">Pause/Go</Button>
+            <Button Margin="20,0" Grid.Column="4" HorizontalAlignment="Left" FontSize="15" Width="50" Height="30" Click="Button_Click_Stop">Stop</Button>
+
+        </Grid>
 
 
     </Grid>
