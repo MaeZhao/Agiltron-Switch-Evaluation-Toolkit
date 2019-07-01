@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using ToastNotifications;
 using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace SW20190530_Ver3
@@ -11,17 +10,32 @@ namespace SW20190530_Ver3
     public partial class MainWin : Window
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWin"/> class.
+        /// </summary>
         public MainWin()
         {
             InitializeComponent();
 
         }
 
-        //Exit Button
+        /// <summary>
+        /// Handles the Exit event of the Button_Click control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click_Exit(object sender, RoutedEventArgs e) => System.Windows.Application.Current.Shutdown(99);
-        //Min Button
+        /// <summary>
+        /// Handles the Exit event of the Button_Min control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Min_Exit(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
-        //Draggable
+        /// <summary>
+        /// Handles the MouseDown event of the Window control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -30,7 +44,11 @@ namespace SW20190530_Ver3
             }
         }
 
-        //Continue Button
+        /// <summary>
+        /// Handles the Continue event of the Button_Click control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click_Continue(object sender, RoutedEventArgs e)
         {
             this.IsEnabled = false;
@@ -39,7 +57,11 @@ namespace SW20190530_Ver3
             op.Show();
         }
 
-        //Change in group selection
+        /// <summary>
+        /// Handles the Changed event of the Group control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Group_Changed(object sender, RoutedEventArgs e)
         {
             if (type == null)
@@ -75,7 +97,11 @@ namespace SW20190530_Ver3
             }
         }
 
-        //Adds String array elements into Combobox
+        /// <summary>
+        /// Adds String array elements into Combobox        
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="l">The l.</param>
         private void Add_Items(ComboBox c, string[] l)
         {
             for (int i = 0; i < l.GetLength(0); i++)

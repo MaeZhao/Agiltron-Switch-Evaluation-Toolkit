@@ -31,20 +31,29 @@ namespace SW20190530_Ver3
     /// </summary>
     public partial class OpticalSwitchControlSequence : Window
     {
-        private ComboBox port;
-        private String type;
+        //UI fields
         private Boolean offline;
-        private Notifier notifier; //From ToastNotifications v2 nuget pkg:
+        private Notifier notifier; //From ToastNotifications v2 nuget pkg
+        private ToastNotifications.Core.MessageOptions messageOptions;  //From ToastNotifications v2 nuget pkg
+        //switchGrid specs
+        private Grid switchGrid;
+        private int numOut, numChannel;
+        //running/pausing button controls
         private bool running;
         private bool pause;
+        private int runningRow;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpticalSwitchControlSequence"/> class.
+        /// </summary>
+        /// <param name="input">The input.</param>
         public OpticalSwitchControlSequence(MainWin input)
         {
             InitializeComponent();
-            running = false;
-            pause = false;
-            Application.Current.MainWindow = this;
+
+
             //Initializes general notifier settings
+            Application.Current.MainWindow = this;
             notifier = new Notifier(cfg =>
             {
                 cfg.PositionProvider = new WindowPositionProvider(
@@ -58,13 +67,150 @@ namespace SW20190530_Ver3
                     maximumNotificationCount: MaximumNotificationCount.FromCount(5));
                 cfg.Dispatcher = Application.Current.Dispatcher;
             });
+            messageOptions = new ToastNotifications.Core.MessageOptions
+            {
+                ShowCloseButton = true, // set the option to show or hide notification close button
+                FreezeOnMouseEnter = true, // set the option to prevent notification dissapear automatically if user move cursor on it
+                NotificationClickAction = n => // set the callback for notification click event
+                {
+                    n.Close(); // call Close method to remove notification
+                },
+            };
 
-            type = input.type.Text;
+            // offline display
+            offline = input.offlineButton.IsChecked.Value;
+            input.Close();
+            this.Show();
+            if (offline)
+            {
+                notifier.ShowInformation("Running in Offline Mode", messageOptions);
+            }
+
+            //Initializes/finds switchGrid specs 
+            SwitchBoardFieldIni(input);
+            //Initializes switch test run specs
+            SwitchRunPauseStopFieldIni(input);
+
+            //TODO load presets
+            //TODO do soemthing with the port
+            ProgressBar_ValueChanged(new object(), new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+        }
+
+        /// <summary>
+        /// Handles the Exit event of the Button_Click control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void Button_Click_Exit(object sender, RoutedEventArgs e) => Application.Current.Shutdown(99);
+        /// <summary>
+        /// Handles the Exit event of the Button_Min control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void Button_Min_Exit(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
+        /// <summary>
+        /// Handles the MouseDown event of the Window control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e) => this.DragMove();
+
+        #region REGION IS INCOMPLETE: Contains code related to loading and reading existing test cases
+#line hidden
+        //Read test components from file
+        private void File_Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Load_Saved_Test(File.ReadAllText(openFileDialog.FileName));
+            }
+        }
+        //Load path to switch logic
+        //TODO: move the private fields to just the arguements, get rid of used fields
+        private void Load_PTH()
+        {
+            //String PTH = File.ReadAllText("Logic_PTH/" + type + ".PTH");
+
+        }
+        //Load saved test file NOT done VERY buggy
+        private void Load_Saved_Test(String config)
+        {
+            StringReader test = new StringReader(config);
+            //Loading Test Components
+            //TODO: remove console writelines
+            int totalSteps = System.Convert.ToInt32(Find_Value(test, '='));
+            Console.WriteLine("totalSteps: " + totalSteps);
+
+            String title = "";
+            if (test.Peek() == 'T')
+            {
+                title = Find_Value(test, '=');
+            }
+            Console.WriteLine("title: " + title);
+
+            String boardConfig = Find_Value(test, '=');
+            Console.WriteLine("boardConfig: " + boardConfig);
+
+            //ArrayList stepAr = Read_Step_Array(test, totalSteps);
+
+            //IO.DataContext = new SwitchGrid(totalSteps, type, title, stepAr);
+
+        }
+
+        //Only follows specific step test file format
+        //private ArrayList Read_Step_Array(StringReader test, int totalSteps)
+        //{
+        //    ArrayList stepAr = new ArrayList();
+        //    int i = 0;
+        //    for (i = 0; test.Peek() != -1; i++)
+        //    {
+        //        SwitchStep step = new SwitchStep(System.Convert.ToDouble(Find_Value(test, '=')), System.Convert.ToInt32(Find_Value(test, '=')));
+        //        Console.WriteLine(i + " time: " + step.Time1);
+        //        Console.WriteLine(i + " index: " + step.Index1);
+        //        stepAr.Add(step);
+        //    }
+        //    if (i != totalSteps)
+        //    {
+        //        MessageBox.Show("Please fix TotalSteps in Test file");
+        //    }
+        //    return stepAr;
+        //}
+
+        //Returns the rest of the line skipping everything before (and including) the stop
+        private string Find_Value(StringReader test, char stop)
+        {
+
+            while (test.Peek() != stop && test.Peek() != -1)
+            {
+                test.Read();
+            }
+            if (test.Peek() == stop)
+            {
+                test.Read();
+            }
+
+            return test.ReadLine();
+        }
+#line default
+        #endregion
+    }
+
+    #region REGION: Switch Grid Components (before running)
+    partial class OpticalSwitchControlSequence
+    {
+        /// <summary>
+        /// Initializes Switch board fields.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        private void SwitchBoardFieldIni(MainWin input)
+        {
+            String type = input.type.Text;
             type = type.Replace(" ", String.Empty);
             type = type.Substring(0, type.IndexOf('('));
 
-            int numOut = System.Convert.ToInt32(type.Substring(type.IndexOf("X")).Replace("X", String.Empty));
-            int numChannel = System.Convert.ToInt32(type.Substring(2, type.IndexOf("X") - 1).Replace("X", String.Empty));
+            numOut = System.Convert.ToInt32(type.Substring(type.IndexOf("X")).Replace("X", String.Empty));
+            numChannel = System.Convert.ToInt32(type.Substring(2, type.IndexOf("X") - 1).Replace("X", String.Empty));
 
             TextBlock TableTitle = new TextBlock
             {
@@ -73,49 +219,25 @@ namespace SW20190530_Ver3
                 VerticalAlignment = VerticalAlignment.Bottom,
                 FontSize = 20,
                 Foreground = Brushes.White,
-                //FontWeight = FontWeights.Medium
             };
             Grid.SetRow(TableTitle, 1);
             Main.Children.Add(TableTitle);
 
-            Grid grid = Load_Grid(numOut, numChannel, 6, new int[] { });
-            Grid.SetRow(grid, 2);
-            Grid.SetColumnSpan(grid, 2);
-            grid.Margin = new Thickness(10, 10, 10, 10);
-            Main.Children.Add(grid);
-
-            #region improperly initialized fields (TODO)
-            port = input.port;
-            offline = input.offlineButton.IsChecked.Value;
-            input.Close();
-            this.Show();
-            // Display offline mode notification
-            if (offline)
-            {
-                var messageOptions = new ToastNotifications.Core.MessageOptions
-                {
-                    ShowCloseButton = true, // set the option to show or hide notification close button
-                    FreezeOnMouseEnter = true, // set the option to prevent notification dissapear automatically if user move cursor on it
-                    NotificationClickAction = n => // set the callback for notification click event
-                    {
-                        n.Close(); // call Close method to remove notification
-                    },
-                };
-                notifier.ShowInformation("Running in Offline Mode", messageOptions);
-
-
-            }
-            #endregion
-            //TODO load presets
-            //TODO do soemthing with the port
-            ProgressBar_ValueChanged(new object(), new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+            //initializes switchGrid:
+            Load_Grid(6, new int[] { });
+            Grid.SetRow(switchGrid, 2);
+            Grid.SetColumnSpan(switchGrid, 2);
+            switchGrid.Margin = new Thickness(10, 10, 10, 10);
+            Main.Children.Add(switchGrid);
+            runningRow = 2;
         }
 
-        // Loads ON OFF Table Grid
-        public Grid Load_Grid(int outP, int channelNum, int steps, int[] runtime)
+        /// <summary>Loads ON OFF button grid.</summary>
+        /// <param name="steps">The number of steps.</param>
+        /// <param name="runtime">An array of runtime times (in seconds).</param>
+        public void Load_Grid(int steps, int[] runtime)
         {
-
-            Grid switchGrid = new Grid();
+            switchGrid = new Grid();
             switchGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
             switchGrid.VerticalAlignment = VerticalAlignment.Top;
             switchGrid.Background = Brushes.White;
@@ -164,9 +286,9 @@ namespace SW20190530_Ver3
             //Generating Output Lables
             int currOutSt = 1;
             int currChanSt = 2;
-            for (int c = 0; c < channelNum; c++)
+            for (int c = 0; c < numChannel; c++)
             {
-                for (int o = 0; o < outP; o++)
+                for (int o = 0; o < numOut; o++)
                 {
                     currOutSt++;
                     ColumnDefinition cOut = new ColumnDefinition();
@@ -175,7 +297,6 @@ namespace SW20190530_Ver3
 
                     TextBox outLable = new TextBox();
                     outLable.BorderBrush = System.Windows.Media.Brushes.Black;
-                    //outLable.BorderThickness = new Thickness(2);
                     outLable.IsReadOnly = true;
                     outLable.FontSize = 14;
                     outLable.Text = (c + 1) + "-" + (o + 1);
@@ -185,67 +306,100 @@ namespace SW20190530_Ver3
                 }
                 TextBox chanLable = new TextBox();
                 chanLable.BorderBrush = System.Windows.Media.Brushes.Black;
-                // chanLable.BorderThickness = new Thickness(2);
                 chanLable.IsReadOnly = true;
                 chanLable.FontSize = 14;
                 chanLable.Text = "Channel " + (c + 1);
                 Grid.SetColumn(chanLable, currChanSt);
                 Grid.SetRow(chanLable, 0);
-                Grid.SetColumnSpan(chanLable, outP);
+                Grid.SetColumnSpan(chanLable, numOut);
                 switchGrid.Children.Add(chanLable);
-                currChanSt += outP;
+                currChanSt += numOut;
             }
 
-            AddStepsButtonRT_UI(switchGrid, steps, outP * channelNum, runtime);
-
-            return switchGrid;
+            AddStepsButtonRT_UI(steps, numOut * numChannel, runtime);
         }
 
-        //Adds Steps, or Rows of buttons to the ON OFF table
-        //initializes RunTime cell and ON OFF buttons user interface
-        public void AddStepsButtonRT_UI(Grid gSteps, int rows, int col, int[] runTime)
+        /// <summary>
+        /// Adds Steps, or Rows of buttons to the ON OFF table :
+        /// initializes RunTime cell and ON OFF buttons user interface     
+        /// </summary>
+        /// <param name="rows">The rows.</param>
+        /// <param name="col">The col.</param>
+        /// <param name="runTime">The run times.</param>
+        public void AddStepsButtonRT_UI(int rows, int col, int[] runTime)
         {
             GridLength WxH = new GridLength(2, GridUnitType.Auto);
 
-
-            //Default time if runTime is not specified:
+            //Default time if runTime array is not initialized properly:
             if (runTime.Length != rows)
             {
                 if (runTime.Length == 0)
                 {
-                    Console.WriteLine("RunTime array is empty");
+                    notifier.ShowWarning("Run Times not initialized", messageOptions);
                 }
                 else
-                    Console.WriteLine("RunTime array is incorrect");
+                {
+                    notifier.ShowError("Unable to read Run Times", messageOptions);
+                }
 
                 runTime = Enumerable.Repeat<int>(100, rows).ToArray<int>();
             }
 
-            int currRows = gSteps.RowDefinitions.Count;
+            int currRows = switchGrid.RowDefinitions.Count;
             for (int i = 1; i <= rows; i++)
             {
                 RowDefinition nRow = new RowDefinition();
                 nRow.Height = WxH;
-                gSteps.RowDefinitions.Add(nRow);
+                switchGrid.RowDefinitions.Add(nRow);
 
-                TextBox stepLable = new TextBox();
-                stepLable.BorderBrush = System.Windows.Media.Brushes.Black;
-                //stepLable.BorderThickness = new Thickness(2);
-                stepLable.IsReadOnly = true;
-                stepLable.FontSize = 14;
-                stepLable.Text = "" + (currRows - 1);
+                InlineUIContainer hcontrol = new InlineUIContainer();
+                Rectangle highlight = new Rectangle
+                {
+                    Fill = System.Windows.Media.Brushes.Transparent,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    IsEnabled = false
+                };
+                Grid.SetRow(highlight, currRows);
+                Grid.SetColumnSpan(highlight, 2); // Might change to 2
+                switchGrid.Children.Add(highlight);
+
+                //Highlights/unhighlights row
+                highlight.IsEnabledChanged += (sender, e) =>
+                {
+                    if (runningRow == Grid.GetRow(highlight))
+                    {
+                        highlight.Fill = System.Windows.Media.Brushes.Green;
+                    }
+                    else
+                    {
+                        highlight.Fill = System.Windows.Media.Brushes.Transparent;
+                    }
+                };
+
+                TextBox stepLable = new TextBox
+                {
+                    BorderBrush = System.Windows.Media.Brushes.Black,
+                    IsReadOnly = true,
+                    FontSize = 14,
+                    Text = "" + (currRows - 1),
+                    Background = System.Windows.Media.Brushes.Transparent,
+                };
                 Grid.SetColumn(stepLable, 0);
                 Grid.SetRow(stepLable, currRows);
-                gSteps.Children.Add(stepLable);
+                switchGrid.Children.Add(stepLable);
 
-                TextBox times = new TextBox();
-                times.FontSize = 14;
-                times.BorderBrush = System.Windows.Media.Brushes.Black;
-                //times.BorderThickness = new Thickness(1);
-                times.Text = "" + runTime.GetValue(i - 1);
+
+                TextBox times = new TextBox
+                {
+                    FontSize = 14,
+                    BorderBrush = System.Windows.Media.Brushes.Black,
+                    Text = "" + runTime.GetValue(i - 1),
+                    Background = System.Windows.Media.Brushes.Transparent,
+                };
                 Grid.SetColumn(times, 1);
                 Grid.SetRow(times, currRows);
-                gSteps.Children.Add(times);
+                switchGrid.Children.Add(times);
                 times.LostFocus += RunTimeCell_UI; //initializes runtime UI
                                                    //Adds the ON OFF buttons
                 for (int b = 0; b < col; b++)
@@ -258,7 +412,8 @@ namespace SW20190530_Ver3
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                         Content = "OFF",
                         BorderBrush = new SolidColorBrush(Colors.Black),
-                        BorderThickness = new Thickness(1)
+                        BorderThickness = new Thickness(1),
+                        IsEnabled = true,
                     };
                     //ON OFF button Click UI + Logic
                     //TODO button logic
@@ -276,19 +431,35 @@ namespace SW20190530_Ver3
                         }
 
                     };
+                    // highlights/unhighlights row of buttons
+                    onOff.IsEnabledChanged += (sender, e) =>
+                    {
+                        if (runningRow == Grid.GetRow(onOff) && (string)onOff.Content != "ON")
+                        {
+                            onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#800080"));
+                        }
+                        else
+                        {
+                            if ((string)onOff.Content != "ON")
+                            {
+                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#223C69"));
+                            }
+                        }
+                    };
+
                     Grid.SetRow(onOff, currRows);
                     Grid.SetColumn(onOff, b + 2);
-                    gSteps.Children.Add(onOff);
+                    switchGrid.Children.Add(onOff);
                 }
                 currRows++;
             }
         }
 
-
-
-
-
-        //UI interaction when Run Time value is not an integer:
+        /// <summary>
+        /// Handles the UI event of the RunTimeCell value is not an integer.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void RunTimeCell_UI(object sender, RoutedEventArgs e)
         {
             var times = sender as TextBox;
@@ -308,97 +479,28 @@ namespace SW20190530_Ver3
                 times.SelectionBrush = SystemColors.HighlightBrush;
             }
         }
+    }
+    #endregion
 
-        //Exit Button
-        private void Button_Click_Exit(object sender, RoutedEventArgs e) => Application.Current.Shutdown(99);
-        //Min Button
-        private void Button_Min_Exit(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
-        //Draggable
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e) => this.DragMove();
-
-
-
-        #region FOLLOWING IS INCOMPLETE: Contains code related to loading and reading existing test cases
-
-#line hidden
-        //Read test components from file
-        private void File_Open_Click(object sender, RoutedEventArgs e)
+    #region REGION: Switch Test Running Components
+    partial class OpticalSwitchControlSequence
+    {
+        /// <summary>
+        /// Initializes fields used run pause stop the program.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        private void SwitchRunPauseStopFieldIni(MainWin input)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                Load_Saved_Test(File.ReadAllText(openFileDialog.FileName));
-            }
-        }
-        //Load path to switch logic
-        //TODO: move the private fields to just the arguements, get rid of used fields
-        private void Load_PTH()
-        {
-            String PTH = File.ReadAllText("Logic_PTH/" + type + ".PTH");
-
-        }
-        //Load saved test file NOT done VERY buggy
-        private void Load_Saved_Test(String config)
-        {
-            StringReader test = new StringReader(config);
-            //Loading Test Components
-            //TODO: remove console writelines
-            int totalSteps = System.Convert.ToInt32(Find_Value(test, '='));
-            Console.WriteLine("totalSteps: " + totalSteps);
-
-            String title = "";
-            if (test.Peek() == 'T')
-            {
-                title = Find_Value(test, '=');
-            }
-            Console.WriteLine("title: " + title);
-
-            String boardConfig = Find_Value(test, '=');
-            Console.WriteLine("boardConfig: " + boardConfig);
-
-            ArrayList stepAr = Read_Step_Array(test, totalSteps);
-
-            //IO.DataContext = new SwitchGrid(totalSteps, type, title, stepAr);
+            running = false;
+            pause = false;
 
         }
 
-        //Only follows specific step test file format
-        private ArrayList Read_Step_Array(StringReader test, int totalSteps)
-        {
-            ArrayList stepAr = new ArrayList();
-            int i = 0;
-            for (i = 0; test.Peek() != -1; i++)
-            {
-                SwitchStep step = new SwitchStep(System.Convert.ToDouble(Find_Value(test, '=')), System.Convert.ToInt32(Find_Value(test, '=')));
-                Console.WriteLine(i + " time: " + step.Time1);
-                Console.WriteLine(i + " index: " + step.Index1);
-                stepAr.Add(step);
-            }
-            if (i != totalSteps)
-            {
-                MessageBox.Show("Please fix TotalSteps in Test file");
-            }
-            return stepAr;
-        }
-
-        //Returns the rest of the line skipping everything before (and including) the stop
-        private string Find_Value(StringReader test, char stop)
-        {
-
-            while (test.Peek() != stop && test.Peek() != -1)
-            {
-                test.Read();
-            }
-            if (test.Peek() == stop)
-            {
-                test.Read();
-            }
-
-            return test.ReadLine();
-        }
-#line default
-        #endregion
-
+        /// <summary>
+        /// Handles the ValueChanged event of the ProgressBar control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedPropertyChangedEventArgs{System.Double}"/> instance containing the event data.</param>
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             //TODO Have the progress update live
@@ -409,7 +511,7 @@ namespace SW20190530_Ver3
             }
             else if (running == true && pause == false)
             {
-                progressBar.Value = 10;
+                progressBar.Value = e.NewValue;
                 progressBar.Foreground = Brushes.Green;
             }
             else
@@ -418,25 +520,90 @@ namespace SW20190530_Ver3
             }
         }
 
-        private void Button_Click_Run(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Handles the Run event of the Button_Click control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private async void Button_Click_Run(object sender, RoutedEventArgs e)
         {
             //TODO
             running = true;
-            ProgressBar_ValueChanged(sender, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+
+            int rowTotal = switchGrid.RowDefinitions.Count;
+            progressBar.Value = 0;
+            double progress = (100.0 * (double)(runningRow - 1) / (double)(rowTotal - 2));
+            ProgressBar_ValueChanged(sender, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value + progress));
+            while (runningRow < rowTotal)
+            {
+                BarFlash();
+                await Task.Delay(1000);
+                ProgressBar_ValueChanged(sender, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value + progress));
+                runningRow++;
+                BarUnFlash();
+
+            }
+            runningRow = 2;
         }
+
+        /// <summary>
+        /// Handles the Pause event of the Button_Click control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click_Pause(object sender, RoutedEventArgs e)
         {
             //TODO
             pause = !pause;
             ProgressBar_ValueChanged(sender, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
         }
+
+        /// <summary>
+        /// Handles the Stop event of the Button_Click control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click_Stop(object sender, RoutedEventArgs e)
         {
-            //TODO
+            runningRow = 2;
             running = false;
             ProgressBar_ValueChanged(sender, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
         }
+
+        /// <summary>
+        /// Row Flashing Animation  
+        /// </summary>
+        /// <param name="rowCurr">The row curr.</param>
+        private void BarFlash()
+        {
+            foreach (UIElement child in switchGrid.Children)
+            {
+                if (Grid.GetRow(child) == runningRow)
+                {
+                    if (child.GetType() == new Rectangle().GetType() || child.GetType() == new Button().GetType())
+                    {
+                        child.IsEnabled = !child.IsEnabled;
+                    }
+                }
+            }
+
+        }
+
+        private void BarUnFlash()
+        {
+            foreach (UIElement child in switchGrid.Children)
+            {
+                if (Grid.GetRow(child) == runningRow - 1)
+                {
+                    if (child.GetType() == new Rectangle().GetType() || child.GetType() == new Button().GetType())
+                    {
+                        child.IsEnabled = !child.IsEnabled;
+                    }
+                }
+            }
+
+        }
+        #endregion
+
     }
-
-
 }
