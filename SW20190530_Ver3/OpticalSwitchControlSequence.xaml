@@ -10,31 +10,32 @@
         ResizeMode="CanResizeWithGrip"
         Icon="Images+Icons\agiltronLogo.ico"
         Name ="win"
-        Title="Optical Switch Control Sequence" Height="450" Width="800">
-    <Grid  Name="Main">
+        Title="Optical Switch Control Sequence" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" StateChanged="Win_StateChanged">
+    <!--Backgroud Fade-->
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+            <GradientStop Color="#345CA0" Offset="0.1"/>
+            <GradientStop Color="#050767" Offset="0.5"/>
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Grid  Name="Main" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <!--Window bar-->
             <RowDefinition Height="Auto"/>
+            <!--Switch Data Table-->
             <RowDefinition Height="Auto"/>
+            <!--Diagram-->
             <RowDefinition />
+            <!--Buttons-->
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!--Backgroud Fade-->
-        <Grid Grid.RowSpan="4">
-            <Border Height="{Binding ElementName=win,Path=Height}" HorizontalAlignment="Left" Width="{Binding ElementName=win,Path=Width}" >
-                <Border.Background>
-                    <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
-                        <GradientStop Color="#345CA0" Offset="0.1"/>
-                        <GradientStop Color="#050767" Offset="0.5"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-            </Border>
-        </Grid>
 
-        <!--Custom Window-->
-        <Grid  Background="#345CA0" Grid.ColumnSpan="2" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown">
+        <!--Custom Window bar-->
+        <Grid  Background="#345CA0" Grid.ColumnSpan="2" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto" />
@@ -52,7 +53,7 @@
             </Image>
             <!--Dock Panel Menu-->
             <DockPanel Grid.Row="0">
-                <Menu DockPanel.Dock="Top" Background="#345CA0" >
+                <Menu DockPanel.Dock="Top" Background="Transparent">
                     <MenuItem Header="_File" Foreground="White">
                         <MenuItem Header="_New"/>
                         <MenuItem Header="_Open" Click="File_Open_Click"/>

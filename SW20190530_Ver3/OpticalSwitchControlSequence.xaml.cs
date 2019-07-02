@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -23,6 +25,7 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Messages.Core;
 using ToastNotifications.Position;
+
 
 namespace SW20190530_Ver3
 {
@@ -50,8 +53,6 @@ namespace SW20190530_Ver3
         public OpticalSwitchControlSequence(MainWin input)
         {
             InitializeComponent();
-
-
             //Initializes general notifier settings
             Application.Current.MainWindow = this;
             notifier = new Notifier(cfg =>
@@ -94,7 +95,63 @@ namespace SW20190530_Ver3
             //TODO load presets
             //TODO do soemthing with the port
             ProgressBar_ValueChanged(new object(), new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
         }
+
+        #region REGION: Methods used for every Window (only slightly variated) TODO: Turn these methods into an abstract class
+        #region REGION: Adjusts default pixel offset in window maximization/minimization
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        // Make sure RECT is actually OUR defined struct, not the windows rect.
+        public static RECT GetWindowRectangle(Window window)
+        {
+            RECT rect;
+            GetWindowRect((new WindowInteropHelper(window)).Handle, out rect);
+            return rect;
+        }
+
+        private void Win_StateChanged(object sender, EventArgs e)
+        {
+            RECT rect = GetWindowRectangle(win);
+            if (win.WindowState == WindowState.Maximized)
+            {
+                Window_Loaded(sender, new RoutedEventArgs()); // Inefficient: resets the WindowsState.Normal settings
+
+                rect.Left = (int)SystemParameters.WorkArea.Left;
+                rect.Top = (int)SystemParameters.WorkArea.Top;
+                rect.Right = (int)(rect.Left - this.MaxWidth);
+                rect.Bottom = (int)(rect.Top - this.MaxHeight);
+                WindowState = WindowState.Normal;
+            }
+
+        }
+
+        /// <summary>
+        /// Handles the Loaded event of the Initial Window State control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Left = SystemParameters.WorkArea.Left;
+            this.Top = SystemParameters.WorkArea.Top;
+            this.Height = SystemParameters.WorkArea.Height;
+            this.Width = SystemParameters.WorkArea.Width;
+
+        }
+        #endregion
 
         /// <summary>
         /// Handles the Exit event of the Button_Click control.
@@ -113,92 +170,60 @@ namespace SW20190530_Ver3
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e) => this.DragMove();
-
-        #region REGION IS INCOMPLETE: Contains code related to loading and reading existing test cases
-#line hidden
-        //Read test components from file
-        private void File_Open_Click(object sender, RoutedEventArgs e)
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
+            RECT rect = GetWindowRectangle(win);
+            if (this.Height == SystemParameters.WorkArea.Height && this.Width == SystemParameters.WorkArea.Width && WindowState != WindowState.Maximized)
             {
-                Load_Saved_Test(File.ReadAllText(openFileDialog.FileName));
-            }
-        }
-        //Load path to switch logic
-        //TODO: move the private fields to just the arguements, get rid of used fields
-        private void Load_PTH()
-        {
-            //String PTH = File.ReadAllText("Logic_PTH/" + type + ".PTH");
+                //WindowState = WindowState.Normal;
+                this.Height = 600;
+                this.Width = 800;
 
-        }
-        //Load saved test file NOT done VERY buggy
-        private void Load_Saved_Test(String config)
-        {
-            StringReader test = new StringReader(config);
-            //Loading Test Components
-            //TODO: remove console writelines
-            int totalSteps = System.Convert.ToInt32(Find_Value(test, '='));
-            Console.WriteLine("totalSteps: " + totalSteps);
-
-            String title = "";
-            if (test.Peek() == 'T')
-            {
-                title = Find_Value(test, '=');
-            }
-            Console.WriteLine("title: " + title);
-
-            String boardConfig = Find_Value(test, '=');
-            Console.WriteLine("boardConfig: " + boardConfig);
-
-            //ArrayList stepAr = Read_Step_Array(test, totalSteps);
-
-            //IO.DataContext = new SwitchGrid(totalSteps, type, title, stepAr);
-
-        }
-
-        //Only follows specific step test file format
-        //private ArrayList Read_Step_Array(StringReader test, int totalSteps)
-        //{
-        //    ArrayList stepAr = new ArrayList();
-        //    int i = 0;
-        //    for (i = 0; test.Peek() != -1; i++)
-        //    {
-        //        SwitchStep step = new SwitchStep(System.Convert.ToDouble(Find_Value(test, '=')), System.Convert.ToInt32(Find_Value(test, '=')));
-        //        Console.WriteLine(i + " time: " + step.Time1);
-        //        Console.WriteLine(i + " index: " + step.Index1);
-        //        stepAr.Add(step);
-        //    }
-        //    if (i != totalSteps)
-        //    {
-        //        MessageBox.Show("Please fix TotalSteps in Test file");
-        //    }
-        //    return stepAr;
-        //}
-
-        //Returns the rest of the line skipping everything before (and including) the stop
-        private string Find_Value(StringReader test, char stop)
-        {
-
-            while (test.Peek() != stop && test.Peek() != -1)
-            {
-                test.Read();
-            }
-            if (test.Peek() == stop)
-            {
-                test.Read();
+                this.Top = GetMousePositionY();
+                this.Left = (int)(GetMousePositionX() - 400);
             }
 
-            return test.ReadLine();
+            this.DragMove();
         }
-#line default
+        #region REGION: Finds Mouse cursor positions
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        internal static extern bool GetCursorPos(ref Win32Point pt);
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        internal struct Win32Point
+        {
+            public Int32 X;
+            public Int32 Y;
+        };
+        /// <summary>
+        /// Gets the mouse position x.
+        /// </summary>
+        /// <returns></returns>
+        public static int GetMousePositionX()
+        {
+            Win32Point w32Mouse = new Win32Point();
+            GetCursorPos(ref w32Mouse);
+            return w32Mouse.X;
+        }
+        /// <summary>
+        /// Gets the mouse position y.
+        /// </summary>
+        /// <returns></returns>
+        public static int GetMousePositionY()
+        {
+            Win32Point w32Mouse = new Win32Point();
+            GetCursorPos(ref w32Mouse);
+            return w32Mouse.Y;
+        }
         #endregion
+        #endregion
+
     }
 
-    #region REGION: Switch Grid Components (before running)
+
     partial class OpticalSwitchControlSequence
     {
+        #region REGION: Switch Grid Components (before running)
         /// <summary>
         /// Initializes Switch board fields.
         /// </summary>
@@ -237,47 +262,59 @@ namespace SW20190530_Ver3
         /// <param name="runtime">An array of runtime times (in seconds).</param>
         public void Load_Grid(int steps, int[] runtime)
         {
-            switchGrid = new Grid();
-            switchGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-            switchGrid.VerticalAlignment = VerticalAlignment.Top;
-            switchGrid.Background = Brushes.White;
+            switchGrid = new Grid
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+                Background = Brushes.White
+            };
 
             GridLength WxH = new GridLength(2, GridUnitType.Star);
 
-            ColumnDefinition stepNum = new ColumnDefinition();
-            stepNum.Width = WxH;
-            ColumnDefinition runTime = new ColumnDefinition();
-            runTime.Width = WxH;
+            ColumnDefinition stepNum = new ColumnDefinition
+            {
+                Width = WxH
+            };
+            ColumnDefinition runTime = new ColumnDefinition
+            {
+                Width = WxH
+            };
             switchGrid.ColumnDefinitions.Add(stepNum);
             switchGrid.ColumnDefinitions.Add(runTime);
 
-            RowDefinition chanNum = new RowDefinition();
-            chanNum.Height = WxH;
-            RowDefinition outNum = new RowDefinition();
-            outNum.Height = WxH;
+            RowDefinition chanNum = new RowDefinition
+            {
+                Height = WxH
+            };
+            RowDefinition outNum = new RowDefinition
+            {
+                Height = WxH
+            };
             switchGrid.RowDefinitions.Add(chanNum);
             switchGrid.RowDefinitions.Add(outNum);
 
 
             //Run title
-            TextBox runT = new TextBox();
-            runT.BorderBrush = System.Windows.Media.Brushes.Black;
-            //runT.BorderThickness = new Thickness(2);
-            runT.IsReadOnly = true;
-            runT.FontSize = 14;
-            runT.Text = "Run Times (s)";
+            TextBox runT = new TextBox
+            {
+                BorderBrush = System.Windows.Media.Brushes.Black,
+                IsReadOnly = true,
+                FontSize = 14,
+                Text = "Run Times (s)"
+            };
             Grid.SetColumn(runT, 1);
             Grid.SetRow(runT, 0);
             Grid.SetRowSpan(runT, 2);
             switchGrid.Children.Add(runT);
 
             //Step Title
-            TextBox stepT = new TextBox();
-            stepT.BorderBrush = System.Windows.Media.Brushes.Black;
-            //stepT.BorderThickness = new Thickness(2);
-            stepT.IsReadOnly = true;
-            stepT.FontSize = 14;
-            stepT.Text = "Step(s)";
+            TextBox stepT = new TextBox
+            {
+                BorderBrush = System.Windows.Media.Brushes.Black,
+                IsReadOnly = true,
+                FontSize = 14,
+                Text = "Step(s)"
+            };
             Grid.SetColumn(stepT, 0);
             Grid.SetRow(stepT, 0);
             Grid.SetRowSpan(stepT, 2);
@@ -291,24 +328,30 @@ namespace SW20190530_Ver3
                 for (int o = 0; o < numOut; o++)
                 {
                     currOutSt++;
-                    ColumnDefinition cOut = new ColumnDefinition();
-                    cOut.Width = WxH;
+                    ColumnDefinition cOut = new ColumnDefinition
+                    {
+                        Width = WxH
+                    };
                     switchGrid.ColumnDefinitions.Add(cOut);
 
-                    TextBox outLable = new TextBox();
-                    outLable.BorderBrush = System.Windows.Media.Brushes.Black;
-                    outLable.IsReadOnly = true;
-                    outLable.FontSize = 14;
-                    outLable.Text = (c + 1) + "-" + (o + 1);
+                    TextBox outLable = new TextBox
+                    {
+                        BorderBrush = System.Windows.Media.Brushes.Black,
+                        IsReadOnly = true,
+                        FontSize = 14,
+                        Text = (c + 1) + "-" + (o + 1)
+                    };
                     Grid.SetColumn(outLable, currOutSt);
                     Grid.SetRow(outLable, 1);
                     switchGrid.Children.Add(outLable);
                 }
-                TextBox chanLable = new TextBox();
-                chanLable.BorderBrush = System.Windows.Media.Brushes.Black;
-                chanLable.IsReadOnly = true;
-                chanLable.FontSize = 14;
-                chanLable.Text = "Channel " + (c + 1);
+                TextBox chanLable = new TextBox
+                {
+                    BorderBrush = System.Windows.Media.Brushes.Black,
+                    IsReadOnly = true,
+                    FontSize = 14,
+                    Text = "Channel " + (c + 1)
+                };
                 Grid.SetColumn(chanLable, currChanSt);
                 Grid.SetRow(chanLable, 0);
                 Grid.SetColumnSpan(chanLable, numOut);
@@ -348,8 +391,10 @@ namespace SW20190530_Ver3
             int currRows = switchGrid.RowDefinitions.Count;
             for (int i = 1; i <= rows; i++)
             {
-                RowDefinition nRow = new RowDefinition();
-                nRow.Height = WxH;
+                RowDefinition nRow = new RowDefinition
+                {
+                    Height = WxH
+                };
                 switchGrid.RowDefinitions.Add(nRow);
 
                 InlineUIContainer hcontrol = new InlineUIContainer();
@@ -369,7 +414,7 @@ namespace SW20190530_Ver3
                 {
                     if (runningRow == Grid.GetRow(highlight))
                     {
-                        highlight.Fill = System.Windows.Media.Brushes.Green;
+                        highlight.Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3BA00"));
                     }
                     else
                     {
@@ -413,7 +458,7 @@ namespace SW20190530_Ver3
                         Content = "OFF",
                         BorderBrush = new SolidColorBrush(Colors.Black),
                         BorderThickness = new Thickness(1),
-                        IsEnabled = true,
+                        Focusable = false,
                     };
                     //ON OFF button Click UI + Logic
                     //TODO button logic
@@ -432,19 +477,21 @@ namespace SW20190530_Ver3
 
                     };
 
-                    // TODO: ISENABLEDCHANGED MUST BE TURNED INTO ANOTHER TRIGGER
                     // highlights /unhighlights row of buttons
-                    onOff.IsEnabledChanged += (sender, e) =>
+                    onOff.FocusableChanged += (sender, e) =>
                     {
-                        if (runningRow == Grid.GetRow(onOff) && (string)onOff.Content != "ON")
+                        if (runningRow == Grid.GetRow(onOff))
                         {
-                            onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#800080"));
+                            if ((string)onOff.Content != "ON")
+                            {
+                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3BA00"));
+                            }
                         }
                         else
                         {
                             if ((string)onOff.Content != "ON")
                             {
-                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#800080"));//#223C69
+                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#223C69"));
                             }
                         }
                     };
@@ -456,6 +503,7 @@ namespace SW20190530_Ver3
                 currRows++;
             }
         }
+
 
         /// <summary>
         /// Handles the UI event of the RunTimeCell value is not an integer.
@@ -481,12 +529,14 @@ namespace SW20190530_Ver3
                 times.SelectionBrush = SystemColors.HighlightBrush;
             }
         }
+        #endregion
     }
-    #endregion
 
-    #region REGION: Switch Test Running Components
+
+
     partial class OpticalSwitchControlSequence
     {
+        #region REGION: Switch Test Running Components
         /// <summary>
         /// Initializes fields used run pause stop the program.
         /// </summary>
@@ -582,9 +632,13 @@ namespace SW20190530_Ver3
             {
                 if (Grid.GetRow(child) == runningRow)
                 {
-                    if (child.GetType() == new Rectangle().GetType() || child.GetType() == new Button().GetType())
+                    if (child.GetType() == new Rectangle().GetType())
                     {
                         child.IsEnabled = !child.IsEnabled;
+                    }
+                    else if (child.GetType() == new Button().GetType())
+                    {
+                        child.Focusable = !child.Focusable;
                     }
                 }
             }
@@ -597,9 +651,13 @@ namespace SW20190530_Ver3
             {
                 if (Grid.GetRow(child) == runningRow - 1)
                 {
-                    if (child.GetType() == new Rectangle().GetType() || child.GetType() == new Button().GetType())
+                    if (child.GetType() == new Rectangle().GetType())
                     {
                         child.IsEnabled = !child.IsEnabled;
+                    }
+                    else if (child.GetType() == new Button().GetType())
+                    {
+                        child.Focusable = !child.Focusable;
                     }
                 }
             }
@@ -607,5 +665,88 @@ namespace SW20190530_Ver3
         }
         #endregion
 
+    }
+
+    partial class OpticalSwitchControlSequence
+    {
+        #region REGION IS INCOMPLETE: Contains code related to loading and reading existing test cases
+#line hidden
+        //Read test components from file
+        private void File_Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Load_Saved_Test(File.ReadAllText(openFileDialog.FileName));
+            }
+        }
+        //Load path to switch logic
+        //TODO: move the private fields to just the arguements, get rid of used fields
+        private void Load_PTH()
+        {
+            //String PTH = File.ReadAllText("Logic_PTH/" + type + ".PTH");
+
+        }
+        //Load saved test file NOT done VERY buggy
+        private void Load_Saved_Test(String config)
+        {
+            StringReader test = new StringReader(config);
+            //Loading Test Components
+            //TODO: remove console writelines
+            int totalSteps = System.Convert.ToInt32(Find_Value(test, '='));
+            Console.WriteLine("totalSteps: " + totalSteps);
+
+            String title = "";
+            if (test.Peek() == 'T')
+            {
+                title = Find_Value(test, '=');
+            }
+            Console.WriteLine("title: " + title);
+
+            String boardConfig = Find_Value(test, '=');
+            Console.WriteLine("boardConfig: " + boardConfig);
+
+            //ArrayList stepAr = Read_Step_Array(test, totalSteps);
+
+            //IO.DataContext = new SwitchGrid(totalSteps, type, title, stepAr);
+
+        }
+
+        //Only follows specific step test file format
+        //private ArrayList Read_Step_Array(StringReader test, int totalSteps)
+        //{
+        //    ArrayList stepAr = new ArrayList();
+        //    int i = 0;
+        //    for (i = 0; test.Peek() != -1; i++)
+        //    {
+        //        SwitchStep step = new SwitchStep(System.Convert.ToDouble(Find_Value(test, '=')), System.Convert.ToInt32(Find_Value(test, '=')));
+        //        Console.WriteLine(i + " time: " + step.Time1);
+        //        Console.WriteLine(i + " index: " + step.Index1);
+        //        stepAr.Add(step);
+        //    }
+        //    if (i != totalSteps)
+        //    {
+        //        MessageBox.Show("Please fix TotalSteps in Test file");
+        //    }
+        //    return stepAr;
+        //}
+
+        //Returns the rest of the line skipping everything before (and including) the stop
+        private string Find_Value(StringReader test, char stop)
+        {
+
+            while (test.Peek() != stop && test.Peek() != -1)
+            {
+                test.Read();
+            }
+            if (test.Peek() == stop)
+            {
+                test.Read();
+            }
+
+            return test.ReadLine();
+        }
+#line default
+        #endregion
     }
 }

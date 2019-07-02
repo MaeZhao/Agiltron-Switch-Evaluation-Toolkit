@@ -12,8 +12,14 @@
         Icon="Images+Icons\agiltronLogo.ico"
         Title="Agiltron Switch Evaluation Program" Height="580" Width="750"
        
-        Name="MainWindow"
-        Background="#345CA0">
+        Name="MainWindow">
+    <!--Backgroud Fade-->
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+            <GradientStop Color="#345CA0" Offset="0.1"/>
+            <GradientStop Color="#050767" Offset="0.5"/>
+        </LinearGradientBrush>
+    </Window.Background>
 
     <Grid >
         <Grid.ColumnDefinitions>
@@ -28,7 +34,7 @@
         </Grid.RowDefinitions>
 
         <!--Dock Bar-->
-        <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Background="#345CA0" Grid.RowSpan="2" MouseDown="Window_MouseDown">
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Background="Transparent" Grid.RowSpan="2" MouseDown="Window_MouseDown">
             <Grid Height="Auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -70,15 +76,6 @@
             </Grid>
         </DockPanel>
 
-        <!--The background-->
-        <Border Height="{Binding ElementName=MainWin,Path=Height}" Grid.Row="2" Grid.RowSpan= "2" Grid.ColumnSpan="2"  BorderThickness="0" Margin="0,0,0,0">
-            <Border.Background>
-                <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
-                    <GradientStop Color="#345CA0" Offset="0.1"/>
-                    <GradientStop Color= "#050767" Offset="0.5"/>
-                </LinearGradientBrush>
-            </Border.Background>
-        </Border>
 
         <!--Buttons-->
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,100,0,0" Height="Auto" VerticalAlignment="Top" Grid.ColumnSpan="2" >
