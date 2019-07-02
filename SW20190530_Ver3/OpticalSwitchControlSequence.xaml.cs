@@ -431,7 +431,9 @@ namespace SW20190530_Ver3
                         }
 
                     };
-                    // highlights/unhighlights row of buttons
+
+                    // TODO: ISENABLEDCHANGED MUST BE TURNED INTO ANOTHER TRIGGER
+                    // highlights /unhighlights row of buttons
                     onOff.IsEnabledChanged += (sender, e) =>
                     {
                         if (runningRow == Grid.GetRow(onOff) && (string)onOff.Content != "ON")
@@ -442,7 +444,7 @@ namespace SW20190530_Ver3
                         {
                             if ((string)onOff.Content != "ON")
                             {
-                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#223C69"));
+                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#800080"));//#223C69
                             }
                         }
                     };
