@@ -3,7 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
         xmlns:local="clr-namespace:SW20190530_Ver3"
+        xmlns:controls1="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+        xmlns:controls2="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+        xmlns:controls3="http://schemas.microsoft.com/xps/2005/06"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -11,6 +15,41 @@
         Icon="Images+Icons\agiltronLogo.ico"
         Name ="win"
         Title="Optical Switch Control Sequence" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" StateChanged="Win_StateChanged">
+    <!--Style for GridSplitter-->
+    <Window.Resources>
+        <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Cursor" Value="SizeWE" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Background" Value="Transparent">
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GridSplitter}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Width="{TemplateBinding Width}">
+                            <Border Height="50" Width="4" VerticalAlignment="Center"
+                                    HorizontalAlignment="Center" BorderThickness="1 0"
+                                    Background="Transparent"  BorderBrush="#B9B9B9">
+                            </Border>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="VerticalGridSplitter" TargetType="{x:Type GridSplitter}"
+                BasedOn="{StaticResource GridSplitterVerticalGripStyle}">
+            <Setter Property="Width" Value="6" />
+            <Setter Property="Margin" Value="15 0" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+
     <!--Backgroud Fade-->
     <Window.Background>
         <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
@@ -19,8 +58,9 @@
         </LinearGradientBrush>
     </Window.Background>
 
-    <Grid  Name="Main" Margin="10">
+    <Grid  Name="Main" Margin="10,0,10,10">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
@@ -35,15 +75,16 @@
         </Grid.RowDefinitions>
 
         <!--Custom Window bar-->
-        <Grid  Background="#345CA0" Grid.ColumnSpan="2" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown" >
+        <Grid  Background="Transparent" Grid.ColumnSpan="3" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+
             </Grid.ColumnDefinitions>
             <!--Logo-->
             <Image Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Margin="10,0,0,0">
@@ -52,7 +93,7 @@
                 </Image.Source>
             </Image>
             <!--Dock Panel Menu-->
-            <DockPanel Grid.Row="0">
+            <DockPanel Grid.Row="0" Margin="0,10,0,0">
                 <Menu DockPanel.Dock="Top" Background="Transparent">
                     <MenuItem Header="_File" Foreground="White">
                         <MenuItem Header="_New"/>
@@ -73,23 +114,24 @@
                 </Menu>
             </DockPanel>
 
-            <Grid Grid.Column="2" Grid.RowSpan="2">
+            <Grid Grid.Column="2" Grid.RowSpan="2" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <!--Minimise, Exit, Expand Buttons-->
-                <Grid Grid.Row="0">
+                <Grid Grid.Row="0" HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition  Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Button Name="ExitButton" Background="#345CA0" Grid.Column="1" VerticalAlignment="Top"
+                    <Button Name="ExitButton" Background="#345CA0" Grid.Column="2" VerticalAlignment="Top"
                                 HorizontalAlignment="Right" Click="Button_Click_Exit" >
                         <Image Source="Images+Icons\IconExit.png" Height="15"/>
                     </Button>
-                    <Button Name="MinButton" Background="#345CA0" Grid.Column="0" VerticalAlignment="Top"
+                    <Button Name="MinButton" Background="#345CA0" Grid.Column="1" VerticalAlignment="Top"
                                         HorizontalAlignment="Right" Click="Button_Min_Exit">
                         <Image Source="Images+Icons\IconMin.png" Height="15"/>
                     </Button>
@@ -104,7 +146,7 @@
             </Grid>
         </Grid>
         <!--Bottom Buttons-->
-        <Grid Grid.Row="3" VerticalAlignment="Center"  Margin="15" Grid.ColumnSpan="2">
+        <Grid Grid.Row="3" VerticalAlignment="Center"  Margin="15" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions >
                 <ColumnDefinition />
                 <ColumnDefinition Width= "Auto" />
@@ -118,9 +160,19 @@
             </StatusBar>
             <Button Margin="20,0" Grid.Column="3" HorizontalAlignment="Left" FontSize="16" Width="85" Click="Button_Click_Pause">Pause/Go</Button>
             <Button Margin="20,0" Grid.Column="4" HorizontalAlignment="Left" FontSize="15" Width="50" Height="30" Click="Button_Click_Stop">Stop</Button>
-
         </Grid>
 
+        <GridSplitter Grid.Row ="1" Grid.RowSpan="2"  VerticalAlignment="Stretch" HorizontalAlignment="Left" Grid.Column="1"
+                      Width="11" Margin="0" Style="{StaticResource VerticalGridSplitter}">
+            <GridSplitter.Background>
+                <LinearGradientBrush x:Name="GradStyle" EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                    <GradientStop Color="#00050554" Offset="0.1"/>
+                    <GradientStop Color= "#050767" Offset="0.2"/>
+                    <GradientStop Color="#D3345CA0" Offset="0.4"/>
+                    <GradientStop Color="#00345CA0" Offset="0.58"/>
+                </LinearGradientBrush>
+            </GridSplitter.Background>
+        </GridSplitter>
 
     </Grid>
 

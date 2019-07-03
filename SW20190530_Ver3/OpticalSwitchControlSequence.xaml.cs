@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -39,7 +40,7 @@ namespace SW20190530_Ver3
         private Notifier notifier; //From ToastNotifications v2 nuget pkg
         private ToastNotifications.Core.MessageOptions messageOptions;  //From ToastNotifications v2 nuget pkg
         //switchGrid specs
-        private Grid switchGrid;
+        private Grid gridSide, switchGrid;
         private int numOut, numChannel;
         //running/pausing button controls
         private bool running;
@@ -179,7 +180,7 @@ namespace SW20190530_Ver3
             {
                 //WindowState = WindowState.Normal;
                 this.Height = 600;
-                this.Width = 800;
+                this.Width = 1000;
 
                 this.Top = GetMousePositionY();
                 this.Left = (int)(GetMousePositionX() - 400);
@@ -238,25 +239,43 @@ namespace SW20190530_Ver3
             numOut = System.Convert.ToInt32(type.Substring(type.IndexOf("X")).Replace("X", String.Empty));
             numChannel = System.Convert.ToInt32(type.Substring(2, type.IndexOf("X") - 1).Replace("X", String.Empty));
 
-            TextBlock TableTitle = new TextBlock
+            //Title Components:
+            Grid Title = new Grid();
+            GridLength Stiff = new GridLength(2, GridUnitType.Auto);
+            RowDefinition TitleHeight = new RowDefinition
             {
-                Text = "" + numChannel + " - " + numOut + " Switch Control Test",
+                Height = new GridLength(2, GridUnitType.Star)
+            };
+            Title.RowDefinitions.Add(TitleHeight);
+            ColumnDefinition TitleWidth = new ColumnDefinition
+            {
+                Width = new GridLength(2, GridUnitType.Star)
+            };
+            Title.ColumnDefinitions.Add(TitleWidth);
+            //Title
+            TextBlock TestRunTitle = new TextBlock
+            {
+                Text = "" + numChannel + " - " + numOut + " Switch Evaluation",
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                FontSize = 20,
+                FontWeight = FontWeights.Light,
+                FontSize = 25,
                 Foreground = Brushes.White,
+                Margin = new Thickness(0, 0, 0, 10)
             };
-            Grid.SetRow(TableTitle, 1);
-            Grid.SetColumnSpan(TableTitle, 2);
-            Main.Children.Add(TableTitle);
+            Grid.SetRow(TestRunTitle, 1);
+            Grid.SetColumnSpan(TestRunTitle, 2);
+            Title.Children.Add(TestRunTitle);
+            Grid.SetRow(Title, 1);
+            Grid.SetColumnSpan(Title, 3);
+            Main.Children.Add(Title);
 
-            //initializes switchGrid:
-            Load_Grid(6, new int[] { });
-            switchGrid.ShowGridLines = true;
-            Grid.SetRow(switchGrid, 2);
-            Grid.SetColumn(switchGrid, 0);
-            switchGrid.Margin = new Thickness(10, 10, 10, 10);
-            Main.Children.Add(switchGrid);
+            //initializes gridSide:
+            Load_Grid(100, new int[] { });
+            Grid.SetRow(gridSide, 2);
+            Grid.SetColumn(gridSide, 0);
+            switchGrid.Margin = new Thickness(10, 0, 10, 10);
+            Main.Children.Add(gridSide);
             runningRow = 2;
         }
 
@@ -265,15 +284,46 @@ namespace SW20190530_Ver3
         /// <param name="runtime">An array of runtime times (in seconds).</param>
         public void Load_Grid(int steps, int[] runtime)
         {
+            GridLength Adjustable = new GridLength(2, GridUnitType.Star);
+            GridLength Stiff = new GridLength(2, GridUnitType.Auto);
+
+            gridSide = new Grid
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top,
+                Background = Brushes.Transparent
+            };
+            RowDefinition TableTitle = new RowDefinition
+            {
+                Height = Stiff
+            };
+            gridSide.RowDefinitions.Add(TableTitle);
+            RowDefinition Table = new RowDefinition
+            {
+                Height = Stiff
+            };
+            gridSide.RowDefinitions.Add(Table);
+            //Title
+            TextBlock SwitchTableTitle = new TextBlock
+            {
+                Text = "" + numChannel + " - " + numOut + " Switch Control Table",
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                FontSize = 15,
+                Foreground = Brushes.White,
+                Margin = new Thickness(10, 15, 0, 10)
+            };
+            Grid.SetRow(SwitchTableTitle, 0);
+            gridSide.Children.Add(SwitchTableTitle);
+
+            //The Switch Table
+            ScrollViewer sgrid = new ScrollViewer();
             switchGrid = new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Top,
                 Background = Brushes.White
             };
-
-            GridLength Adjustable = new GridLength(2, GridUnitType.Star);
-            GridLength Stiff = new GridLength(2, GridUnitType.Auto);
 
             ColumnDefinition stepNum = new ColumnDefinition
             {
@@ -296,7 +346,6 @@ namespace SW20190530_Ver3
             };
             switchGrid.RowDefinitions.Add(chanNum);
             switchGrid.RowDefinitions.Add(outNum);
-
 
             //Run title
             TextBox runT = new TextBox
@@ -334,7 +383,7 @@ namespace SW20190530_Ver3
                     currOutSt++;
                     ColumnDefinition cOut = new ColumnDefinition
                     {
-                        Width = Stiff
+                        Width = Adjustable
                     };
                     switchGrid.ColumnDefinitions.Add(cOut);
 
@@ -362,8 +411,51 @@ namespace SW20190530_Ver3
                 switchGrid.Children.Add(chanLable);
                 currChanSt += numOut;
             }
-
             AddStepsButtonRT_UI(steps, numOut * numChannel, runtime);
+            AddScrollBar();
+
+            Grid.SetRow(s, 1);
+            gridSide.Children.Add(switchGrid);
+        }
+
+        private void AddScrollBar()
+        {
+            //Add a scrollbar to switchGrid
+            ColumnDefinition scrollCol = new ColumnDefinition
+            {
+                Width = new GridLength(2, GridUnitType.Auto),
+            };
+            //ScrollBar tableScroller = new ScrollBar
+            //{
+            //    Width = 10,
+            //    Orientation = Orientation.Vertical,
+            //    Height = switchGrid.Height,
+            //    Minimum = 1,
+            //    Maximum = 100,
+            //    Value = 1,
+            //    Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("131D3E")),
+            //    Foreground = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9B9B9")),
+            //    VerticalAlignment = VerticalAlignment.Stretch,
+            //    HorizontalAlignment = HorizontalAlignment.Left
+            //};
+            switchGrid.ColumnDefinitions.Add(scrollCol);
+
+            ScrollBar tableScroller = new ScrollBar();
+            tableScroller.Orientation = Orientation.Vertical;
+            tableScroller.HorizontalAlignment = HorizontalAlignment.Left;
+            tableScroller.Height =
+            tableScroller.VerticalAlignment = VerticalAlignment.Stretch;
+            //tableScroller.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#131D3E"));
+            //tableScroller.Foreground = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9B9B9"));
+            tableScroller.Minimum = 1;
+            tableScroller.Maximum = 100;
+            tableScroller.Value = 50;
+
+            Grid.SetColumn(tableScroller, switchGrid.ColumnDefinitions.Count);
+
+
+            //ScrollGrid.Children.Add(tableScroller);
+            switchGrid.Children.Add(tableScroller);
         }
 
         /// <summary>
