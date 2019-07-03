@@ -21,6 +21,7 @@
 
     <Grid  Name="Main" Margin="10">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -28,7 +29,6 @@
             <RowDefinition Height="Auto"/>
             <!--Switch Data Table-->
             <RowDefinition Height="Auto"/>
-            <!--Diagram-->
             <RowDefinition />
             <!--Buttons-->
             <RowDefinition Height="Auto"/>
@@ -104,7 +104,7 @@
             </Grid>
         </Grid>
         <!--Bottom Buttons-->
-        <Grid Grid.Row="3" VerticalAlignment="Center"  Margin="15">
+        <Grid Grid.Row="3" VerticalAlignment="Center"  Margin="15" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions >
                 <ColumnDefinition />
                 <ColumnDefinition Width= "Auto" />

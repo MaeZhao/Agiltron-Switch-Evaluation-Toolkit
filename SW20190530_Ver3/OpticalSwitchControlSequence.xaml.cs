@@ -44,7 +44,9 @@ namespace SW20190530_Ver3
         //running/pausing button controls
         private bool running;
         private bool pause;
+        private bool flashing;
         private int runningRow;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OpticalSwitchControlSequence"/> class.
@@ -53,6 +55,7 @@ namespace SW20190530_Ver3
         public OpticalSwitchControlSequence(MainWin input)
         {
             InitializeComponent();
+
             //Initializes general notifier settings
             Application.Current.MainWindow = this;
             notifier = new Notifier(cfg =>
@@ -94,7 +97,6 @@ namespace SW20190530_Ver3
 
             //TODO load presets
             //TODO do soemthing with the port
-            ProgressBar_ValueChanged(new object(), new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
             this.MaxWidth = SystemParameters.WorkArea.Width;
             this.MaxHeight = SystemParameters.WorkArea.Height;
         }
@@ -217,7 +219,6 @@ namespace SW20190530_Ver3
         }
         #endregion
         #endregion
-
     }
 
 
@@ -239,19 +240,21 @@ namespace SW20190530_Ver3
 
             TextBlock TableTitle = new TextBlock
             {
-                Text = "" + numChannel + " - " + numOut + " Switch Control Table",
+                Text = "" + numChannel + " - " + numOut + " Switch Control Test",
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 FontSize = 20,
                 Foreground = Brushes.White,
             };
             Grid.SetRow(TableTitle, 1);
+            Grid.SetColumnSpan(TableTitle, 2);
             Main.Children.Add(TableTitle);
 
             //initializes switchGrid:
             Load_Grid(6, new int[] { });
+            switchGrid.ShowGridLines = true;
             Grid.SetRow(switchGrid, 2);
-            Grid.SetColumnSpan(switchGrid, 2);
+            Grid.SetColumn(switchGrid, 0);
             switchGrid.Margin = new Thickness(10, 10, 10, 10);
             Main.Children.Add(switchGrid);
             runningRow = 2;
@@ -269,26 +272,27 @@ namespace SW20190530_Ver3
                 Background = Brushes.White
             };
 
-            GridLength WxH = new GridLength(2, GridUnitType.Star);
+            GridLength Adjustable = new GridLength(2, GridUnitType.Star);
+            GridLength Stiff = new GridLength(2, GridUnitType.Auto);
 
             ColumnDefinition stepNum = new ColumnDefinition
             {
-                Width = WxH
+                Width = Stiff
             };
             ColumnDefinition runTime = new ColumnDefinition
             {
-                Width = WxH
+                Width = Stiff
             };
             switchGrid.ColumnDefinitions.Add(stepNum);
             switchGrid.ColumnDefinitions.Add(runTime);
 
             RowDefinition chanNum = new RowDefinition
             {
-                Height = WxH
+                Height = Adjustable
             };
             RowDefinition outNum = new RowDefinition
             {
-                Height = WxH
+                Height = Adjustable
             };
             switchGrid.RowDefinitions.Add(chanNum);
             switchGrid.RowDefinitions.Add(outNum);
@@ -330,7 +334,7 @@ namespace SW20190530_Ver3
                     currOutSt++;
                     ColumnDefinition cOut = new ColumnDefinition
                     {
-                        Width = WxH
+                        Width = Stiff
                     };
                     switchGrid.ColumnDefinitions.Add(cOut);
 
@@ -537,7 +541,6 @@ namespace SW20190530_Ver3
     partial class OpticalSwitchControlSequence
     {
         #region REGION: Switch Test Running Components
-        private bool flashing;
         /// <summary>
         /// Initializes fields used run pause stop the program.
         /// </summary>
@@ -548,6 +551,8 @@ namespace SW20190530_Ver3
             running = false;
             pause = false;
             flashing = false;
+            ProgressBar_ValueChanged(new object(), new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+
 
         }
 
