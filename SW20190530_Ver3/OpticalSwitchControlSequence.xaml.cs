@@ -558,11 +558,9 @@ namespace SW20190530_Ver3
         /// <param name="e">The <see cref="RoutedPropertyChangedEventArgs{System.Double}"/> instance containing the event data.</param>
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //TODO Have the progress update live
             if (running == false)
             {
                 progressBar.Value = 0;
-                //progressBar.Foreground = Brushes.Red;
             }
             else if (running == true && pause == false)
             {
@@ -611,7 +609,7 @@ namespace SW20190530_Ver3
                 int rowLeft = rowTotal - 1;
                 while (runningRow <= rowLeft && running == true)
                 {
-                    Console.WriteLine("running row: " + runningRow + " | ruwLeft: " + rowLeft);
+                    //Console.WriteLine("running row: " + runningRow + " | ruwLeft: " + rowLeft);
                     BarFlash();
                     ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value + progress));
 
@@ -625,7 +623,7 @@ namespace SW20190530_Ver3
                     //Test is paused:
                     await Task.Run(() =>
                     {
-                        if (pause) Console.WriteLine("paused line: " + runningRow);
+                        //if (pause) Console.WriteLine("paused line: " + runningRow);
                         while (pause == true && running == true) ;
                     });
 
@@ -649,7 +647,6 @@ namespace SW20190530_Ver3
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click_Pause(object sender, RoutedEventArgs e)
         {
-            //TODO
             pause = !pause;
             if (pause == true)
                 notifier.ShowInformation("Test Paused", messageOptions);
@@ -662,8 +659,8 @@ namespace SW20190530_Ver3
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click_Stop(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("flashing : " + flashing);
-            Console.WriteLine("stopped line : " + runningRow);
+            //Console.WriteLine("flashing : " + flashing);
+            //Console.WriteLine("stopped line : " + runningRow);
             if (flashing == true)
             {
                 BarUnFlash();
@@ -671,11 +668,10 @@ namespace SW20190530_Ver3
             SwitchRunPauseStopFieldIni();
             ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
             notifier.ShowWarning("Test Stopped", messageOptions);
-            Console.WriteLine("stop runningRow val : " + runningRow);
         }
 
         /// <summary>
-        /// Highlights the bar
+        /// Highlights the row
         /// </summary>
         private void BarFlash()
         {
@@ -697,11 +693,11 @@ namespace SW20190530_Ver3
 
         }
         /// <summary>
-        /// Removes the highlight on a bar 
+        /// Removes the highlight on the previously highlighted row 
         /// </summary>
         private void BarUnFlash()
         {
-            Console.WriteLine("unflashed row : " + (runningRow - 1));
+            //Console.WriteLine("unflashed row : " + (runningRow - 1));
             flashing = false;
             foreach (UIElement child in switchGrid.Children)
             {
@@ -717,7 +713,6 @@ namespace SW20190530_Ver3
                     }
                 }
             }
-
         }
         #endregion
 
