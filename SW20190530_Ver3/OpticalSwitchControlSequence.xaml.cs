@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using ITCC.NetworkView.AdvancedSample;
+using ITCC.NetworkView.AdvancedSample.NetworkModel;
+using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +29,6 @@ using ToastNotifications.Messages;
 using ToastNotifications.Messages.Core;
 using ToastNotifications.Position;
 
-
 namespace SW20190530_Ver3
 {
     /// <summary>
@@ -40,7 +41,6 @@ namespace SW20190530_Ver3
         private Notifier notifier; //From ToastNotifications v2 nuget pkg
         private ToastNotifications.Core.MessageOptions messageOptions;  //From ToastNotifications v2 nuget pkg
         //switchGrid specs
-        private Grid gridSide, switchGrid;
         private int numOut, numChannel;
         //running/pausing button controls
         private bool running;
@@ -56,7 +56,6 @@ namespace SW20190530_Ver3
         public OpticalSwitchControlSequence(MainWin input)
         {
             InitializeComponent();
-
             //Initializes general notifier settings
             Application.Current.MainWindow = this;
             notifier = new Notifier(cfg =>
@@ -255,7 +254,7 @@ namespace SW20190530_Ver3
             //Title
             TextBlock TestRunTitle = new TextBlock
             {
-                Text = "" + numChannel + " - " + numOut + " Switch Evaluation",
+                Text = "" + numChannel + " - " + numOut + " Switch Control",
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 FontWeight = FontWeights.Light,
@@ -267,15 +266,13 @@ namespace SW20190530_Ver3
             Grid.SetColumnSpan(TestRunTitle, 2);
             Title.Children.Add(TestRunTitle);
             Grid.SetRow(Title, 1);
+
             Grid.SetColumnSpan(Title, 3);
             Main.Children.Add(Title);
 
-            //initializes gridSide:
+            //initializes switchGrid:
             Load_Grid(100, new int[] { });
-            Grid.SetRow(gridSide, 2);
-            Grid.SetColumn(gridSide, 0);
-            switchGrid.Margin = new Thickness(10, 0, 10, 10);
-            Main.Children.Add(gridSide);
+
             runningRow = 2;
         }
 
@@ -286,44 +283,6 @@ namespace SW20190530_Ver3
         {
             GridLength Adjustable = new GridLength(2, GridUnitType.Star);
             GridLength Stiff = new GridLength(2, GridUnitType.Auto);
-
-            gridSide = new Grid
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Top,
-                Background = Brushes.Transparent
-            };
-            RowDefinition TableTitle = new RowDefinition
-            {
-                Height = Stiff
-            };
-            gridSide.RowDefinitions.Add(TableTitle);
-            RowDefinition Table = new RowDefinition
-            {
-                Height = Stiff
-            };
-            gridSide.RowDefinitions.Add(Table);
-            //Title
-            TextBlock SwitchTableTitle = new TextBlock
-            {
-                Text = "" + numChannel + " - " + numOut + " Switch Control Table",
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                FontSize = 15,
-                Foreground = Brushes.White,
-                Margin = new Thickness(10, 15, 0, 10)
-            };
-            Grid.SetRow(SwitchTableTitle, 0);
-            gridSide.Children.Add(SwitchTableTitle);
-
-            //The Switch Table
-            ScrollViewer sgrid = new ScrollViewer();
-            switchGrid = new Grid
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Top,
-                Background = Brushes.White
-            };
 
             ColumnDefinition stepNum = new ColumnDefinition
             {
@@ -412,51 +371,8 @@ namespace SW20190530_Ver3
                 currChanSt += numOut;
             }
             AddStepsButtonRT_UI(steps, numOut * numChannel, runtime);
-            AddScrollBar();
-
-            Grid.SetRow(s, 1);
-            gridSide.Children.Add(switchGrid);
         }
 
-        private void AddScrollBar()
-        {
-            //Add a scrollbar to switchGrid
-            ColumnDefinition scrollCol = new ColumnDefinition
-            {
-                Width = new GridLength(2, GridUnitType.Auto),
-            };
-            //ScrollBar tableScroller = new ScrollBar
-            //{
-            //    Width = 10,
-            //    Orientation = Orientation.Vertical,
-            //    Height = switchGrid.Height,
-            //    Minimum = 1,
-            //    Maximum = 100,
-            //    Value = 1,
-            //    Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("131D3E")),
-            //    Foreground = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9B9B9")),
-            //    VerticalAlignment = VerticalAlignment.Stretch,
-            //    HorizontalAlignment = HorizontalAlignment.Left
-            //};
-            switchGrid.ColumnDefinitions.Add(scrollCol);
-
-            ScrollBar tableScroller = new ScrollBar();
-            tableScroller.Orientation = Orientation.Vertical;
-            tableScroller.HorizontalAlignment = HorizontalAlignment.Left;
-            tableScroller.Height =
-            tableScroller.VerticalAlignment = VerticalAlignment.Stretch;
-            //tableScroller.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#131D3E"));
-            //tableScroller.Foreground = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#B9B9B9"));
-            tableScroller.Minimum = 1;
-            tableScroller.Maximum = 100;
-            tableScroller.Value = 50;
-
-            Grid.SetColumn(tableScroller, switchGrid.ColumnDefinitions.Count);
-
-
-            //ScrollGrid.Children.Add(tableScroller);
-            switchGrid.Children.Add(tableScroller);
-        }
 
         /// <summary>
         /// Adds Steps, or Rows of buttons to the ON OFF table :
@@ -896,5 +812,13 @@ namespace SW20190530_Ver3
         }
 #line default
         #endregion
+    }
+
+    partial class OpticalSwitchControlSequence
+    {
+        private void DiagramINI()
+        {
+
+        }
     }
 }

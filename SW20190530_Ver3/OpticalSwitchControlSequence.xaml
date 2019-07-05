@@ -8,6 +8,10 @@
         xmlns:controls1="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
         xmlns:controls2="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
         xmlns:controls3="http://schemas.microsoft.com/xps/2005/06"
+        xmlns:diagramSource="clr-namespace:ITCC.NetworkView.AdvancedSample;assembly=ITCC.NetworkView.AdvancedSample"
+        xmlns:networkUi="clr-namespace:ITCC.NetworkView.NetworkUI;assembly=ITCC.NetworkView.NetworkUI"
+        xmlns:adornedControl="clr-namespace:ITCC.NetworkView.AdornedControl;assembly=ITCC.NetworkView.AdornedControl"
+        xmlns:networkModel ="clr-namespace:ITCC.NetworkView.AdvancedSample.NetworkModel;assembly=ITCC.NetworkView.AdvancedSample.NetworkModel"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -15,8 +19,9 @@
         Icon="Images+Icons\agiltronLogo.ico"
         Name ="win"
         Title="Optical Switch Control Sequence" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" StateChanged="Win_StateChanged">
-    <!--Style for GridSplitter-->
+
     <Window.Resources>
+        <!--Style for GridSplitter-->
         <Style x:Key="GridSplitterVerticalGripStyle" TargetType="{x:Type GridSplitter}">
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -40,7 +45,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style x:Key="VerticalGridSplitter" TargetType="{x:Type GridSplitter}"
                 BasedOn="{StaticResource GridSplitterVerticalGripStyle}">
             <Setter Property="Width" Value="6" />
@@ -48,7 +52,165 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
+        <!--Directories/Styles for SwitchDyagram-->
+        <ResourceDictionary x:Key="switchDiagram">
+            <ResourceDictionary.MergedDictionaries>
+                <!-- 
+                Merge in the resource dictionary that is shared between the main window and the overview window.
+                -->
+                <ResourceDictionary 
+                    Source="SharedVisualTemplates.xaml"
+                    />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- UI commands. -->
+
+            <RoutedUICommand x:Key="Commands.DeleteSelectedNodes" />
+            <RoutedUICommand x:Key="Commands.CreateNode" />
+            <RoutedUICommand x:Key="Commands.DeleteNode" />
+            <RoutedUICommand x:Key="Commands.DeleteConnection" />
+            <RoutedUICommand x:Key="Commands.ZoomOut" />
+            <RoutedUICommand x:Key="Commands.ZoomIn" />
+            <RoutedUICommand x:Key="Commands.JumpBackToPrevZoom" />
+            <RoutedUICommand x:Key="Commands.FitContent" />
+            <RoutedUICommand x:Key="Commands.Fill" />
+            <RoutedUICommand x:Key="Commands.OneHundredPercent" />
+
+            <!-- 
+            This converts from a scale value to a percentage value.
+            It is used to convert the value of 'ContentScale' to the percentage zoom level that is displayed in the UI.
+            -->
+            <diagramSource:ScaleToPercentConverter 
+                x:Key="ScaleToPercentConverter" 
+                />
+            <!-- Define a data-template for the 'NodeViewModel' class. -->
+            <DataTemplate
+                DataType="{x:Type networkModel:NodeViewModel}"
+                >
+
+                <!-- 
+                An adorned control is used, to represent the node. 
+                When the user hovers the mouse cursor over the node, the 
+                'delete node' adorner pops up and allows them to delete the node.
+                -->
+                <adornedControl:AdornedControl
+                    HorizontalAdornerPlacement="Outside"
+                    VerticalAdornerPlacement="Outside"
+                    AdornerOffsetX="-12"
+                    AdornerOffsetY="8"
+                    IsMouseOverShowEnabled="{Binding ElementName=NetworkControl, Path=IsNotDragging}"
+                    >
+
+                    <!-- The margin has been selected so that the selection rect nicely covers the entire node. -->
+
+                    <Grid
+                        MinWidth="120"
+                        Margin="10,6,10,6"
+                        SizeChanged="Node_SizeChanged"
+                        >
+
+                        <!-- This rectangle is the main visual for the node. -->
+
+                        <Rectangle
+                            Stroke="{StaticResource NodeBorderBrush}"
+                            StrokeThickness="1.3"
+                            RadiusX="4"
+                            RadiusY="4"
+                            Fill="{StaticResource NodeFillBrush}"
+                            />
+
+                        <!-- 
+                        This grid contains the node's connectors.
+                        The margin is negative so that the connectors overlap the body of the node and it's selection border.
+                        -->
+                        <Grid
+                            Margin="-6,4,-6,4"
+                            >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" MinWidth="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <!-- spacer -->
+                                <RowDefinition Height="2" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- The name of the node. -->
+                            <TextBlock
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Grid.Row="0"
+                                Text="{Binding Name}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                />
+
+                            <!-- Displays the node's input connectors. -->
+                            <ItemsControl
+                                Grid.Column="0"
+                                Grid.Row="2"
+                                ItemsSource="{Binding InputConnectors}"
+                                ItemTemplate="{StaticResource InputConnectorTemplate}"
+                                Focusable="False"
+                                />
+
+                            <!-- Displays the node's output connectors. -->
+                            <ItemsControl
+                                Grid.Column="2"
+                                Grid.Row="2"
+                                ItemsSource="{Binding OutputConnectors}"
+                                ItemTemplate="{StaticResource OutputConnectorTemplate}"
+                                Focusable="False"
+                                />
+                        </Grid>
+                    </Grid>
+
+                    <adornedControl:AdornedControl.AdornerContent>
+
+                        <!-- 
+                        This is the adorner that pops up when the user hovers the mouse over the node.
+                        It displays a button that the user can click to delete the node.
+                        -->
+                        <Canvas
+                            x:Name="nodeAdornerCanvas"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Width="30"
+                            Height="30"
+                            >
+                            <Line
+                                X1="0"
+                                Y1="30"
+                                X2="15"
+                                Y2="15"
+                                Stroke="Black"
+                                StrokeThickness="1"
+                                />
+                            <Button
+                                x:Name="deleteNodeButton"
+                                Canvas.Left="10"
+                                Canvas.Top="0"
+                                Width="20"
+                                Height="20"
+                                Cursor="Hand"
+                                Focusable="False"
+                                Command="{StaticResource Commands.DeleteNode}"
+                                CommandParameter="{Binding}"
+                                Template="{StaticResource DeleteButtonTemplate}"
+                                />
+                        </Canvas>
+                    </adornedControl:AdornedControl.AdornerContent>
+                </adornedControl:AdornedControl>
+            </DataTemplate>
+        </ResourceDictionary>
     </Window.Resources>
+
+    <Window.DataContext>
+        <diagramSource:MainWindowViewModel />
+    </Window.DataContext>
 
     <!--Backgroud Fade-->
     <Window.Background>
@@ -58,7 +220,7 @@
         </LinearGradientBrush>
     </Window.Background>
 
-    <Grid  Name="Main" Margin="10,0,10,10">
+    <Grid  Name="Main" Margin="10,0,10,10" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
@@ -161,9 +323,24 @@
             <Button Margin="20,0" Grid.Column="3" HorizontalAlignment="Left" FontSize="16" Width="85" Click="Button_Click_Pause">Pause/Go</Button>
             <Button Margin="20,0" Grid.Column="4" HorizontalAlignment="Left" FontSize="15" Width="50" Height="30" Click="Button_Click_Stop">Stop</Button>
         </Grid>
-
-        <GridSplitter Grid.Row ="1" Grid.RowSpan="2"  VerticalAlignment="Stretch" HorizontalAlignment="Left" Grid.Column="1"
-                      Width="11" Margin="0" Style="{StaticResource VerticalGridSplitter}">
+        <!--Control table half-->
+        <Grid Name="gridSide" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Grid.Row="2" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="15" Foreground="White" 
+                       Text="Switch Control Table" Margin="10,15,0,10"/>
+            <!--Scroll Viewer-->
+            <ScrollViewer Name="scroller" Grid.Row="1" VerticalContentAlignment="Stretch" 
+                          MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
+                          VerticalScrollBarVisibility="Auto">
+                <Grid Name="switchGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="White" Margin="10,0,0,10"/>
+            </ScrollViewer>
+        </Grid>
+        <!--Center gridsplitter-->
+        <GridSplitter Grid.Row ="2" VerticalAlignment="Stretch" HorizontalAlignment="Left" Grid.Column="1"
+                      Width="11" Margin="0" Style="{StaticResource VerticalGridSplitter}" Padding="11">
             <GridSplitter.Background>
                 <LinearGradientBrush x:Name="GradStyle" EndPoint="0.504,1.5" StartPoint="0.504,0.03">
                     <GradientStop Color="#00050554" Offset="0.1"/>
@@ -173,7 +350,31 @@
                 </LinearGradientBrush>
             </GridSplitter.Background>
         </GridSplitter>
+        <!--Chart table half-->
+        <Grid Name="chartSide" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="15" Foreground="White" 
+                       Text="Switch Control Diagram" Margin="10,15,0,10"/>
 
+            <Border Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                BorderThickness="2"
+                BorderBrush="Black">
+                <!--Scroll Viewer-->
+                <ScrollViewer Name="scroller2" Grid.Row="1" VerticalContentAlignment="Stretch" 
+                          MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
+                          VerticalScrollBarVisibility="Visible">
+                    <networkUi:NetworkView Name="switchDiagram" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                    Background="#212667D7"
+                                            NodesSource="{Binding Network.Nodes}"
+                            ConnectionsSource="{Binding Path=Network.Connections}">
+
+                    </networkUi:NetworkView>
+                </ScrollViewer>
+            </Border>
+        </Grid>
     </Grid>
 
 </Window>
