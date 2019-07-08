@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DiagramDesigner;
+using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -97,7 +98,6 @@ namespace SW20190530_Ver3
             //TODO do soemthing with the port
             this.MaxWidth = SystemParameters.WorkArea.Width;
             this.MaxHeight = SystemParameters.WorkArea.Height;
-            DiagramINI();
         }
 
         #region REGION: Methods used for every Window (only slightly variated) TODO: Turn these methods into an abstract class
@@ -206,6 +206,9 @@ namespace SW20190530_Ver3
             GetCursorPos(ref w32Mouse);
             return w32Mouse.X;
         }
+
+
+
         /// <summary>
         /// Gets the mouse position y.
         /// </summary>
@@ -815,8 +818,20 @@ namespace SW20190530_Ver3
 
     partial class OpticalSwitchControlSequence
     {
-        private void DiagramINI()
+        private void Output_Loaded(object sender, RoutedEventArgs e)
         {
+            //double space = switchDiagram.ActualHeight;
+            //double height = space / (double)numOut;
+            //for (int i = 1; i <= numOut; i++)
+            //{
+            //System.Windows.Shapes.Path Node = new System.Windows.Shapes.Path();
+            //Node.Style = Resources["Star"] as Style;
+            Rectangle Node = new Rectangle();
+            Node.Fill = Brushes.Black;
+            Node.Height = 50;
+            Node.Width = 50;
+            switchDiagram.Children.Add(Node);
+            //}
         }
     }
 

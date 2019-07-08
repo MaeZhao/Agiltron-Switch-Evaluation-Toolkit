@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    
+        xmlns:diagramDesigner="clr-namespace:DiagramDesigner;assembly=DiagramDesigner"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -203,9 +203,14 @@
                 <ScrollViewer Name="scroller2" Grid.Row="1" VerticalContentAlignment="Stretch" 
                           MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
                           VerticalScrollBarVisibility="Visible">
-                    <Canvas Name="switchDiagram" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                    Background="#212667D7">
-                    </Canvas>
+                    <diagramDesigner:DesignerCanvas Name="switchDiagram" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                    Background="#212667D7"  Loaded="Output_Loaded">
+                        <!--<Path Style="{StaticResource ResourceKey=Star}"  Height="50" Width="50"/>-->
+                        <!--<StackPanel Name ="Output">
+                            <Path Style="{StaticResource ResourceKey=Star}"  Height="50" Width="50"/>
+                            <Path Style="{StaticResource ResourceKey=Star}"  Height="50" Width="50"/>
+                        </StackPanel>-->
+                    </diagramDesigner:DesignerCanvas>
                 </ScrollViewer>
             </Border>
         </Grid>

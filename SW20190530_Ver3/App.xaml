@@ -7,31 +7,33 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
+                <ResourceDictionary Source="ShapeStencils.xaml" />
+                <ResourceDictionary Source="FlowChartStencils.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-       
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#223C69"   />
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="BorderThickness" Value="0"></Setter>
-        </Style>
 
-        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-            <Setter Property="Foreground" Value= "#131D3E"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="#223C69"   />
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="BorderThickness" Value="0"></Setter>
+            </Style>
 
-        <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Helvetica" />
-        </Style>
+            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                <Setter Property="Foreground" Value= "#131D3E"/>
+                <Setter Property="Padding" Value="5"/>
+            </Style>
 
-        <Style TargetType="MenuItem">
-            <Setter Property="FontFamily" Value="Helvetica" />
-            <Setter Property="Foreground" Value="Black" />
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Helvetica" />
+            </Style>
 
-        </Style>
+            <Style TargetType="MenuItem">
+                <Setter Property="FontFamily" Value="Helvetica" />
+                <Setter Property="Foreground" Value="Black" />
+
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
-    
-   
+
+
 </Application>
