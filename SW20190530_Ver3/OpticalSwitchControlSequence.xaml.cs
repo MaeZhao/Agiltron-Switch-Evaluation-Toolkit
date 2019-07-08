@@ -1,5 +1,6 @@
-﻿using ITCC.NetworkView.AdvancedSample;
-using ITCC.NetworkView.AdvancedSample.NetworkModel;
+﻿using ITCC.NetworkView.NetworkUI;
+using ITCC.NetworkView.SimpleSample.NetworkModel;
+using ITCC.NetworkView.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections;
@@ -28,6 +29,10 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Messages.Core;
 using ToastNotifications.Position;
+using ConnectionViewModel = ITCC.NetworkView.SimpleSample.NetworkModel.ConnectionViewModel;
+using ConnectorViewModel = ITCC.NetworkView.SimpleSample.NetworkModel.ConnectorViewModel;
+using NetworkViewModel = ITCC.NetworkView.SimpleSample.NetworkModel.NetworkViewModel;
+using NodeViewModel = ITCC.NetworkView.SimpleSample.NetworkModel.NodeViewModel;
 
 namespace SW20190530_Ver3
 {
@@ -99,6 +104,7 @@ namespace SW20190530_Ver3
             //TODO do soemthing with the port
             this.MaxWidth = SystemParameters.WorkArea.Width;
             this.MaxHeight = SystemParameters.WorkArea.Height;
+            DiagramINI();
         }
 
         #region REGION: Methods used for every Window (only slightly variated) TODO: Turn these methods into an abstract class
@@ -816,9 +822,10 @@ namespace SW20190530_Ver3
 
     partial class OpticalSwitchControlSequence
     {
+        public ViewModel vModel => (ViewModel)DataContext;
         private void DiagramINI()
         {
-
         }
     }
+
 }

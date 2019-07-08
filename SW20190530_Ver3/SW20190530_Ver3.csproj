@@ -69,6 +69,12 @@
     <Reference Include="ITCC.NetworkView.NetworkUI">
       <HintPath>..\..\..\ITCC.NetworkView\build\sample\AdvancedSample\ITCC.NetworkView.AdvancedSample\AnyCPU\Debug\ITCC.NetworkView.NetworkUI.dll</HintPath>
     </Reference>
+    <Reference Include="ITCC.NetworkView.SimpleSample">
+      <HintPath>..\..\..\ITCC.NetworkView\sample\SimpleSample\ITCC.NetworkView.SimpleSample\obj\Debug\ITCC.NetworkView.SimpleSample.exe</HintPath>
+    </Reference>
+    <Reference Include="ITCC.NetworkView.SimpleSample.NetworkModel">
+      <HintPath>..\..\..\ITCC.NetworkView\sample\SimpleSample\ITCC.NetworkView.SimpleSample.NetworkModel\obj\Debug\ITCC.NetworkView.SimpleSample.NetworkModel.dll</HintPath>
+    </Reference>
     <Reference Include="ITCC.NetworkView.Utils">
       <HintPath>..\..\..\ITCC.NetworkView\build\sample\AdvancedSample\ITCC.NetworkView.AdvancedSample\AnyCPU\Debug\ITCC.NetworkView.Utils.dll</HintPath>
     </Reference>
@@ -103,6 +109,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Arrow.cs" />
+    <Compile Include="ViewModel.cs" />
     <Compile Include="WindowUIComponents.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
