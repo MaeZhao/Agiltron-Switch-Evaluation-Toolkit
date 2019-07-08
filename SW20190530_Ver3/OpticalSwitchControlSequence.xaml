@@ -3,10 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:networkUi="clr-namespace:ITCC.NetworkView.NetworkUI;assembly=ITCC.NetworkView.NetworkUI"
-        xmlns:networkModel="clr-namespace:ITCC.NetworkView.AdvancedSample.NetworkModel;assembly=ITCC.NetworkView.AdvancedSample.NetworkModel"
-        xmlns:SimpleSample="clr-namespace:ITCC.NetworkView.SimpleSample;assembly=ITCC.NetworkView.SimpleSample"
-        xmlns:thisNetwork="clr-namespace:SW20190530_Ver3"
+    
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -48,202 +45,9 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
         <!--Directories/Styles for SwitchDyagram-->
-        <ResourceDictionary x:Key="switchDiagram">
-            <ResourceDictionary.MergedDictionaries>
-                <!-- 
-                Merge in the resource dictionary that is shared between the main window and the overview window.
-                -->
-                <ResourceDictionary 
-                    Source="SharedVisualTemplates.xaml"
-                    />
-            </ResourceDictionary.MergedDictionaries>
 
-            <!-- UI commands. -->
-
-            <RoutedUICommand x:Key="Commands.DeleteSelectedNodes" />
-            <RoutedUICommand x:Key="Commands.CreateNode" />
-
-            <!-- 
-        Data-template for ConectionViewModel.
-        
-        Note that the 'Start' and 'End' of the arrow are bound to 'SourceConnectorHotspot' and 'DestConnectorHotspot' in 
-        the view-model.
-
-        In this sample a straight arrow represents connections between nodes.
-        -->
-            <DataTemplate
-            DataType="{x:Type networkModel:ConnectionViewModel}"
-            >
-
-                <!-- The connection is represented by a simple arrow. -->
-                <SimpleSample:Arrow
-                Stroke="Black"
-                StrokeThickness="2"
-                Fill="Black"
-                Start="{Binding SourceConnectorHotspot}"
-                End="{Binding DestConnectorHotspot}"
-                IsHitTestVisible="False"
-                />
-
-                <!-- If you want someting even simpler, try this Line! 
-            <Line
-                Stroke="Black"
-                X1="{Binding SourceConnectorHotspot.X}"
-                Y1="{Binding SourceConnectorHotspot.Y}"
-                X2="{Binding DestConnectorHotspot.X}"
-                Y2="{Binding DestConnectorHotspot.Y}"
-                />
-            -->
-
-            </DataTemplate>
-
-            <!--
-        Define the visual style for a 'NodeItem'.
-        
-        Binds 'X' and 'Y' in the view-model (the 'NodeViewModel' class)
-        to 'X' and 'Y' in the NodeItem class.
-        
-        This sets the position of the node within the Canvas.
-        -->
-            <Style TargetType="{x:Type networkUi:NodeItem}">
-                <Setter
-                Property="X"
-                Value="{Binding X}"
-                />
-                <Setter
-                Property="Y"
-                Value="{Binding Y}"
-                />
-                <Setter
-                Property="IsSelected"
-                Value="{Binding IsSelected}"
-                />
-            </Style>
-
-            <!-- 
-        Define the visual style for a 'ConnectorItem'.
-        -->
-            <Style 
-            TargetType="{x:Type networkUi:ConnectorItem}"
-            >
-                <!-- 
-            Data-binding for the connector hotspot.
-            ConnectorItem automatically computes its center 
-            points and assigns this value to the 'Hotspot' property.  
-            This data-binding in this style then 'pushes' the value into the 
-            application view-model.
-            -->
-                <Setter 
-                Property="Hotspot"
-                Value="{Binding Hotspot, Mode=OneWayToSource}"
-                />
-
-                <!-- The visual template. -->
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate 
-                        TargetType="{x:Type networkUi:ConnectorItem}"
-                        >
-                            <Rectangle
-                            Stroke="Black"
-                            Fill="White"                            
-                            Cursor="Hand"
-                            Width="12"
-                            Height="12"
-                            RadiusX="1"
-                            RadiusY="1"
-                            />
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- 
-        Define a data-template for the 'NodeViewModel' class.
-        This generates the UI for each node.
-        -->
-            <DataTemplate
-            DataType="{x:Type networkModel:NodeViewModel}"
-            >
-                <Grid
-                Width="120"
-                Height="60"
-                >
-
-                    <!-- This rectangle is the main visual for the node. -->
-                    <Rectangle
-                    Stroke="Black"
-                    Fill="White"
-                    RadiusX="4"
-                    RadiusY="4"
-                    />
-
-                    <!-- 
-                This grid contains the node's name and connectors.
-                The margin is negative so that the connectors overlap the body of the node and it's selection border.
-                -->
-                    <Grid
-                    Margin="-8"
-                    >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" MinWidth="10" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <!-- The name of the node. -->
-                        <TextBlock
-                        Grid.Column="1"
-                        Grid.Row="1"
-                        Text="{Binding Name}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        />
-
-                        <!-- 
-                    Define the node's four connectors, one on each edge of the node.
-                    -->
-
-                        <networkUi:ConnectorItem 
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        DataContext="{Binding Connectors[0]}"
-                        />
-
-
-                        <networkUi:ConnectorItem 
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        DataContext="{Binding Connectors[1]}"
-                        />
-
-                        <networkUi:ConnectorItem 
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        DataContext="{Binding Connectors[2]}"
-                        />
-
-                        <networkUi:ConnectorItem 
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        DataContext="{Binding Connectors[3]}"
-                        />
-                    </Grid>
-                </Grid>
-            </DataTemplate>
-
-        </ResourceDictionary>
     </Window.Resources>
 
-    <Window.DataContext>
-        <thisNetwork:ViewModel>
-        </thisNetwork:ViewModel>
-    </Window.DataContext>
 
     <!--Backgroud Fade-->
     <Window.Background>
@@ -399,11 +203,9 @@
                 <ScrollViewer Name="scroller2" Grid.Row="1" VerticalContentAlignment="Stretch" 
                           MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
                           VerticalScrollBarVisibility="Visible">
-                    <networkUi:NetworkView Name="switchDiagram" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                    Background="#212667D7"
-                             NodesSource="{Binding Network.Nodes}"
-                            ConnectionsSource="{Binding Network.Connections}">
-                    </networkUi:NetworkView>
+                    <Canvas Name="switchDiagram" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                    Background="#212667D7">
+                    </Canvas>
                 </ScrollViewer>
             </Border>
         </Grid>

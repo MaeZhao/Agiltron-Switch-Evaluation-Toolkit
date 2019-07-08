@@ -1,7 +1,4 @@
-﻿using ITCC.NetworkView.NetworkUI;
-using ITCC.NetworkView.SimpleSample.NetworkModel;
-using ITCC.NetworkView.Utils;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,10 +26,6 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Messages.Core;
 using ToastNotifications.Position;
-using ConnectionViewModel = ITCC.NetworkView.SimpleSample.NetworkModel.ConnectionViewModel;
-using ConnectorViewModel = ITCC.NetworkView.SimpleSample.NetworkModel.ConnectorViewModel;
-using NetworkViewModel = ITCC.NetworkView.SimpleSample.NetworkModel.NetworkViewModel;
-using NodeViewModel = ITCC.NetworkView.SimpleSample.NetworkModel.NodeViewModel;
 
 namespace SW20190530_Ver3
 {
@@ -822,7 +815,6 @@ namespace SW20190530_Ver3
 
     partial class OpticalSwitchControlSequence
     {
-        public ViewModel vModel => (ViewModel)DataContext;
         private void DiagramINI()
         {
         }
