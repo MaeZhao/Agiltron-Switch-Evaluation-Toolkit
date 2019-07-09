@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
                 <ResourceDictionary Source="ShapeStencils.xaml" />
                 <ResourceDictionary Source="FlowChartStencils.xaml"/>
+                <ResourceDictionary Source="Connection.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="Button">

@@ -74,7 +74,7 @@
         </Grid.RowDefinitions>
 
         <!--Custom Window bar-->
-        <Grid  Background="Transparent" Grid.ColumnSpan="3" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown">
+        <Grid Name="WindowBar"  Background="Transparent" Grid.ColumnSpan="3" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
@@ -166,7 +166,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="15" Foreground="White" 
+            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Foreground="White" 
                        Text="Switch Control Table" Margin="10,15,0,10"/>
             <!--Scroll Viewer-->
             <ScrollViewer Name="scroller" Grid.Row="1" VerticalContentAlignment="Stretch" 
@@ -193,8 +193,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="15" Foreground="White" 
-                       Text="Switch Control Diagram" Margin="10,15,0,10"/>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Foreground="White" 
+                       Text="Switch Control Diagram" Margin="0,15,0,10"/>
 
             <Border Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                 BorderThickness="2"
@@ -202,14 +202,10 @@
                 <!--Scroll Viewer-->
                 <ScrollViewer Name="scroller2" Grid.Row="1" VerticalContentAlignment="Stretch" 
                           MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
-                          VerticalScrollBarVisibility="Visible">
+                          VerticalScrollBarVisibility="Auto">
                     <diagramDesigner:DesignerCanvas Name="switchDiagram" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                    Background="#212667D7"  Loaded="Output_Loaded">
-                        <!--<Path Style="{StaticResource ResourceKey=Star}"  Height="50" Width="50"/>-->
-                        <!--<StackPanel Name ="Output">
-                            <Path Style="{StaticResource ResourceKey=Star}"  Height="50" Width="50"/>
-                            <Path Style="{StaticResource ResourceKey=Star}"  Height="50" Width="50"/>
-                        </StackPanel>-->
+                    Background="#212667D7"  FocusVisualStyle="{x:Null}" IsEnabled="False" Focusable="true">
+                        <!--<Path Style="{StaticResource ResourceKey=Card}" Width="50" Height="50" />-->
                     </diagramDesigner:DesignerCanvas>
                 </ScrollViewer>
             </Border>

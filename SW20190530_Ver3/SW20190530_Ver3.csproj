@@ -89,6 +89,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="WindowUIComponents.cs" />
+    <Page Include="Connection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="FlowChartStencils.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -420,10 +420,10 @@
                 </s:DesignerItem.ConnectorDecoratorTemplate>
             </Path>
 
-            <Path Style="{StaticResource Card}" ToolTip="Card">
+            <Path Style="{StaticResource Card}" ToolTip="Card" x:Name="CardControlTemp">
                 <s:DesignerItem.DragThumbTemplate>
                     <ControlTemplate>
-                        <Path Style="{StaticResource Card_DragThumb}"/>
+                        <Path Style="{StaticResource Card_DragThumb}"  />
                     </ControlTemplate>
                 </s:DesignerItem.DragThumbTemplate>
             </Path>

@@ -27,6 +27,7 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Messages.Core;
 using ToastNotifications.Position;
+using Path = System.Windows.Shapes.Path;
 
 namespace SW20190530_Ver3
 {
@@ -62,11 +63,11 @@ namespace SW20190530_Ver3
                 cfg.PositionProvider = new WindowPositionProvider(
                     parentWindow: Application.Current.MainWindow,
                     corner: Corner.TopRight,
-                    offsetX: 10,
-                    offsetY: 10);
+                    offsetX: 0,
+                    offsetY: WindowBar.ActualHeight);
                 cfg.DisplayOptions.TopMost = true;
                 cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                    notificationLifetime: TimeSpan.FromSeconds(3),
+                    notificationLifetime: TimeSpan.FromSeconds(10),
                     maximumNotificationCount: MaximumNotificationCount.FromCount(5));
                 cfg.Dispatcher = Application.Current.Dispatcher;
             });
@@ -98,6 +99,7 @@ namespace SW20190530_Ver3
             //TODO do soemthing with the port
             this.MaxWidth = SystemParameters.WorkArea.Width;
             this.MaxHeight = SystemParameters.WorkArea.Height;
+            Output_Loaded();
         }
 
         #region REGION: Methods used for every Window (only slightly variated) TODO: Turn these methods into an abstract class
@@ -256,13 +258,14 @@ namespace SW20190530_Ver3
             //Title
             TextBlock TestRunTitle = new TextBlock
             {
-                Text = "" + numChannel + " - " + numOut + " Switch Control",
+                Text = "" + numChannel + " - " + numOut + " SWITCH CONTROL",
                 HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                FontWeight = FontWeights.Light,
-                FontSize = 25,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.ExtraBold,
+                FontSize = 30,
                 Foreground = Brushes.White,
-                Margin = new Thickness(0, 0, 0, 10)
+                //TextDecorations = TextDecorations.Underline,
+                Margin = new Thickness(0, -20, 0, 30)
             };
             Grid.SetRow(TestRunTitle, 1);
             Grid.SetColumnSpan(TestRunTitle, 2);
@@ -273,7 +276,7 @@ namespace SW20190530_Ver3
             Main.Children.Add(Title);
 
             //initializes switchGrid:
-            Load_Grid(100, new int[] { });
+            Load_Grid(20, new int[] { });
 
             runningRow = 2;
         }
@@ -818,21 +821,150 @@ namespace SW20190530_Ver3
 
     partial class OpticalSwitchControlSequence
     {
-        private void Output_Loaded(object sender, RoutedEventArgs e)
+        private void Output_Loaded()
         {
-            //double space = switchDiagram.ActualHeight;
-            //double height = space / (double)numOut;
-            //for (int i = 1; i <= numOut; i++)
-            //{
-            //System.Windows.Shapes.Path Node = new System.Windows.Shapes.Path();
-            //Node.Style = Resources["Star"] as Style;
-            Rectangle Node = new Rectangle();
-            Node.Fill = Brushes.Black;
-            Node.Height = 50;
-            Node.Width = 50;
-            switchDiagram.Children.Add(Node);
-            //}
-        }
-    }
+            double space = switchDiagram.ActualHeight;
+            double height = space / (double)numOut;
+            double width = height + (double)20;
+            double yPositionInp = (space / 2) - (numChannel / 2.0 * 50.0);
+            double yPositionOutp = (space / 2) - (numOut / 2.0 * 50.0);
+            //double yPositionInp = 40;
+            TextBlock inpT = new TextBlock
+            {
+                Text = "Input Channel(s)",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                FontWeight = FontWeights.Light,
+                FontSize = 15,
+                Foreground = Brushes.White,
+                Margin = new Thickness(0, 10, 0, 0)
+            };
+            Canvas.SetTop(inpT, 0);
+            Canvas.SetLeft(inpT, 10);
+            switchDiagram.Children.Add(inpT);
 
+            TextBlock outT = new TextBlock
+            {
+                Text = "Output Switches",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                FontWeight = FontWeights.Light,
+                FontSize = 15,
+                Foreground = Brushes.White,
+                Margin = new Thickness(0, 10, 0, 0)
+            };
+            Canvas.SetTop(outT, 0);
+            Canvas.SetRight(outT, 10);
+            switchDiagram.Children.Add(outT);
+            //Expander ins = new Expander
+            //{
+            //    VerticalAlignment = VerticalAlignment.Stretch,
+            //    HorizontalAlignment = HorizontalAlignment.Left,
+            //    IsExpanded = true,
+            //    ExpandDirection = ExpandDirection.Down
+            //};
+            //ItemsControl insItems = new ItemsControl
+            //{
+            //    //SnapsToDevicePixels = true,
+            //    Visibility = Visibility.Visible,
+            //    IsEnabled = true,
+            //    Focusable = true,
+            //    VerticalAlignment = VerticalAlignment.Stretch,
+            //    HorizontalAlignment = HorizontalAlignment.Left,
+            //};
+            for (int i = 1; i <= numChannel; i++)
+            {
+                Path Node = new System.Windows.Shapes.Path
+                {
+                    Style = Application.Current.Resources["Card"] as Style,
+                    Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#62C1AF")),
+                    Visibility = Visibility.Visible,
+                    MaxHeight = 50,
+                    MaxWidth = 80,
+                    Height = height,
+                    Width = width,
+                    Focusable = false,
+                    IsEnabled = false,
+                    Stroke = Brushes.Transparent,
+                };
+                Grid NodeContent = new Grid
+                {
+                    MaxHeight = 50,
+                    MaxWidth = 80,
+                    Height = height,
+                    Width = width,
+                    Visibility = Visibility.Visible,
+                };
+                NodeContent.Children.Add(Node);
+                TextBlock name = new TextBlock
+                {
+                    Text = "in #" + i,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontWeight = FontWeights.DemiBold,
+                    FontSize = 15,
+                    Foreground = Brushes.Black,
+                    MaxHeight = 50,
+                    MaxWidth = 80,
+
+                };
+                NodeContent.Children.Add(name);
+                //insItems.Items.Add(Node);
+                ControlTemplate NodeControls = Application.Current.Resources["CardControlTemp"] as ControlTemplate;
+                DesignerItem.SetDragThumbTemplate(Node, NodeControls);
+                Canvas.SetTop(NodeContent, yPositionInp);
+                Canvas.SetLeft(NodeContent, 5);
+                yPositionInp += 60;
+                switchDiagram.Children.Add(NodeContent);
+            }
+            //ins.Content = insItems;
+            //switchDiagram.Children.Add(ins);
+
+            for (int i = 1; i <= numOut; i++)
+            {
+                Path Node = new System.Windows.Shapes.Path
+                {
+                    Style = Application.Current.Resources["Card"] as Style,
+                    Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4788C")),
+                    Visibility = Visibility.Visible,
+                    MaxHeight = 50,
+                    MaxWidth = 80,
+                    Height = height,
+                    Width = width,
+                    Focusable = false,
+                    IsEnabled = false,
+                    Stroke = Brushes.Transparent,
+                };
+                Grid NodeContent = new Grid
+                {
+                    MaxHeight = 50,
+                    MaxWidth = 80,
+                    Height = height,
+                    Width = width,
+                    Visibility = Visibility.Visible,
+                };
+                NodeContent.Children.Add(Node);
+                TextBlock name = new TextBlock
+                {
+                    Text = "out #" + i,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontWeight = FontWeights.DemiBold,
+                    FontSize = 15,
+                    Foreground = Brushes.Black,
+                    MaxHeight = 50,
+                    MaxWidth = 80,
+                };
+                NodeContent.Children.Add(name);
+                //insItems.Items.Add(Node);
+                ControlTemplate NodeControls = Application.Current.Resources["CardControlTemp"] as ControlTemplate;
+                DesignerItem.SetDragThumbTemplate(Node, NodeControls);
+                Canvas.SetTop(NodeContent, yPositionOutp);
+                Canvas.SetRight(NodeContent, 5);
+                yPositionOutp += 60;
+                switchDiagram.Children.Add(NodeContent);
+            }
+        }
+
+    }
 }
