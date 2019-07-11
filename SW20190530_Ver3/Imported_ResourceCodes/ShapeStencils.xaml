@@ -1,4 +1,6 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<!--Taken from sukram's Diagram Designer Part 4-->
+<!--see for more: https://www.codeproject.com/Articles/24681/WPF-Diagram-Designer-Part-4-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:s="clr-namespace:DiagramDesigner;assembly=DiagramDesigner"
                     xmlns:c="clr-namespace:DiagramDesigner.Controls;assembly=DiagramDesigner">

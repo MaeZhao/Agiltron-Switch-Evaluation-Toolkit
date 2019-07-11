@@ -60,6 +60,9 @@
     <Reference Include="DiagramDesigner">
       <HintPath>..\..\..\..\..\Downloads\DiagramDesignerPart4\DiagramDesigner\bin\Debug\DiagramDesigner.exe</HintPath>
     </Reference>
+    <Reference Include="MoveResizeRotateWithAdorners">
+      <HintPath>..\..\..\..\..\Downloads\DiagramDesignerPart1_src\DiagramDesignerPart1\MoveResizeRotateWithAdorners\bin\Debug\MoveResizeRotateWithAdorners.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -89,15 +92,31 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="WindowUIComponents.cs" />
-    <Page Include="Connection.xaml">
+    <Page Include="Imported_ResourceCodes\Connection.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="FlowChartStencils.xaml">
+    <Page Include="Imported_ResourceCodes\DesignerItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ShapeStencils.xaml">
+    <Page Include="Imported_ResourceCodes\FlowChartStencils.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Imported_ResourceCodes\ResizeRotateChrome.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Imported_ResourceCodes\ShapeStencils.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Imported_ResourceCodes\Shared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Imported_ResourceCodes\SizeChrome.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:diagramDesigner="clr-namespace:DiagramDesigner;assembly=DiagramDesigner"
+        xmlns:c="clr-namespace:DiagramDesigner.Controls;assembly=DiagramDesigner"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -203,9 +204,36 @@
                 <ScrollViewer Name="scroller2" Grid.Row="1" VerticalContentAlignment="Stretch" 
                           MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
                           VerticalScrollBarVisibility="Auto">
-                    <diagramDesigner:DesignerCanvas Name="switchDiagram" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                    Background="#212667D7"  FocusVisualStyle="{x:Null}" IsEnabled="False" Focusable="true">
-                        <!--<Path Style="{StaticResource ResourceKey=Card}" Width="50" Height="50" />-->
+                    <diagramDesigner:DesignerCanvas ClipToBounds="True" SnapsToDevicePixels="True" Name="switchDiagram" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                    Background="#212667D7"  FocusVisualStyle="{x:Null}" Focusable="True" OverridesDefaultStyle="False">
+
+
+                        <!--CARD NOTE CONNECTOR CONFIG-->
+                        <diagramDesigner:DesignerItem Width="70" Height="50" Canvas.Top="100" Canvas.Left="10"
+                                                      OverridesDefaultStyle="False">
+                            <Grid IsHitTestVisible="False" Focusable="True">
+                                <Grid>
+                                    <Path Style="{StaticResource ResourceKey=Card}" Width="70" Height="50"/>
+                                    <TextBlock Focusable="False" Foreground="Black" FontWeight="Bold"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"> TEST</TextBlock>
+                                </Grid>
+                            </Grid>
+                        </diagramDesigner:DesignerItem>
+
+                        <diagramDesigner:DesignerItem Width="70" Height="50" Canvas.Top="100" Canvas.Right="10"
+                                                      OverridesDefaultStyle="False">
+                            <Grid IsHitTestVisible="False" Focusable="True">
+                                <Grid>
+                                    <Path Style="{StaticResource ResourceKey=Card}" Width="70" Height="50"/>
+                                    <TextBlock Focusable="False" Foreground="Black" FontWeight="Bold"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"> TEST</TextBlock>
+                                </Grid>
+                            </Grid>
+                        </diagramDesigner:DesignerItem>
+
+
+
+
                     </diagramDesigner:DesignerCanvas>
                 </ScrollViewer>
             </Border>
