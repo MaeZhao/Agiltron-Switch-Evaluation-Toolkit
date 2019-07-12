@@ -821,8 +821,14 @@ namespace SW20190530_Ver3
 
     partial class OpticalSwitchControlSequence
     {
+        private void connect_Nodes()
+        {
+            //new ConnectionAdorner(switchDiagram, Parent.
+
+        }
         private void Output_Loaded()
         {
+            connect_Nodes();
             //double space = switchDiagram.ActualHeight;
             //double height = space / (double)numOut;
             //double width = height + (double)20;
