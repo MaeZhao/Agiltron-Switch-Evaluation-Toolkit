@@ -68,7 +68,7 @@
             </Style>
             <!-- base style for all arrow shapes -->
             <Style x:Key="ArrowSymbolBaseStyle" TargetType="Path">
-                <Setter Property="Fill" Value="{StaticResource SolidBorderBrush}"/>
+                <Setter Property="Fill" Value="Black"/>
                 <Setter Property="Stretch" Value="Fill"/>
             </Style>
             <!-- Arrow -->
@@ -88,7 +88,7 @@
                             ContextMenu="{StaticResource ConnectionContextMenu}">
                         <Path Name="PART_ConnectionPath"
                               StrokeThickness="2"
-                              Stroke="{StaticResource SolidBorderBrush}"
+                              Stroke="Black"
                               StrokeStartLineCap="Round"
                               StrokeEndLineCap="Round"
                               StrokeLineJoin="Round"

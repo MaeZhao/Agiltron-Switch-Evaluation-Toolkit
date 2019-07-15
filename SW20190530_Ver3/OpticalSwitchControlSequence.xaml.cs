@@ -47,7 +47,11 @@ namespace SW20190530_Ver3
         private bool pause;
         private bool flashing;
         private int runningRow;
-
+        private List<int[]> ONindex = new List<int[]>();
+        //switchDiagram Specs
+        List<DesignerItem> inp = new List<DesignerItem>(); //List of input Nodes
+        List<DesignerItem> oup = new List<DesignerItem>(); //List of outputNodes
+        List<Connection> runningPair = new List<Connection>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OpticalSwitchControlSequence"/> class.
@@ -92,14 +96,16 @@ namespace SW20190530_Ver3
 
             //Initializes/finds switchGrid specs 
             SwitchBoardFieldIni(input);
+            //Initializes switch Diagram
+            Output_Loaded();
             //Initializes switch test run specs
             SwitchRunPauseStopFieldIni();
+
 
             //TODO load presets
             //TODO do soemthing with the port
             this.MaxWidth = SystemParameters.WorkArea.Width;
             this.MaxHeight = SystemParameters.WorkArea.Height;
-            Output_Loaded();
         }
 
         #region REGION: Methods used for every Window (only slightly variated) TODO: Turn these methods into an abstract class
@@ -406,7 +412,7 @@ namespace SW20190530_Ver3
             }
 
             int currRows = switchGrid.RowDefinitions.Count;
-            for (int i = 1; i <= rows; i++)
+            for (int r = 1; r <= rows; r++)
             {
                 RowDefinition nRow = new RowDefinition
                 {
@@ -456,7 +462,7 @@ namespace SW20190530_Ver3
                 {
                     FontSize = 14,
                     BorderBrush = System.Windows.Media.Brushes.Black,
-                    Text = "" + runTime.GetValue(i - 1),
+                    Text = "" + runTime.GetValue(r - 1),
                     Background = System.Windows.Media.Brushes.Transparent,
                 };
                 Grid.SetColumn(times, 1);
@@ -464,7 +470,7 @@ namespace SW20190530_Ver3
                 switchGrid.Children.Add(times);
                 times.LostFocus += RunTimeCell_UI; //initializes runtime UI
                                                    //Adds the ON OFF buttons
-                for (int b = 0; b < col; b++)
+                for (int c = 0; c < col; c++)
                 {
                     //ON OFF button generation
                     Button onOff = new Button
@@ -503,18 +509,31 @@ namespace SW20190530_Ver3
                             {
                                 onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3BA00"));
                             }
+                            if ((string)onOff.Content == "ON")
+                            {
+                                int bcol = Grid.GetColumn(onOff) - 2;
+                                int inNum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2));
+                                int ouNum = bcol % numOut;
+                                int[] io = new int[2] { inNum, ouNum };
+                                ONindex.Add(io);
+                                runningPair.Add(Draw_Arrow(inp[io[0]], oup[io[1]]));
+                                Draw_Arrow(inp[io[0]], oup[io[1]]);
+                                switchDiagram.UpdateLayout();
+                            }
                         }
                         else
                         {
                             if ((string)onOff.Content != "ON")
                             {
                                 onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#223C69"));
+
                             }
+
                         }
                     };
 
                     Grid.SetRow(onOff, currRows);
-                    Grid.SetColumn(onOff, b + 2);
+                    Grid.SetColumn(onOff, c + 2);
                     switchGrid.Children.Add(onOff);
                 }
                 currRows++;
@@ -634,8 +653,9 @@ namespace SW20190530_Ver3
                     // Keeps RunningRow from incrementing when stopped
                     if (running == true)
                     {
-                        runningRow++;
                         await Task.Delay(1000);
+                        runningRow++;
+
                     }
 
                     //Test is paused:
@@ -693,6 +713,7 @@ namespace SW20190530_Ver3
         /// </summary>
         private void BarFlash()
         {
+
             flashing = true;
             foreach (UIElement child in switchGrid.Children)
             {
@@ -717,6 +738,11 @@ namespace SW20190530_Ver3
         {
             //Console.WriteLine("unflashed row : " + (runningRow - 1));
             flashing = false;
+            foreach (Connection item in runningPair)
+            {
+                item.Visibility = Visibility.Collapsed;
+            }
+            runningPair.Clear();
             foreach (UIElement child in switchGrid.Children)
             {
                 if (Grid.GetRow(child) == runningRow - 1)
@@ -821,159 +847,140 @@ namespace SW20190530_Ver3
 
     partial class OpticalSwitchControlSequence
     {
-        private void connect_Nodes()
-        {
-            //new ConnectionAdorner(switchDiagram, Parent.
 
-        }
         private void Output_Loaded()
         {
-            connect_Nodes();
-            //double space = switchDiagram.ActualHeight;
-            //double height = space / (double)numOut;
-            //double width = height + (double)20;
+            double space = switchDiagram.ActualHeight;
+            double spaceW = diagramBounds.ActualWidth;
+            double height = 60;
+            double width = 80;
             //double yPositionInp = (space / 2) - (numChannel / 2.0 * 50.0);
             //double yPositionOutp = (space / 2) - (numOut / 2.0 * 50.0);
-            ////double yPositionInp = 40;
-            //TextBlock inpT = new TextBlock
-            //{
-            //    Text = "Input Channel(s)",
-            //    HorizontalAlignment = HorizontalAlignment.Center,
-            //    VerticalAlignment = VerticalAlignment.Bottom,
-            //    FontWeight = FontWeights.Light,
-            //    FontSize = 15,
-            //    Foreground = Brushes.White,
-            //    Margin = new Thickness(0, 10, 0, 0)
-            //};
-            //Canvas.SetTop(inpT, 0);
-            //Canvas.SetLeft(inpT, 10);
-            //switchDiagram.Children.Add(inpT);
+            double yPositionInp = 40;
+            double yPositionOutp = 40;
 
-            //TextBlock outT = new TextBlock
-            //{
-            //    Text = "Output Switches",
-            //    HorizontalAlignment = HorizontalAlignment.Center,
-            //    VerticalAlignment = VerticalAlignment.Bottom,
-            //    FontWeight = FontWeights.Light,
-            //    FontSize = 15,
-            //    Foreground = Brushes.White,
-            //    Margin = new Thickness(0, 10, 0, 0)
-            //};
-            //Canvas.SetTop(outT, 0);
-            //Canvas.SetRight(outT, 10);
-            //switchDiagram.Children.Add(outT);
+            for (int i = 1; i <= numChannel; i++)
+            {
+                DesignerItem Node = new DesignerItem
+                {
+                    Height = height,
+                    Width = width,
+                    Visibility = Visibility.Visible,
+                    OverridesDefaultStyle = false,
+                    Name = "in_" + i,
+                };
 
-            ////Expander ins = new Expander
-            ////{
-            ////    VerticalAlignment = VerticalAlignment.Stretch,
-            ////    HorizontalAlignment = HorizontalAlignment.Left,
-            ////    IsExpanded = true,
-            ////    ExpandDirection = ExpandDirection.Down
-            ////};
-            ////ItemsControl insItems = new ItemsControl
-            ////{
-            ////    //SnapsToDevicePixels = true,
-            ////    Visibility = Visibility.Visible,
-            ////    IsEnabled = true,
-            ////    Focusable = true,
-            ////    VerticalAlignment = VerticalAlignment.Stretch,
-            ////    HorizontalAlignment = HorizontalAlignment.Left,
-            ////};
+                Grid NodeContent = new Grid
+                {
+                    IsHitTestVisible = false,
+                    Focusable = false,
+                };
+                Path NodeShape = new System.Windows.Shapes.Path
+                {
+                    Style = Application.Current.Resources["Card"] as Style,
+                    Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#62C1AF")),
+                    Visibility = Visibility.Visible,
+                    Height = height,
+                    Width = width,
+                    Stroke = Brushes.Transparent,
+                };
+                TextBlock name = new TextBlock
+                {
+                    Text = "in #" + i,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontWeight = FontWeights.DemiBold,
+                    FontSize = 15,
+                    Foreground = Brushes.Black,
+                    MaxHeight = 50,
+                    MaxWidth = 80,
 
-            //for (int i = 1; i <= numChannel; i++)
-            //{
-            //    Path Node = new System.Windows.Shapes.Path
-            //    {
-            //        Style = Application.Current.Resources["Card"] as Style,
-            //        Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#62C1AF")),
-            //        Visibility = Visibility.Visible,
-            //        MaxHeight = 50,
-            //        MaxWidth = 80,
-            //        Height = height,
-            //        Width = width,
-            //        Focusable = false,
-            //        IsEnabled = false,
-            //        Stroke = Brushes.Transparent,
-            //    };
-            //    Grid NodeContent = new Grid
-            //    {
-            //        MaxHeight = 50,
-            //        MaxWidth = 80,
-            //        Height = height,
-            //        Width = width,
-            //        Visibility = Visibility.Visible,
-            //    };
-            //    NodeContent.Children.Add(Node);
-            //    TextBlock name = new TextBlock
-            //    {
-            //        Text = "in #" + i,
-            //        HorizontalAlignment = HorizontalAlignment.Center,
-            //        VerticalAlignment = VerticalAlignment.Center,
-            //        FontWeight = FontWeights.DemiBold,
-            //        FontSize = 15,
-            //        Foreground = Brushes.Black,
-            //        MaxHeight = 50,
-            //        MaxWidth = 80,
+                };
+                NodeContent.Children.Add(NodeShape);
+                NodeContent.Children.Add(name);
+                Node.Content = NodeContent;
 
-            //    };
-            //    NodeContent.Children.Add(name);
-            //    //insItems.Items.Add(Node);
-            //    ControlTemplate NodeControls = Application.Current.Resources["CardControlTemp"] as ControlTemplate;
-            //    DesignerItem.SetDragThumbTemplate(Node, NodeControls);
-            //    Canvas.SetTop(NodeContent, yPositionInp);
-            //    Canvas.SetLeft(NodeContent, 5);
-            //    yPositionInp += 60;
-            //    switchDiagram.Children.Add(NodeContent);
-            //}
-            //ins.Content = insItems;
-            //switchDiagram.Children.Add(ins);
+                Canvas.SetTop(Node, yPositionInp);
+                Canvas.SetLeft(Node, 5);
+                yPositionInp += 80;
+                inp.Add(Node);
+                switchDiagram.Children.Add(Node);
+            }
 
-            //    for (int i = 1; i <= numOut; i++)
-            //    {
-            //        Path Node = new System.Windows.Shapes.Path
-            //        {
-            //            Style = Application.Current.Resources["Card"] as Style,
-            //            Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4788C")),
-            //            Visibility = Visibility.Visible,
-            //            MaxHeight = 50,
-            //            MaxWidth = 80,
-            //            Height = height,
-            //            Width = width,
-            //            Focusable = false,
-            //            IsEnabled = false,
-            //            Stroke = Brushes.Transparent,
-            //        };
-            //        Grid NodeContent = new Grid
-            //        {
-            //            MaxHeight = 50,
-            //            MaxWidth = 80,
-            //            Height = height,
-            //            Width = width,
-            //            Visibility = Visibility.Visible,
-            //        };
-            //        NodeContent.Children.Add(Node);
-            //        TextBlock name = new TextBlock
-            //        {
-            //            Text = "out #" + i,
-            //            HorizontalAlignment = HorizontalAlignment.Center,
-            //            VerticalAlignment = VerticalAlignment.Center,
-            //            FontWeight = FontWeights.DemiBold,
-            //            FontSize = 15,
-            //            Foreground = Brushes.Black,
-            //            MaxHeight = 50,
-            //            MaxWidth = 80,
-            //        };
-            //        DesignerItem.SetConnectorDecoratorTemplate(Node, Application.Current.Resources["ConnectorDecoratorTemplate"] as ControlTemplate);
-            //        NodeContent.Children.Add(name);
-            //        //insItems.Items.Add(Node);
-            //        ControlTemplate NodeControls = Application.Current.Resources["CardControlTemp"] as ControlTemplate;
-            //        DesignerItem.SetDragThumbTemplate(Node, NodeControls);
-            //        Canvas.SetTop(NodeContent, yPositionOutp);
-            //        Canvas.SetRight(NodeContent, 5);
-            //        yPositionOutp += 60;
-            //        switchDiagram.Children.Add(NodeContent);
-            //    }
+            for (int i = 1; i <= numOut; i++)
+            {
+                DesignerItem Node = new DesignerItem
+                {
+                    Height = height,
+                    Width = width,
+                    Visibility = Visibility.Visible,
+                    OverridesDefaultStyle = false,
+                    Name = "out_" + i,
+                };
+
+                Grid NodeContent = new Grid
+                {
+                    IsHitTestVisible = false,
+                    Focusable = false,
+                };
+                Path NodeShape = new System.Windows.Shapes.Path
+                {
+                    Style = Application.Current.Resources["Card"] as Style,
+                    Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#F3A414")),
+                    Visibility = Visibility.Visible,
+                    Height = height,
+                    Width = width,
+                    Stroke = Brushes.Transparent,
+                };
+                TextBlock name = new TextBlock
+                {
+                    Text = "out #" + i,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    FontWeight = FontWeights.DemiBold,
+                    FontSize = 15,
+                    Foreground = Brushes.Black,
+                    MaxHeight = 50,
+                    MaxWidth = 80,
+
+                };
+                NodeContent.Children.Add(NodeShape);
+                NodeContent.Children.Add(name);
+                Node.Content = NodeContent;
+
+                Canvas.SetTop(Node, yPositionOutp);
+                switchGrid.UpdateLayout();
+                Canvas.SetLeft(Node, spaceW - 700);
+                yPositionOutp += 80;
+                oup.Add(Node);
+                switchDiagram.Children.Add(Node);
+            }
+            switchDiagram.UpdateLayout();
+            RemoveConnectors("Left", inp);
+            RemoveConnectors("Right", oup);
+        }
+
+        private void RemoveConnectors(String connectorKey, List<DesignerItem> items)
+        {
+            foreach (DesignerItem i in items)
+            {
+                i.RemoveConnector(connectorKey);
+            }
+        }
+
+        private Connection Draw_Arrow(DesignerItem Parent, DesignerItem Kid)
+        {
+            Connector pR = Parent.GetConnector("Right");
+            Connector cL = Kid.GetConnector("Left");
+            ConnectorAdorner sinkAdorner = new ConnectorAdorner(switchDiagram, cL);
+
+            Connection connection = new Connection(pR, cL);
+
+            switchDiagram.Children.Add(connection);
+            switchDiagram.UpdateLayout();
+            return connection;
         }
 
     }
+
 }

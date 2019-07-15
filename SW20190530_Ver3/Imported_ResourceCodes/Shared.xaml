@@ -138,13 +138,13 @@
 
     <SolidColorBrush x:Key="DisabledBorderBrush" Color="#AAA" />
 
-    <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
+    <SolidColorBrush x:Key="SolidBorderBrush" Color="#888888" />
 
-    <SolidColorBrush x:Key="LightBorderBrush" Color="#AAA" />
+    <SolidColorBrush x:Key="LightBorderBrush" Color="#AAAAAA" />
 
     <!-- Miscellaneous Brushes -->
-    <SolidColorBrush x:Key="GlyphBrush" Color="#444" />
+    <SolidColorBrush x:Key="GlyphBrush" Color="#444444" />
 
-    <SolidColorBrush x:Key="LightColorBrush" Color="#DDD" />
+    <SolidColorBrush x:Key="LightColorBrush" Color="#444444" />
 
 </ResourceDictionary>

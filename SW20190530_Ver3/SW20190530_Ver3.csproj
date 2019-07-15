@@ -57,9 +57,6 @@
     <ApplicationIcon>Images+Icons\agiltronLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DiagramDesigner">
-      <HintPath>..\..\..\..\..\Downloads\DiagramDesignerPart4\DiagramDesigner\bin\Debug\DiagramDesigner.exe</HintPath>
-    </Reference>
     <Reference Include="MoveResizeRotateWithAdorners">
       <HintPath>..\..\..\..\..\Downloads\DiagramDesignerPart1_src\DiagramDesignerPart1\MoveResizeRotateWithAdorners\bin\Debug\MoveResizeRotateWithAdorners.exe</HintPath>
     </Reference>
@@ -229,6 +226,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Downloads\DiagramDesignerPart4\DiagramDesigner\DiagramDesigner.csproj">
+      <Project>{b437df5f-20e0-4082-a92e-5c1d9c31a8e9}</Project>
+      <Name>DiagramDesigner</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
