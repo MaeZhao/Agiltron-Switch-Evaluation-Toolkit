@@ -35,13 +35,69 @@ namespace SW20190530_Ver3
      */
     partial class OpticalSwitchControlSequence
     {
+        public struct Radius
+        {
+            private double space;
+            private double xOffset;
+            private double yOffset;
+            private double size;
+            private double[] centerXY;
+            private double height;
+
+            public double Space { get => space; }
+            public double XOffset { get => xOffset; }
+            public double YOffset { get => yOffset; }
+            public double Size { get => size; }
+            public double[] CenterXY { get => centerXY; }
+            public double Height { get => height; }
+
+            public Radius(int outNum, double h, double offX, double offY, double s)
+            {
+                height = h;
+                space = s;
+                xOffset = offX;
+                yOffset = offY + h;
+                size = (double)(outNum / 2 - 1) * (h + space) + (double)1 / 2 * space;
+                centerXY = new double[2];
+                centerXY[1] = xOffset;
+                centerXY[2] = yOffset + size;
+            }
+
+            public Radius(int outNum, double h)
+            {
+                height = h;
+                space = 20;
+                xOffset = 10;
+                yOffset = 20 + h;
+                size = (double)(outNum / 2 - 1) * (h + space) + (double)1 / 2 * space;
+                centerXY = new double[2];
+                centerXY[1] = xOffset;
+                centerXY[2] = yOffset + size;
+            }
+        }
+
+        public struct PositionRGen
+        {
+            //TODO
+        }
+        private void SwitchDiagramCircleIni()
+        {
+            double totalH = switchDiagram.ActualHeight;
+            double totalW = diagramBounds.ActualWidth;
+            double height = 60;
+            double width = 80;
+            //double yPositionInp = (space / 2) - (numChannel / 2.0 * 50.0);
+            //double yPositionOutp = (space / 2) - (numOut / 2.0 * 50.0);
+
+
+        }
         /// <summary>
         /// Initializeds feilds and node formation in Switch Diagram
         /// </summary>
         private void SwitchDiagramIni()
         {
-            double space = switchDiagram.ActualHeight;
-            double spaceW = diagramBounds.ActualWidth;
+            //double space = switchDiagram.ActualHeight;
+            double totalW = diagramBounds.ActualWidth;
             double height = 60;
             double width = 80;
             //double yPositionInp = (space / 2) - (numChannel / 2.0 * 50.0);
@@ -140,7 +196,7 @@ namespace SW20190530_Ver3
 
                 Canvas.SetTop(Node, yPositionOutp);
                 switchGrid.UpdateLayout();
-                Canvas.SetLeft(Node, spaceW - 700);
+                Canvas.SetLeft(Node, totalW - 700);
                 yPositionOutp += 80;
                 oup.Add(Node);
                 switchDiagram.Children.Add(Node);
