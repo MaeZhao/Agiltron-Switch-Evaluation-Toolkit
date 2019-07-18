@@ -88,6 +88,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="OpticalSwitchDiagram.cs" />
+    <Compile Include="OpticalSwitchGrid.cs" />
+    <Compile Include="OpticalSwitchMenuItems.cs" />
+    <Compile Include="OpticalSwitchRun.cs" />
     <Compile Include="WindowUIComponents.cs" />
     <Page Include="Imported_ResourceCodes\Connection.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -130,6 +134,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="OpticalSwitchControlSequence.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowUIComponents.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

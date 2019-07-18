@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Basic Windows functions shared by all windows-->Create custom ControlTemplate 
+ */
+using System;
 
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,10 +12,13 @@ using System.Windows.Interop;
 
 namespace SW20190530_Ver3
 {
-    public abstract class WindowUIComponents : Window
+    public partial class WindowUIComponents : Window
     {
         public WindowUIComponents()
         {
+            this.Style = FindResource("DefaultWindowStyle") as Style;
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.StateChanged += Win_StateChanged;
             this.MaxWidth = SystemParameters.WorkArea.Width;
             this.MaxHeight = SystemParameters.WorkArea.Height;
         }
@@ -40,19 +45,18 @@ namespace SW20190530_Ver3
             return rect;
         }
 
-        private void Win_StateChanged(object sender, EventArgs e)
+        public void Win_StateChanged(object sender, EventArgs e)
         {
-            Window wind = (Window)sender;
-            RECT rect = GetWindowRectangle(wind);
-            if (wind.WindowState == WindowState.Maximized)
+            RECT rect = GetWindowRectangle(this);
+            if (this.WindowState == WindowState.Maximized)
             {
                 Window_Loaded(sender, new RoutedEventArgs()); // Inefficient: resets the WindowsState.Normal settings
 
                 rect.Left = (int)SystemParameters.WorkArea.Left;
                 rect.Top = (int)SystemParameters.WorkArea.Top;
-                rect.Right = (int)(rect.Left - wind.MaxWidth);
-                rect.Bottom = (int)(rect.Top - wind.MaxHeight);
-                wind.WindowState = WindowState.Normal;
+                rect.Right = (int)(rect.Left - this.MaxWidth);
+                rect.Bottom = (int)(rect.Top - this.MaxHeight);
+                WindowState = WindowState.Normal;
             }
 
         }
@@ -62,7 +66,14 @@ namespace SW20190530_Ver3
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        public abstract void Window_Loaded(object sender, RoutedEventArgs e);
+        public void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Left = SystemParameters.WorkArea.Left;
+            this.Top = SystemParameters.WorkArea.Top;
+            this.Height = SystemParameters.WorkArea.Height;
+            this.Width = SystemParameters.WorkArea.Width;
+
+        }
         #endregion
 
         /// <summary>
@@ -70,19 +81,33 @@ namespace SW20190530_Ver3
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void Button_Click_Exit(object sender, RoutedEventArgs e) => Application.Current.Shutdown(99);
+        public void Button_Click_Exit(object sender, RoutedEventArgs e) => Application.Current.Shutdown(99);
         /// <summary>
         /// Handles the Exit event of the Button_Min control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void Button_Min_Exit(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
+        public void Button_Min_Exit(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
         /// <summary>
         /// Handles the MouseDown event of the Window control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        public abstract void Window_MouseDown(object sender, MouseButtonEventArgs e);
+        public void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            RECT rect = GetWindowRectangle(this);
+            if (this.Height == SystemParameters.WorkArea.Height && this.Width == SystemParameters.WorkArea.Width && WindowState != WindowState.Maximized)
+            {
+                //WindowState = WindowState.Normal;
+                this.Height = 600;
+                this.Width = 1000;
+
+                this.Top = GetMousePositionY();
+                this.Left = (int)(GetMousePositionX() - 400);
+            }
+
+            this.DragMove();
+        }
         #region REGION: Finds Mouse cursor positions
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
@@ -103,6 +128,9 @@ namespace SW20190530_Ver3
             GetCursorPos(ref w32Mouse);
             return w32Mouse.X;
         }
+
+
+
         /// <summary>
         /// Gets the mouse position y.
         /// </summary>
@@ -115,7 +143,5 @@ namespace SW20190530_Ver3
         }
         #endregion
         #endregion
-
     }
 }
-

@@ -6,6 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="WindowUIComponents.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
                 <ResourceDictionary Source="Imported_ResourceCodes/ShapeStencils.xaml"/>
                 <ResourceDictionary Source="Imported_ResourceCodes/FlowChartStencils.xaml"/>
@@ -35,8 +36,10 @@
             <Style TargetType="MenuItem">
                 <Setter Property="FontFamily" Value="Helvetica" />
                 <Setter Property="Foreground" Value="Black" />
-
             </Style>
+
+
+
         </ResourceDictionary>
     </Application.Resources>
 

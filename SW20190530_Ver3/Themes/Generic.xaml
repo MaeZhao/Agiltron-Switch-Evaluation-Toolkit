@@ -1,0 +1,9 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:SW20190530_Ver3">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="WindowUIComponents.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>
