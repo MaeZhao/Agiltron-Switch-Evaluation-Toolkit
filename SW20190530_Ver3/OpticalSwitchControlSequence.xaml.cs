@@ -83,7 +83,7 @@ namespace SW20190530_Ver3
             //Initializes/finds switchGrid specs 
             SwitchBoardFieldIni(input);
             //Initializes switch Diagram
-            SwitchDiagramIni();
+            SwitchDiagramCircleIni();
             //Initializes switch test run specs
             SwitchRunControlsIni();
 

@@ -40,14 +40,14 @@ namespace SW20190530_Ver3
             private double space;
             private double xOffset;
             private double yOffset;
-            private double size;
+            private double diameter;
             private double[] centerXY;
             private double height;
 
             public double Space { get => space; }
             public double XOffset { get => xOffset; }
             public double YOffset { get => yOffset; }
-            public double Size { get => size; }
+            public double Diameter { get => diameter; }
             public double[] CenterXY { get => centerXY; }
             public double Height { get => height; }
 
@@ -57,39 +57,138 @@ namespace SW20190530_Ver3
                 space = s;
                 xOffset = offX;
                 yOffset = offY + h;
-                size = (double)(outNum / 2 - 1) * (h + space) + (double)1 / 2 * space;
+                diameter = (height + space) * outNum;
                 centerXY = new double[2];
-                centerXY[1] = xOffset;
-                centerXY[2] = yOffset + size;
+                centerXY[0] = xOffset;
+                centerXY[1] = yOffset + diameter;
             }
 
             public Radius(int outNum, double h)
             {
                 height = h;
                 space = 20;
+                diameter = height * (outNum - 2) + space * (outNum - 1);
+                yOffset = 10;
                 xOffset = 10;
-                yOffset = 20 + h;
-                size = (double)(outNum / 2 - 1) * (h + space) + (double)1 / 2 * space;
                 centerXY = new double[2];
-                centerXY[1] = xOffset;
-                centerXY[2] = yOffset + size;
+                centerXY[0] = xOffset;
+                centerXY[1] = diameter / 2 + 10;
             }
         }
 
-        public struct PositionRGen
-        {
-            //TODO
-        }
+
         private void SwitchDiagramCircleIni()
         {
-            double totalH = switchDiagram.ActualHeight;
-            double totalW = diagramBounds.ActualWidth;
-            double height = 60;
-            double width = 80;
-            //double yPositionInp = (space / 2) - (numChannel / 2.0 * 50.0);
-            //double yPositionOutp = (space / 2) - (numOut / 2.0 * 50.0);
 
 
+            if (inChannelNum == 1)
+            {
+                double height = 60;
+                double width = 80;
+                double totalH = switchDiagram.ActualHeight;
+                double totalW = diagramBounds.ActualWidth;
+                Radius radius = new Radius(outSwitchNum, height);
+                //Places input Node
+                PlaceNewNode(true, height, width, 1, "#62C1AF", radius.CenterXY);
+                //Finds outputnode indexes
+                Dictionary<int, double[]> outNodeIndex = OutputNodeIndexGenerator(radius);
+                for (int i = 1; i <= outNodeIndex.Count; i++)
+                {
+                    PlaceNewNode(false, height, width, i, "#F3A414", outNodeIndex[i]);
+                }
+            }
+            else
+            {
+                SwitchDiagramIni();
+
+            }
+        }
+
+        private Dictionary<int, double[]> OutputNodeIndexGenerator(Radius rad)
+        {
+            Dictionary<int, double[]> outNodeIndex = new Dictionary<int, double[]>();
+            double radLength = rad.Diameter / 2.0;
+            double angleSeperation = Math.PI / outSwitchNum;
+            for (int NodeID = 1; NodeID <= outSwitchNum; NodeID++)
+            {
+                double NodeAngle = angleSeperation * NodeID;
+
+                if (NodeID * angleSeperation <= 0.5 * Math.PI)
+                {
+                    outNodeIndex.Add(NodeID, new double[] { rad.CenterXY[0] + (radLength * Math.Sin(NodeAngle)), rad.CenterXY[1] - (radLength * Math.Cos(NodeAngle)) });
+                }
+                else if (NodeID * angleSeperation > 0.5 * Math.PI)
+                {
+                    NodeAngle = NodeAngle - (0.5 * Math.PI);
+                    outNodeIndex.Add(NodeID, new double[] { (radLength * Math.Cos(NodeAngle)) + rad.CenterXY[0], (radLength * Math.Sin(NodeAngle)) + rad.CenterXY[1] });
+                }
+            }
+            return outNodeIndex;
+        }
+
+        private void PlaceNewNode(Boolean input, double height, double width, int nodeID, string color, double[] xyPosition)
+        {
+            double xPosition = xyPosition[0];
+            double yPosition = xyPosition[1];
+            string text = "";
+            DesignerItem Node = new DesignerItem
+            {
+                Height = height,
+                Width = width,
+                Visibility = Visibility.Visible,
+                OverridesDefaultStyle = false,
+            };
+
+            Grid NodeContent = new Grid
+            {
+                IsHitTestVisible = false,
+                Focusable = false,
+            };
+            Path NodeShape = new System.Windows.Shapes.Path
+            {
+                Style = Application.Current.Resources["Card"] as Style,
+                Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString(color)),
+                Visibility = Visibility.Visible,
+                Height = height,
+                Width = width,
+                Stroke = Brushes.Transparent,
+            };
+            if (input == true)
+            {
+                text = "input #" + nodeID;
+            }
+            else
+            {
+                text = "output #" + nodeID;
+            }
+
+            TextBlock name = new TextBlock
+            {
+                Text = text,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.DemiBold,
+                FontSize = 15,
+                Foreground = Brushes.Black,
+                MaxHeight = height,
+                MaxWidth = width - 10,
+            };
+
+            NodeContent.Children.Add(NodeShape);
+            NodeContent.Children.Add(name);
+            Node.Content = NodeContent;
+
+            Canvas.SetTop(Node, yPosition);
+            Canvas.SetLeft(Node, xPosition);
+            if (input == true)
+            {
+                inp.Add(Node);
+            }
+            else
+            {
+                oup.Add(Node);
+            }
+            switchDiagram.Children.Add(Node);
         }
         /// <summary>
         /// Initializeds feilds and node formation in Switch Diagram
