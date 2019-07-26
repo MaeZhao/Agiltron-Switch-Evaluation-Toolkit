@@ -239,11 +239,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DiagramDesignerPart4\DiagramDesigner\DiagramDesigner.csproj">
-      <Project>{b437df5f-20e0-4082-a92e-5c1d9c31a8e9}</Project>
-      <Name>DiagramDesigner</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
