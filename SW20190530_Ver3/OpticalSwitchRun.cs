@@ -93,9 +93,8 @@ namespace SW20190530_Ver3
                     {
                         await Task.Delay(1000);
                         runningRow++;
-
                     }
-
+                    flashing = true;
                     //Test is paused:
                     await Task.Run(() =>
                     {
@@ -143,7 +142,7 @@ namespace SW20190530_Ver3
         {
             //Console.WriteLine("flashing : " + flashing);
             //Console.WriteLine("stopped line : " + runningRow);
-            if (flashing == true)
+            if (flashing != true)
             {
                 runningRow++;
                 BarUnFlash();
@@ -158,7 +157,6 @@ namespace SW20190530_Ver3
         /// </summary>
         private void BarFlash()
         {
-            flashing = true;
             foreach (UIElement child in switchGrid.Children)
             {
                 if (Grid.GetRow(child) == runningRow)

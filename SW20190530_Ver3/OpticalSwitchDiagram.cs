@@ -60,31 +60,29 @@ namespace SW20190530_Ver3
                 diameter = (height + space) * outNum;
                 centerXY = new double[2];
                 centerXY[0] = xOffset;
-                centerXY[1] = yOffset + diameter;
+                centerXY[1] = yOffset + diameter + height / 2;
             }
 
             public Radius(int outNum, double h)
             {
                 height = h;
                 space = 20;
-                diameter = height * (outNum - 2) + space * (outNum - 1);
-                yOffset = 10;
-                xOffset = 10;
+                diameter = (height + space) * outNum * 1.5;
+                yOffset = -(height + space) * (outNum) * 0.25;
+                xOffset = 30;
                 centerXY = new double[2];
                 centerXY[0] = xOffset;
-                centerXY[1] = diameter / 2 + 10;
+                centerXY[1] = diameter / 2 + 10 + height / 2.0 + yOffset;
             }
         }
 
 
         private void SwitchDiagramCircleIni()
         {
-
-
             if (inChannelNum == 1)
             {
-                double height = 60;
-                double width = 80;
+                double height = 45;
+                double width = 90;
                 double totalH = switchDiagram.ActualHeight;
                 double totalW = diagramBounds.ActualWidth;
                 Radius radius = new Radius(outSwitchNum, height);
@@ -100,27 +98,42 @@ namespace SW20190530_Ver3
             else
             {
                 SwitchDiagramIni();
-
             }
+            switchDiagram.UpdateLayout();
+            RemoveConnectors("Left", inp);
+            RemoveConnectors("Right", oup);
         }
 
         private Dictionary<int, double[]> OutputNodeIndexGenerator(Radius rad)
         {
             Dictionary<int, double[]> outNodeIndex = new Dictionary<int, double[]>();
             double radLength = rad.Diameter / 2.0;
-            double angleSeperation = Math.PI / outSwitchNum;
+            double NodeHeight = rad.Height;
+            double NodeSpace = rad.Space;
+
+            //Add first node
+            double yNode = 0.0;
+            //outNodeIndex.Add(1, new double[] { rad.CenterXY[0], yNode });
             for (int NodeID = 1; NodeID <= outSwitchNum; NodeID++)
             {
-                double NodeAngle = angleSeperation * NodeID;
-
-                if (NodeID * angleSeperation <= 0.5 * Math.PI)
+                if (NodeID == 1)
                 {
-                    outNodeIndex.Add(NodeID, new double[] { rad.CenterXY[0] + (radLength * Math.Sin(NodeAngle)), rad.CenterXY[1] - (radLength * Math.Cos(NodeAngle)) });
+                    yNode = rad.CenterXY[1] - (NodeHeight + NodeSpace) * outSwitchNum / 2.0;
                 }
-                else if (NodeID * angleSeperation > 0.5 * Math.PI)
+                else
                 {
-                    NodeAngle = NodeAngle - (0.5 * Math.PI);
-                    outNodeIndex.Add(NodeID, new double[] { (radLength * Math.Cos(NodeAngle)) + rad.CenterXY[0], (radLength * Math.Sin(NodeAngle)) + rad.CenterXY[1] });
+                    yNode += NodeHeight + NodeSpace;
+                }
+
+                if (yNode <= rad.CenterXY[1])
+                {
+                    double NodeAngle = Math.Acos((rad.CenterXY[1] - yNode) / radLength);
+                    outNodeIndex.Add(NodeID, new double[] { radLength * Math.Sin(NodeAngle) + rad.CenterXY[0], yNode });
+                }
+                else if (yNode > rad.CenterXY[1])
+                {
+                    double NodeAngle = Math.Asin((yNode - rad.CenterXY[1]) / radLength);
+                    outNodeIndex.Add(NodeID, new double[] { (radLength * Math.Cos(NodeAngle)) + rad.CenterXY[0], yNode });
                 }
             }
             return outNodeIndex;
@@ -146,7 +159,7 @@ namespace SW20190530_Ver3
             };
             Path NodeShape = new System.Windows.Shapes.Path
             {
-                Style = Application.Current.Resources["Card"] as Style,
+                Style = Application.Current.Resources["Start"] as Style,
                 Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString(color)),
                 Visibility = Visibility.Visible,
                 Height = height,
@@ -168,7 +181,7 @@ namespace SW20190530_Ver3
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 FontWeight = FontWeights.DemiBold,
-                FontSize = 15,
+                FontSize = 12,
                 Foreground = Brushes.Black,
                 MaxHeight = height,
                 MaxWidth = width - 10,
