@@ -61,6 +61,7 @@ namespace SW20190530_Ver3
                     maximumNotificationCount: MaximumNotificationCount.FromCount(5));
                 cfg.Dispatcher = Application.Current.Dispatcher;
             });
+
             messageOptions = new ToastNotifications.Core.MessageOptions
             {
                 ShowCloseButton = true, // set the option to show or hide notification close button

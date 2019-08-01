@@ -149,14 +149,17 @@
                 <ColumnDefinition Width= "Auto" />
                 <ColumnDefinition Width= "Auto"/>
                 <ColumnDefinition Width= "Auto"/>
-                <ColumnDefinition />
+                <ColumnDefinition Width= "Auto"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Margin="20,0" Grid.Column="1" HorizontalAlignment="Right" FontSize="17" Width="80" Click="Button_Click_Run">Run</Button>
             <StatusBar Foreground="White" BorderThickness="0" Background="Transparent" Margin="20,0" Grid.Column="2" HorizontalAlignment="Right" FontSize="14" >Progress:
                 <ProgressBar Name ="progressBar"  Width="100" Height="15" Background="#050767" ValueChanged="ProgressBar_ValueChanged"  />
             </StatusBar>
             <Button Margin="20,0" Grid.Column="3" HorizontalAlignment="Left" FontSize="16" Width="85" Click="Button_Click_Pause">Pause/Go</Button>
-            <Button Margin="20,0" Grid.Column="4" HorizontalAlignment="Left" FontSize="15" Width="50" Height="30" Click="Button_Click_Stop">Stop</Button>
+            <Button Margin="20,0" Grid.Column="5" HorizontalAlignment="Left" FontSize="15" Width="50" Height="30" Click="Button_Click_Stop">Stop</Button>
+            <Button Margin="20,0" Grid.Column="4" HorizontalAlignment="Left" FontSize="15" Width="50" Height="30" >Loop</Button>
         </Grid>
         <!--Control table half-->
         <Grid Name="gridSide" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Grid.Row="2" Grid.Column="0">
