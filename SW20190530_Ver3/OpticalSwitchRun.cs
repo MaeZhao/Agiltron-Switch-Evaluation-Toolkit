@@ -56,8 +56,9 @@ namespace SW20190530_Ver3
         {
             Console.WriteLine("runningRow val : " + runningRow);
             //TODO
-            if (runningRow == 2)
+            if (running == false)
             {
+                SwitchRunControlsIni();
                 running = true;
                 FlashingIni(sender, e);
                 return;
@@ -151,7 +152,7 @@ namespace SW20190530_Ver3
             BarUnFlash();
 
 
-            SwitchRunControlsIni();
+            running = false;
             //ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
             notifier.ShowWarning("Test Stopped", messageOptions);
         }
