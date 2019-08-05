@@ -127,7 +127,7 @@ namespace SW20190530_Ver3
         private void Button_Click_Pause(object sender, RoutedEventArgs e)
         {
             pause = !pause;
-            if (pause == true)
+            if (pause == true && running == true)
             {
                 notifier.ShowInformation("Test Paused", messageOptions);
             }
@@ -142,13 +142,17 @@ namespace SW20190530_Ver3
         {
             //Console.WriteLine("flashing : " + flashing);
             //Console.WriteLine("stopped line : " + runningRow);
-            if (flashing != true)
+
+            if (pause != true)
             {
                 runningRow++;
-                BarUnFlash();
             }
+
+            BarUnFlash();
+
+
             SwitchRunControlsIni();
-            ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+            //ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
             notifier.ShowWarning("Test Stopped", messageOptions);
         }
 

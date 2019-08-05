@@ -1,4 +1,4 @@
-﻿<ResourceDictionary
+﻿<ResourceDictionary 
              xmlns:local="clr-namespace:SW20190530_Ver3"
         xmlns:base="clr-namespace:SW20190530_Ver3"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,7 +9,7 @@
         xmlns:c="clr-namespace:DiagramDesigner.Controls;assembly=DiagramDesigner"
         xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <Style x:Key="DefaultWindowStyle" TargetType="{x:Type local:WindowUIComponents}">
+    <Style x:Key="DefaultWindowStyle" TargetType="{x:Type base:WindowUIComponents}">
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
@@ -17,7 +17,13 @@
     </Style>
 
     <!--Style template for OpticalSwitchControlSequence Windosw-->
-    <Style x:Key="WindowStyle_OpticalSwitchControlSequence" TargetType="{x:Type local:WindowUIComponents}" BasedOn="{x:Reference DefaultWindowStyle}">
+    <!--
+    <Style x:Key="WindowStyle_OpticalSwitchControlSequence" TargetType="{x:Type local:WindowUIComponents}">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+        <Setter Property="Icon" Value="Images+Icons\agiltronLogo.ico"/>
+
         <Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
@@ -26,103 +32,95 @@
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
+
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Window}">
-                    <Grid>
-                        <Grid  Name="Main" Margin="10,0,10,10" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <!--Window bar-->
-                                <RowDefinition Height="Auto"/>
-                                <!--Switch Data Table-->
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition />
-                                <!--Buttons-->
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                <ControlTemplate>
+                    -->
+    <!--Custom Window bar-->
+    <!--
+                    <Grid Name="WindowBar"  Background="Transparent" Grid.ColumnSpan="3" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
 
-                            <!--Custom Window bar-->
-                            <Grid Name="WindowBar"  Background="Transparent" Grid.ColumnSpan="3" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
+                        </Grid.ColumnDefinitions>
+                        -->
+    <!--Logo-->
+    <!--
+                        <Image Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Margin="10,0,0,0">
+                            <Image.Source>
+                                <BitmapImage UriSource="Images+Icons\AgiltronBanner.png" />
+                            </Image.Source>
+                        </Image>
+                        -->
+    <!--Dock Panel Menu-->
+    <!--
+                        <DockPanel Grid.Row="0" Margin="0,10,0,0">
+                            <Menu DockPanel.Dock="Top" Background="Transparent">
+                                <MenuItem Header="_File" Foreground="White">
+                                    <MenuItem Header="_New"/>
+                                    <MenuItem Header="_Open" Click="File_Open_Click"/>
+                                    <MenuItem Header="_Save" />
+                                    <MenuItem Header="_Save As" />
+                                </MenuItem>
+                                <MenuItem Header="_Edit" Foreground="White">
+                                    <MenuItem Header="_Add Step"/>
+                                    <MenuItem Header="_Delete Step" />
+                                </MenuItem>
+                                <MenuItem Header="_Configure" Foreground="White">
+                                    <MenuItem Header="_Truth Table" />
+                                </MenuItem>
+                                <MenuItem Header="_Info" Foreground="White">
+                                    <MenuItem Header="_About" />
+                                </MenuItem>
+                            </Menu>
+                        </DockPanel>
+
+                        <Grid Grid.Column="2" Grid.RowSpan="2" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            -->
+    <!--Minimise, Exit, Expand Buttons-->
+    <!--
+                            <Grid Grid.Row="0" HorizontalAlignment="Right">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto"/>
-
+                                    <ColumnDefinition  Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <!--Logo-->
-                                <Image Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Margin="10,0,0,0">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="Images+Icons\AgiltronBanner.png" />
-                                    </Image.Source>
-                                </Image>
-                                <!--Dock Panel Menu-->
-                                <DockPanel Grid.Row="0" Margin="0,10,0,0">
-                                    <Menu DockPanel.Dock="Top" Background="Transparent">
-                                        <MenuItem Header="_File" Foreground="White">
-                                            <MenuItem Header="_New"/>
-                                            <MenuItem Header="_Open" Click="File_Open_Click"/>
-                                            <MenuItem Header="_Save" />
-                                            <MenuItem Header="_Save As" />
-                                        </MenuItem>
-                                        <MenuItem Header="_Edit" Foreground="White">
-                                            <MenuItem Header="_Add Step"/>
-                                            <MenuItem Header="_Delete Step" />
-                                        </MenuItem>
-                                        <MenuItem Header="_Configure" Foreground="White">
-                                            <MenuItem Header="_Truth Table" />
-                                        </MenuItem>
-                                        <MenuItem Header="_Info" Foreground="White">
-                                            <MenuItem Header="_About" />
-                                        </MenuItem>
-                                    </Menu>
-                                </DockPanel>
-
-                                <Grid Grid.Column="2" Grid.RowSpan="2" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <!--Minimise, Exit, Expand Buttons-->
-                                    <Grid Grid.Row="0" HorizontalAlignment="Right">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition  Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Button Name="ExitButton" Background="#345CA0" Grid.Column="2" VerticalAlignment="Top"
+                                <Button Name="ExitButton" Background="#345CA0" Grid.Column="2" VerticalAlignment="Top"
                                 HorizontalAlignment="Right" Click="Button_Click_Exit" >
-                                            <Image Source="Images+Icons\IconExit.png" Height="15"/>
-                                        </Button>
-                                        <Button Name="MinButton" Background="#345CA0" Grid.Column="1" VerticalAlignment="Top"
+                                    <Image Source="Images+Icons\IconExit.png" Height="15"/>
+                                </Button>
+                                <Button Name="MinButton" Background="#345CA0" Grid.Column="1" VerticalAlignment="Top"
                                         HorizontalAlignment="Right" Click="Button_Min_Exit">
-                                            <Image Source="Images+Icons\IconMin.png" Height="15"/>
-                                        </Button>
-                                    </Grid>
-                                    <!--Page Title-->
-                                    <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" FontSize="15"
+                                    <Image Source="Images+Icons\IconMin.png" Height="15"/>
+                                </Button>
+                            </Grid>
+                            -->
+    <!--Page Title-->
+    <!--
+                            <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" FontSize="15"
                            VerticalAlignment="Top" Foreground="White" Margin="0,0,10,5">
                     Switch Evaluation Tookit</TextBlock>
-                                    <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" FontSize="12"
+                            <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" FontSize="12"
                            VerticalAlignment="Top" Foreground="White" Margin="0,0,10,5">
                     Optical Switch Control Sequence</TextBlock>
-                                </Grid>
-                            </Grid>
-
                         </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>-->
 
-    </Style>
+
 </ResourceDictionary>
