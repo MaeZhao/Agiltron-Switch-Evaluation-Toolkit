@@ -225,6 +225,7 @@ namespace SW20190530_Ver3
                     Width = width,
                     Visibility = Visibility.Visible,
                     OverridesDefaultStyle = false,
+                    Name = "in_" + i,
                 };
 
                 Grid NodeContent = new Grid

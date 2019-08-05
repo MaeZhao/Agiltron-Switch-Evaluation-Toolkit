@@ -56,9 +56,6 @@
   <PropertyGroup>
     <ApplicationIcon>Images+Icons\agiltronLogo.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>SW20190530_Ver3.App</StartupObject>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MoveResizeRotateWithAdorners">
       <HintPath>..\..\..\..\..\Downloads\DiagramDesignerPart1_src\DiagramDesignerPart1\MoveResizeRotateWithAdorners\bin\Debug\MoveResizeRotateWithAdorners.exe</HintPath>

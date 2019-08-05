@@ -194,7 +194,6 @@ namespace SW20190530_Ver3
                         child.Focusable = !child.Focusable;
                     }
                 }
-
             }
         }
     }
