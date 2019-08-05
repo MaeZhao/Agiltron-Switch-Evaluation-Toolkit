@@ -28,12 +28,16 @@ namespace DiagramDesigner
                 if (hitDesignerItem != value)
                 {
                     if (hitDesignerItem != null)
+                    {
                         hitDesignerItem.IsDragConnectionOver = false;
+                    }
 
                     hitDesignerItem = value;
 
                     if (hitDesignerItem != null)
+                    {
                         hitDesignerItem.IsDragConnectionOver = true;
+                    }
                 }
             }
         }
@@ -83,7 +87,7 @@ namespace DiagramDesigner
 
             base.Unloaded += new RoutedEventHandler(ConnectionAdorner_Unloaded);
         }
-                
+
 
         void AnchorPositionChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -107,9 +111,13 @@ namespace DiagramDesigner
                 if (connection != null)
                 {
                     if (connection.Source == fixConnector)
+                    {
                         connection.Sink = this.HitConnector;
+                    }
                     else
+                    {
                         connection.Source = this.HitConnector;
+                    }
                 }
             }
 
@@ -181,7 +189,9 @@ namespace DiagramDesigner
             Canvas.SetTop(sourceDragThumb, connection.AnchorPositionSource.Y);
             this.adornerCanvas.Children.Add(sourceDragThumb);
             if (dragThumbStyle != null)
+            {
                 sourceDragThumb.Style = dragThumbStyle;
+            }
 
             sourceDragThumb.DragDelta += new DragDeltaEventHandler(thumbDragThumb_DragDelta);
             sourceDragThumb.DragStarted += new DragStartedEventHandler(thumbDragThumb_DragStarted);
@@ -193,7 +203,9 @@ namespace DiagramDesigner
             Canvas.SetTop(sinkDragThumb, connection.AnchorPositionSink.Y);
             this.adornerCanvas.Children.Add(sinkDragThumb);
             if (dragThumbStyle != null)
+            {
                 sinkDragThumb.Style = dragThumbStyle;
+            }
 
             sinkDragThumb.DragDelta += new DragDeltaEventHandler(thumbDragThumb_DragDelta);
             sinkDragThumb.DragStarted += new DragStartedEventHandler(thumbDragThumb_DragStarted);
@@ -206,9 +218,13 @@ namespace DiagramDesigner
 
             ConnectorOrientation targetOrientation;
             if (HitConnector != null)
+            {
                 targetOrientation = HitConnector.Orientation;
+            }
             else
+            {
                 targetOrientation = dragConnector.Orientation;
+            }
 
             List<Point> linePoints = PathFinder.GetConnectionLine(fixConnector.GetInfo(), position, targetOrientation);
 
@@ -243,7 +259,10 @@ namespace DiagramDesigner
                 {
                     HitDesignerItem = hitObject as DesignerItem;
                     if (!hitConnectorFlag)
+                    {
                         HitConnector = null;
+                    }
+
                     return;
                 }
                 hitObject = VisualTreeHelper.GetParent(hitObject);
