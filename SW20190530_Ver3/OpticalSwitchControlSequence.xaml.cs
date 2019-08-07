@@ -27,20 +27,21 @@ namespace SW20190530_Ver3
         private ToastNotifications.Core.MessageOptions messageOptions;  //From ToastNotifications v2 nuget pkg
         //switchGrid specs
         private int inChannelNum, outSwitchNum;
-        //running/pausing button controls
+        //running/pausing button controls + diagram animations
         private bool running;
         private bool pause;
         private bool flashing;
         private int runningRow; //Current highlighted row
         private List<int[]> activeIOpairs = new List<int[]>(); //List of active inChannel and outSwitch pairs
+        Dictionary<int, Connection> runningUIconnection = new Dictionary<int, Connection>(); //Key value-->(connectionID, Arrow)
         //switchDiagram Specs
         List<DesignerItem> inp = new List<DesignerItem>(); //List of input Nodes
         List<DesignerItem> oup = new List<DesignerItem>(); //List of output Nodes
-        List<Connection> runningUIconnection = new List<Connection>(); //List of active Arrow connections
+
 
         #region REGION: Initialization of OpticalSwitchControlSequence
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpticalSwitchControlSequenceCopy"/> class.
+        /// Initializes a new instance of.
         /// </summary>
         /// <param name="input">The input.</param>
         public OpticalSwitchControlSequence(MainWin input)
@@ -90,8 +91,13 @@ namespace SW20190530_Ver3
 
             //TODO load presets
             //TODO do soemthing with the port
-            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxWidth = GetWidth();
             this.MaxHeight = SystemParameters.WorkArea.Height;
+        }
+
+        private static double GetWidth()
+        {
+            return SystemParameters.WorkArea.Width;
         }
         #endregion
     }

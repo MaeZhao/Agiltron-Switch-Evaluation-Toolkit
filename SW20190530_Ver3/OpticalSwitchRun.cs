@@ -60,7 +60,7 @@ namespace SW20190530_Ver3
             {
                 SwitchRunControlsIni();
                 running = true;
-                FlashingIni(sender, e);
+                Animate(sender, e);
                 return;
             }
             else
@@ -68,7 +68,12 @@ namespace SW20190530_Ver3
                 notifier.ShowError("Test is already running", messageOptions);
             }
         }
-        private async void FlashingIni(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Iterates through flashing animation of the graph rows and diagram arrows
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private async void Animate(object sender, RoutedEventArgs e)
         {
             int rowTotal = switchGrid.RowDefinitions.Count;
 
@@ -84,9 +89,7 @@ namespace SW20190530_Ver3
                 int rowLeft = rowTotal - 1;
                 while (runningRow <= rowLeft && running == true)
                 {
-                    //Console.WriteLine("running row: " + runningRow + " | ruwLeft: " + rowLeft);
-                    BarFlash();
-                    LoadIOConnection(runningRow);
+                    Flash();
                     ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value + progress));
 
                     // Keeps RunningRow from incrementing when stopped
@@ -95,20 +98,28 @@ namespace SW20190530_Ver3
                         await Task.Delay(1000);
                         runningRow++;
                     }
-                    flashing = true;
-                    //Test is paused:
+
+                    //IF test is paused:
                     await Task.Run(() =>
                     {
-                        //if (pause) Console.WriteLine("paused line: " + runningRow);
+                        //Waits until unpaused or stops running
                         while (pause == true && running == true)
                         {
                             ;
                         }
-                    });
 
-                    BarUnFlash();
-                    UnloadIOConnection(runningRow - 1);
-                    ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+                    });
+                    /* TODO:
+                    * -Check if the following "if/else" statement is being used at all */
+                    if (running == true)
+                    {
+                        UnFlash();
+                        ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             //Test is finished:
@@ -132,6 +143,10 @@ namespace SW20190530_Ver3
             {
                 notifier.ShowInformation("Test Paused", messageOptions);
             }
+            else
+            {
+                notifier.ShowError("Test not Running", messageOptions);
+            }
         }
 
         /// <summary>
@@ -141,27 +156,39 @@ namespace SW20190530_Ver3
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click_Stop(object sender, RoutedEventArgs e)
         {
-            //Console.WriteLine("flashing : " + flashing);
-            //Console.WriteLine("stopped line : " + runningRow);
-
             if (pause != true)
             {
                 runningRow++;
             }
 
-            BarUnFlash();
-
-
+            UnFlash();
+            SwitchRunControlsIni();
             running = false;
-            //ProgressBar_ValueChanged(progressBar, new RoutedPropertyChangedEventArgs<double>(progressBar.Value, progressBar.Value));
-            notifier.ShowWarning("Test Stopped", messageOptions);
+            notifier.ShowInformation("Test Stopped", messageOptions);
+        }
+        /// <summary>
+        /// Flashes visual diagrams.
+        /// </summary>
+        private void Flash()
+        {
+            RowHighlight();
+            LoadIOConnection();
+        }
+        /// <summary>
+        /// UnFlashes visual diagrams.
+        /// </summary>
+        private void UnFlash()
+        {
+            RowUnhiglight();
+            UnloadIOConnection();
         }
 
         /// <summary>
-        /// Highlights the row
+        /// Highlights the runningRow
         /// </summary>
-        private void BarFlash()
+        private void RowHighlight()
         {
+            flashing = true;
             foreach (UIElement child in switchGrid.Children)
             {
                 if (Grid.GetRow(child) == runningRow)
@@ -181,7 +208,7 @@ namespace SW20190530_Ver3
         /// <summary>
         /// Removes the highlight on the previously highlighted row 
         /// </summary>
-        private void BarUnFlash()
+        private void RowUnhiglight()
         {
             //Console.WriteLine("unflashed row : " + (runningRow - 1));
             flashing = false;

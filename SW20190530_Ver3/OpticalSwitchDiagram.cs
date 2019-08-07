@@ -35,6 +35,9 @@ namespace SW20190530_Ver3
      */
     partial class OpticalSwitchControlSequence
     {
+        /// <summary>
+        /// Structure used to map out the positions in our input/output diagram
+        /// </summary>
         public struct Radius
         {
             private double space;
@@ -50,7 +53,14 @@ namespace SW20190530_Ver3
             public double Diameter { get => diameter; }
             public double[] CenterXY { get => centerXY; }
             public double Height { get => height; }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Radius"/> struct.
+            /// </summary>
+            /// <param name="outNum">The out number.</param>
+            /// <param name="h">The h.</param>
+            /// <param name="offX">The off x.</param>
+            /// <param name="offY">The off y.</param>
+            /// <param name="s">The s.</param>
             public Radius(int outNum, double h, double offX, double offY, double s)
             {
                 height = h;
@@ -62,7 +72,11 @@ namespace SW20190530_Ver3
                 centerXY[0] = xOffset;
                 centerXY[1] = yOffset + diameter + height / 2;
             }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Radius"/> struct.
+            /// </summary>
+            /// <param name="outNum">The out number.</param>
+            /// <param name="h">The h.</param>
             public Radius(int outNum, double h)
             {
                 height = h;
@@ -76,7 +90,9 @@ namespace SW20190530_Ver3
             }
         }
 
-
+        /// <summary>
+        /// Places index and nodes onto diagram canvas
+        /// </summary>
         private void SwitchDiagramCircleIni()
         {
             if (inChannelNum == 1)
@@ -88,7 +104,7 @@ namespace SW20190530_Ver3
                 Radius radius = new Radius(outSwitchNum, height);
                 //Places input Node
                 PlaceNewNode(true, height, width, 1, "#62C1AF", radius.CenterXY);
-                //Finds outputnode indexes
+                //Finds outputnode indexes and places output Nodes
                 Dictionary<int, double[]> outNodeIndex = OutputNodeIndexGenerator(radius);
                 for (int i = 1; i <= outNodeIndex.Count; i++)
                 {
@@ -100,10 +116,17 @@ namespace SW20190530_Ver3
                 SwitchDiagramIni();
             }
             switchDiagram.UpdateLayout();
+            /*TODO: make this part of the style/template?
+             */
             RemoveConnectors("Left", inp);
             RemoveConnectors("Right", oup);
         }
 
+        /// <summary>
+        /// Generates output node indexes.
+        /// </summary>
+        /// <param name="rad">The RAD.</param>
+        /// <returns></returns>
         private Dictionary<int, double[]> OutputNodeIndexGenerator(Radius rad)
         {
             Dictionary<int, double[]> outNodeIndex = new Dictionary<int, double[]>();
@@ -138,7 +161,15 @@ namespace SW20190530_Ver3
             }
             return outNodeIndex;
         }
-
+        /// <summary>
+        /// Places the new node on diagram canvas.
+        /// </summary>
+        /// <param name="input">if set to <c>true</c> [input].</param>
+        /// <param name="height">The height.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="nodeID">The node identifier.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="xyPosition">The xy position.</param>
         private void PlaceNewNode(Boolean input, double height, double width, int nodeID, string color, double[] xyPosition)
         {
             double xPosition = xyPosition[0];
@@ -157,6 +188,7 @@ namespace SW20190530_Ver3
                 IsHitTestVisible = false,
                 Focusable = false,
             };
+
             Path NodeShape = new System.Windows.Shapes.Path
             {
                 Style = Application.Current.Resources["Start"] as Style,
@@ -204,7 +236,7 @@ namespace SW20190530_Ver3
             switchDiagram.Children.Add(Node);
         }
         /// <summary>
-        /// Initializeds feilds and node formation in Switch Diagram
+        /// Initializeds fields and node formation in Switch Diagram
         /// </summary>
         private void SwitchDiagramIni()
         {

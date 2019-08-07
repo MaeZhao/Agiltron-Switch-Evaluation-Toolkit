@@ -214,7 +214,7 @@ namespace SW20190530_Ver3
                     IsEnabled = false
                 };
                 Grid.SetRow(highlight, currRows);
-                Grid.SetColumnSpan(highlight, 2); // Might change to 2
+                Grid.SetColumnSpan(highlight, 2);
                 switchGrid.Children.Add(highlight);
 
                 //Highlights/unhighlights row
@@ -254,7 +254,7 @@ namespace SW20190530_Ver3
                 Grid.SetRow(times, currRows);
                 switchGrid.Children.Add(times);
                 times.LostFocus += RunTimeCell_UI; //initializes runtime UI
-                                                   //Adds the ON OFF buttons
+
                 for (int c = 0; c < col; c++)
                 {
                     //ON OFF button generation
@@ -293,11 +293,7 @@ namespace SW20190530_Ver3
                             {
                                 onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3BA00"));
                             }
-                            //if ((string)onOff.Content == "ON")
-                            //{
-                            //    LoadIOConnection(onOff);
 
-                            //}
                         }
                         else
                         {
@@ -306,12 +302,6 @@ namespace SW20190530_Ver3
                                 onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#223C69"));
 
                             }
-                            //if ((string)onOff.Content == "ON")
-                            //{
-                            //    UnloadIOConnection(onOff);
-
-                            //}
-                            //runningUIconnection.Clear();
                         }
                     };
 
@@ -322,35 +312,42 @@ namespace SW20190530_Ver3
                 currRows++;
             }
         }
-        private void LoadIOConnection(int buttonRow)
-        {
 
-            //if active button is currently being run
-            if (buttonRow == runningRow)
+        /* TODO:
+         * Find faster way to load io and unload io taking better advantage of the dictionary*/
+        /// <summary>
+        /// Loads the arrow connection corresponding to ON buttons on runningRow into diagram window.
+        /// </summary>
+        private void LoadIOConnection()
+        {
+            int buttonRow = runningRow;
+
+            foreach (UIElement child in switchGrid.Children)
             {
-                foreach (UIElement child in switchGrid.Children)
+                if (child.GetType() == typeof(Button))
                 {
-                    if (child.GetType() == typeof(Button))
+                    Button c = child as Button;
+                    if (Grid.GetRow(child) == buttonRow && (string)c.Content == "ON")
                     {
-                        Button c = child as Button;
-                        if (Grid.GetRow(child) == buttonRow && (string)c.Content == "ON")
-                        {
-                            int bcol = Grid.GetColumn(c) - 2;
-                            int inBnum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2)); // Active child channel number
-                            int outBnum = bcol % outSwitchNum; // Active child switch output number
-                                                               //int[] io = new int[2] { inBnum, outBnum };
-                                                               //activeIOpairs.Add(io);
-                            Connection arrow = Draw_Arrow(inp[inBnum], oup[outBnum]);
-                            runningUIconnection.Add(arrow);
-                            switchDiagram.UpdateLayout();
-                        }
+                        int bcol = Grid.GetColumn(c) - 2;
+                        int inBnum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2)); // Active child channel number
+                        int outBnum = bcol % outSwitchNum; // Active child switch output number
+                        Connection arrow = Draw_Arrow(inp[inBnum], oup[outBnum]);
+                        int connectionID = int.Parse(inBnum.ToString() + outBnum.ToString()); //Unique identifier for each connection
+
+                        runningUIconnection.Add(connectionID, arrow);
+                        switchDiagram.UpdateLayout();
                     }
                 }
             }
         }
 
-        private void UnloadIOConnection(int buttonRow)
+        /// <summary>
+        /// Unloads the arrow connection corresponding to ON buttons on previous runningRow into diagram window.
+        /// </summary>
+        private void UnloadIOConnection()
         {
+            int buttonRow = runningRow - 1;
             if (flashing == false)
             {
                 foreach (UIElement child in switchGrid.Children)
@@ -366,8 +363,10 @@ namespace SW20190530_Ver3
                             int inBnum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2)); // Active child channel number
                             int outBnum = bcol % outSwitchNum; // Active child switch output number
 
-                            //Predicate<Connection> loadedArrow = connection => (connection.Sink.Equals(inp[inBnum]) && connection.Source.Equals(oup[outBnum]));
-                            runningUIconnection.Find(connection => (connection.Sink.Equals(oup[outBnum].GetConnector("Left")) && connection.Source.Equals(inp[inBnum].GetConnector("Right")))).Visibility = Visibility.Collapsed;
+                            int connectionID = int.Parse(inBnum.ToString() + outBnum.ToString());
+                            Connection activeArrow = runningUIconnection[connectionID];
+                            activeArrow.Visibility = Visibility.Collapsed;
+                            runningUIconnection.Remove(connectionID);
                         }
                     }
                 }
