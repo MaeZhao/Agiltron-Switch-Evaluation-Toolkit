@@ -334,11 +334,11 @@ namespace SW20190530_Ver3
                         int bcol = Grid.GetColumn(c) - 2;
                         int inBnum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2)); // Active child channel number
                         int outBnum = bcol % outSwitchNum; // Active child switch output number
-                        Connection arrow = Draw_Arrow(inp[inBnum], oup[outBnum]);
+                        //Connection arrow = Draw_Arrow(inp[inBnum], oup[outBnum]);
                         int connectionID = int.Parse(inBnum.ToString() + outBnum.ToString()); //Unique identifier for each connection
 
-                        runningUIconnection.Add(connectionID, arrow);
-                        switchDiagram.UpdateLayout();
+                        //runningUIconnection.Add(connectionID, arrow);
+                        //switchDiagram.UpdateLayout();
                     }
                 }
             }
