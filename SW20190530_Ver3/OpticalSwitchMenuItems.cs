@@ -34,7 +34,7 @@ using Path = System.Windows.Shapes.Path;
 namespace SW20190530_Ver3
 {
 
-    partial class OpticalSwitchControlSequence
+    partial class OpticalSwitchControlSequence : WindowUIComponents
     {
 
 #line hidden
