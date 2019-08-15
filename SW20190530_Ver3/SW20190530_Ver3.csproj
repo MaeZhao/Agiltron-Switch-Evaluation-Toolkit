@@ -88,38 +88,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="OpticalSwitchDiagram.cs" />
-    <Compile Include="OpticalSwitchGrid.cs" />
     <Compile Include="OpticalSwitchMenuItems.cs" />
-    <Compile Include="OpticalSwitchRun.cs" />
     <Compile Include="WindowUIComponents.cs" />
-    <Page Include="Imported_ResourceCodes\Connection.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="TEMP_WindowDefaultStyle.xaml">
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Imported_ResourceCodes\DesignerItem.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Imported_ResourceCodes\FlowChartStencils.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Imported_ResourceCodes\ResizeRotateChrome.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Imported_ResourceCodes\ShapeStencils.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Imported_ResourceCodes\Shared.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Imported_ResourceCodes\SizeChrome.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -244,6 +217,9 @@
       <Project>{b437df5f-20e0-4082-a92e-5c1d9c31a8e9}</Project>
       <Name>DiagramDesigner</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Imported_ResourceCodes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

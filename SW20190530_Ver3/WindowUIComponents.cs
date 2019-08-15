@@ -1,6 +1,4 @@
-﻿/* Basic Windows functions shared by all windows-->Create custom ControlTemplate 
- */
-using System;
+﻿using System;
 
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,8 +10,14 @@ using System.Windows.Interop;
 
 namespace SW20190530_Ver3
 {
+    /// <summary>
+    /// Basic Windows functions shared by all windows--> Create custom ControlTemplate 
+    /// </summary>
     public partial class WindowUIComponents : Window
     {
+        /// <summary>
+        /// Initialization
+        /// </summary>
         public WindowUIComponents()
         {
             this.Style = FindResource("DefaultWindowStyle") as Style;
