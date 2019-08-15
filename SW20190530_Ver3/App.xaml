@@ -6,15 +6,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="TEMP_WindowDefaultStyle.xaml"/>
+                <ResourceDictionary Source="temp.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
-                <ResourceDictionary Source="Imported_ResourceCodes/ShapeStencils.xaml"/>
+                <!--<ResourceDictionary Source="Imported_ResourceCodes/ShapeStencils.xaml"/>
                 <ResourceDictionary Source="Imported_ResourceCodes/FlowChartStencils.xaml"/>
                 <ResourceDictionary Source="Imported_ResourceCodes/Connection.xaml"/>
                 <ResourceDictionary Source="Imported_ResourceCodes/DesignerItem.xaml"/>
                 <ResourceDictionary Source="Imported_ResourceCodes/SizeChrome.xaml"/>
                 <ResourceDictionary Source="Imported_ResourceCodes/ResizeRotateChrome.xaml"/>
-                <ResourceDictionary Source="Imported_ResourceCodes/Shared.xaml"/>
+                <ResourceDictionary Source="Imported_ResourceCodes/Shared.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="Button">

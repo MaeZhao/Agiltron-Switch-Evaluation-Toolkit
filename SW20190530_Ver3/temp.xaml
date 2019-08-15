@@ -9,7 +9,7 @@
         xmlns:c="clr-namespace:DiagramDesigner.Controls;assembly=DiagramDesigner"
         xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <Style x:Key="DefaultWindowStyle" TargetType="{x:Type base:WindowUIComponents}">
+    <Style x:Key="DefaultWindowStyle" TargetType ="{x:Type base:WindowUIComponents}">
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
