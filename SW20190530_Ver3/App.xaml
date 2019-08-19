@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="temp.xaml"/>
+                <ResourceDictionary Source="WindowUIComponents.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
                 <!--<ResourceDictionary Source="Imported_ResourceCodes/ShapeStencils.xaml"/>
                 <ResourceDictionary Source="Imported_ResourceCodes/FlowChartStencils.xaml"/>
