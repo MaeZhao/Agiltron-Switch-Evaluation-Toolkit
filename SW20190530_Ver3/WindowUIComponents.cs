@@ -1,10 +1,7 @@
 ﻿using System;
-
 using System.Linq;
 using System.Runtime.InteropServices;
-
 using System.Windows;
-
 using System.Windows.Input;
 using System.Windows.Interop;
 
@@ -26,6 +23,7 @@ namespace SW20190530_Ver3
             this.MaxWidth = SystemParameters.WorkArea.Width;
             this.MaxHeight = SystemParameters.WorkArea.Height;
         }
+
         #region REGION: Methods used for every Window (only slightly variated) TODO: Turn these methods into an abstract class
         #region REGION: Adjusts default pixel offset in window maximization/minimization
         [StructLayout(LayoutKind.Sequential)]

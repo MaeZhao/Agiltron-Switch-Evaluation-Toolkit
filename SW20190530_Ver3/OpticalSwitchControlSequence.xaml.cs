@@ -30,7 +30,7 @@ namespace SW20190530_Ver3
         private Notifier notifier; //From ToastNotifications v2 nuget pkg
         private ToastNotifications.Core.MessageOptions messageOptions;  //From ToastNotifications v2 nuget pkg
         //switchGrid specs
-        private int inChannelNum, outSwitchNum;
+        private int inChannelNum, outSwitchNum, steps;
         //running/pausing button controls + diagram animations
         private bool running;
         private bool pause;
@@ -84,7 +84,7 @@ namespace SW20190530_Ver3
                 notifier.ShowInformation("Running in Offline Mode", messageOptions);
             }
 
-            #region Initializes/finds switchGrid specs [REGION A]
+            #region Initializes/finds Switch Table specs [REGION A]
             String type = input.type.Text;
             type = System.Text.RegularExpressions.Regex.Replace(type, @"[^X0-9]", String.Empty);
 
@@ -126,7 +126,8 @@ namespace SW20190530_Ver3
             Main.Children.Add(Title);
 
             //initializes switchGrid:
-            Load_Grid(20, new int[] { });
+            steps = 1;
+            LoadGrid(new int[] { });
 
             runningRow = 2;
             #endregion
@@ -143,6 +144,7 @@ namespace SW20190530_Ver3
             this.MaxHeight = SystemParameters.WorkArea.Height;
         }
 
+
         private static double GetWidth()
         {
             return SystemParameters.WorkArea.Width;
@@ -155,7 +157,7 @@ namespace SW20190530_Ver3
         /// <summary>Loads ON OFF button grid.</summary>
         /// <param name="steps">The number of steps.</param>
         /// <param name="runtime">An array of runtime times (in seconds).</param>
-        public void Load_Grid(int steps, int[] runtime)
+        public void LoadGrid(int[] runtime)
         {
             GridLength Adjustable = new GridLength(2, GridUnitType.Star);
             GridLength Stiff = new GridLength(2, GridUnitType.Auto);
@@ -246,18 +248,16 @@ namespace SW20190530_Ver3
                 switchGrid.Children.Add(chanLable);
                 currChanSt += outSwitchNum;
             }
-            AddStepsButtonRT_UI(steps, outSwitchNum * inChannelNum, runtime);
+            AddStepsIni(steps, outSwitchNum * inChannelNum, runtime);
         }
 
-
         /// <summary>
-        /// Adds Steps, or Rows of buttons to the ON OFF table :
         /// initializes RunTime cell and ON OFF buttons user interface     
         /// </summary>
         /// <param name="rows">The rows.</param>
         /// <param name="col">The col.</param>
         /// <param name="runTime">The run times.</param>
-        public void AddStepsButtonRT_UI(int rows, int col, int[] runTime)
+        public void AddStepsIni(int rows, int col, int[] runTime)
         {
             GridLength WxH = new GridLength(2, GridUnitType.Auto);
 
@@ -391,9 +391,8 @@ namespace SW20190530_Ver3
                 }
                 currRows++;
             }
+            switchGrid.UpdateLayout();
         }
-
-
 
         /* TODO:
          * Find faster way to load io and unload io taking better advantage of the dictionary*/
@@ -454,6 +453,7 @@ namespace SW20190530_Ver3
                 }
             }
         }
+
         /// <summary>
         /// Handles the UI event of the RunTimeCell value is not an integer.
         /// </summary>
@@ -478,6 +478,12 @@ namespace SW20190530_Ver3
                 times.SelectionBrush = SystemColors.HighlightBrush;
             }
         }
+
+        private void AddStepClick(object sender, RoutedEventArgs e)
+        {
+            steps++;
+            AddStepsIni(1, outSwitchNum * inChannelNum, new int[] { });
+        }
     }
     #endregion
 
@@ -500,7 +506,6 @@ namespace SW20190530_Ver3
         /// Handles the ValueChanged event of the ProgressBar control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedPropertyChangedEventArgs{System.Double}"/> instance containing the event data.</param>
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (running == false)

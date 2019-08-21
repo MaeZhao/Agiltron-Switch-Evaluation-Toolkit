@@ -14,6 +14,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,10 +28,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,7 +39,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>1</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <DocumentationFile>bin\Debug\SW20190530_Ver3.xml</DocumentationFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
@@ -215,6 +215,35 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images+Icons\AgiltronBanner2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images+Icons\IconFileNew.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images+Icons\IconFile1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images+Icons\IconFileSaveAs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images+Icons\IconFileSave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images+Icons\IconFileOpen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images+Icons\IconEdit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images+Icons\IconEditAddStep.png" />
+    <Resource Include="Images+Icons\IconSettingsAbout.png" />
+    <Resource Include="Images+Icons\IconSettingsTruth.png" />
+    <Resource Include="Images+Icons\IconSettings.png" />
+    <Resource Include="Images+Icons\IconEditLoadSteps.png" />
+    <Resource Include="Images+Icons\IconEditDeleteStep.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -215,9 +215,5 @@ namespace DiagramDesigner
             }
         }
 
-        public void HasContent()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

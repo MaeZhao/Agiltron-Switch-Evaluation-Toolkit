@@ -1,5 +1,6 @@
-﻿<base:WindowUIComponents x:Class="SW20190530_Ver3.OpticalSwitchControlSequence"
-        xmlns:base="clr-namespace:SW20190530_Ver3"
+﻿<base:WindowUIComponents
+    xmlns:base="clr-namespace:SW20190530_Ver3"
+    x:Class="SW20190530_Ver3.OpticalSwitchControlSequence"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -45,26 +46,36 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
+
+        <!--Custom ListItem Template [USED IN MENU BAR]-->
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Margin" Value="0,5,5,5"/>
+        </Style>
     </Window.Resources>
 
     <!--Backgroud Fade-->
     <Window.Background>
         <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
-            <GradientStop Color="#345CA0" Offset="0.1"/>
-            <GradientStop Color="#050767" Offset="0.5"/>
+            <GradientStop Color="#345CA1" Offset="0.1"/>
+            <GradientStop Color="#142B55" Offset="0.6"/>
+
         </LinearGradientBrush>
     </Window.Background>
 
     <Grid  Name="Main" Margin="10,0,10,10" >
         <Grid.ColumnDefinitions>
+            <!--Toolbar-->
             <ColumnDefinition Width="Auto" />
+            <!--Table-->
             <ColumnDefinition  Width="Auto" />
+            <!--Diagram-->
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <!--Window bar-->
             <RowDefinition Height="Auto"/>
-            <!--Switch Data Table-->
+            <!--Switch Data Table and Diagram-->
             <RowDefinition Height="Auto"/>
             <RowDefinition />
             <!--Buttons-->
@@ -84,32 +95,11 @@
 
             </Grid.ColumnDefinitions>
             <!--Logo-->
-            <Image Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Margin="10,0,0,0">
+            <Image Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="194" Margin="10,0,0,0">
                 <Image.Source>
-                    <BitmapImage UriSource="Images+Icons\AgiltronBanner.png" />
+                    <BitmapImage UriSource="Images+Icons\AgiltronBanner2.png" />
                 </Image.Source>
             </Image>
-            <!--Dock Panel Menu-->
-            <DockPanel Grid.Row="0" Margin="0,10,0,0">
-                <Menu DockPanel.Dock="Top" Background="Transparent">
-                    <MenuItem Header="_File" Foreground="White">
-                        <MenuItem Header="_New"/>
-                        <MenuItem Header="_Open" Click="File_Open_Click"/>
-                        <MenuItem Header="_Save" />
-                        <MenuItem Header="_Save As" />
-                    </MenuItem>
-                    <MenuItem Header="_Edit" Foreground="White">
-                        <MenuItem Header="_Add Step"/>
-                        <MenuItem Header="_Delete Step" />
-                    </MenuItem>
-                    <MenuItem Header="_Configure" Foreground="White">
-                        <MenuItem Header="_Truth Table" />
-                    </MenuItem>
-                    <MenuItem Header="_Info" Foreground="White">
-                        <MenuItem Header="_About" />
-                    </MenuItem>
-                </Menu>
-            </DockPanel>
 
             <Grid Grid.Column="2" Grid.RowSpan="2" >
                 <Grid.RowDefinitions>
@@ -124,16 +114,16 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition  Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Button Name="ExitButton" Background="#345CA0" Grid.Column="2" VerticalAlignment="Top"
+                    <Button Name="ExitButton" Background="Transparent" Grid.Column="2" VerticalAlignment="Top"
                                 HorizontalAlignment="Right" Click="Button_Click_Exit" >
                         <Image Source="Images+Icons\IconExit.png" Height="15"/>
                     </Button>
-                    <Button Name="MinButton" Background="#345CA0" Grid.Column="1" VerticalAlignment="Top"
+                    <Button Name="MinButton" Background="Transparent" Grid.Column="1" VerticalAlignment="Top"
                                         HorizontalAlignment="Right" Click="Button_Min_Exit">
                         <Image Source="Images+Icons\IconMin.png" Height="15"/>
                     </Button>
                 </Grid>
-                <!--Page Title-->
+                <!--Window Title-->
                 <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" FontSize="15"
                            VerticalAlignment="Top" Foreground="White" Margin="0,0,10,5">
                     Switch Evaluation Tookit</TextBlock>
@@ -142,6 +132,184 @@
                     Optical Switch Control Sequence</TextBlock>
             </Grid>
         </Grid>
+
+        <!--Lateral Menu-->
+        <ListBox Grid.Column="0" Grid.Row="2" Margin="0,5,0,0">
+            <ListBox.Resources>
+                <Style TargetType="{x:Type Expander}">
+                    <Setter Property="IsExpanded"
+           Value="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"/>
+                    <Setter Property="Background" Value="#00008D"/>
+                </Style>
+            </ListBox.Resources>
+            <ListBox.Template>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <ItemsPresenter/>
+                </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <ContentPresenter Content="{TemplateBinding Content}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <!--File Group-->
+            <Expander>
+                <Expander.Header>
+                    <BulletDecorator>
+                        <BulletDecorator.Bullet >
+                            <Image Margin="0,10,0,10" Source="Images+Icons\IconFile1.png" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        </BulletDecorator.Bullet>
+                        <TextBlock Text="File" FontSize="20" FontStretch="Normal" FontWeight="Thin" Margin="5,0,20,0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Foreground="White" />
+                    </BulletDecorator>
+                </Expander.Header>
+                <!--File Group Buttons-->
+                <ListBox Background="Transparent" BorderThickness="0" Margin="2,0,2,0" >
+                    <ListBoxItem  HorizontalAlignment="Stretch" >
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Image  HorizontalAlignment="Left" Source="Images+Icons\IconFileNew.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="New" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                    <ListBoxItem  HorizontalAlignment="Stretch" >
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Image HorizontalAlignment="Left" Source="Images+Icons\IconFileOpen.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Open" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                    <ListBoxItem  HorizontalAlignment="Stretch">
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Image HorizontalAlignment="Left" Source="Images+Icons\IconFileSave.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Save" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                    <ListBoxItem  HorizontalAlignment="Stretch">
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Image  HorizontalAlignment="Left" Source="Images+Icons\IconFileSaveAs.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Save As" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                </ListBox>
+            </Expander>
+
+            <!--Edit Group-->
+            <Expander x:Name="Edit">
+                <Expander.Header>
+                    <BulletDecorator>
+                        <BulletDecorator.Bullet >
+                            <Image  Margin="0,10,0,10" Source="Images+Icons\IconEdit.png" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        </BulletDecorator.Bullet>
+                        <TextBlock Text="Edit" FontSize="20" FontStretch="Normal" FontWeight="Thin" Margin="5,0,20,0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Foreground="White" />
+                    </BulletDecorator>
+                </Expander.Header>
+                <!--Edit Group Buttons-->
+                <ListBox Background="Transparent" BorderThickness="0" Margin="2,0,2,0" >
+                    <ListBoxItem  HorizontalAlignment="Stretch" >
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Image  HorizontalAlignment="Left" Source="Images+Icons\IconEditLoadSteps.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Load Steps" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="AddStep"  HorizontalAlignment="Stretch" PreviewMouseDown="AddStepClick">
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch" >
+                                    <Image HorizontalAlignment="Left" Source="Images+Icons\IconEditAddStep.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Add Step" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                    <ListBoxItem  HorizontalAlignment="Stretch">
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Image HorizontalAlignment="Left" Source="Images+Icons\IconEditDeleteStep.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Delete Step" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                </ListBox>
+            </Expander>
+            <!--Settings Group-->
+            <Expander>
+                <Expander.Header>
+                    <BulletDecorator>
+                        <BulletDecorator.Bullet >
+                            <Image  Margin="0,10,0,10" Source="Images+Icons\IconSettings.png" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        </BulletDecorator.Bullet>
+                        <TextBlock Text="Settings" FontSize="20" FontStretch="Normal" FontWeight="Thin" Margin="5,0,20,0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Foreground="White" />
+                    </BulletDecorator>
+                </Expander.Header>
+                <!--Settings Group Buttons-->
+                <ListBox Background="Transparent" BorderThickness="0" Margin="2,0,2,0" >
+                    <ListBoxItem  HorizontalAlignment="Stretch" >
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Image  HorizontalAlignment="Left" Source="Images+Icons\IconSettingsTruth.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Edit Truth Table" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                    <ListBoxItem  HorizontalAlignment="Stretch" >
+                        <ListBoxItem.Template>
+                            <ControlTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Image  HorizontalAlignment="Left" Source="Images+Icons\IconSettingsAbout.png"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="About" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBoxItem.Template>
+                    </ListBoxItem>
+                </ListBox>
+            </Expander>
+        </ListBox>
+
+
+        <!--Control table-->
+        <Grid Name="tableSide" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Foreground="White" 
+                       Text="Switch Control Table" Margin="10,0 ,0,10"/>
+            <!--Scroll Viewer-->
+            <ScrollViewer Name="scroller" Grid.Row="1" VerticalContentAlignment="Stretch" 
+                          MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
+                          VerticalScrollBarVisibility="Auto">
+                <Grid Name="switchGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="White" Margin="10,0,0,10"/>
+            </ScrollViewer>
+        </Grid>
+
         <!--Bottom Buttons-->
         <Grid Grid.Row="3" VerticalAlignment="Center"  Margin="15" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions >
@@ -158,21 +326,16 @@
             <Button Margin="20,0" Grid.Column="3" HorizontalAlignment="Left" FontSize="16" Width="85" Click="Button_Click_Pause">Pause/Go</Button>
             <Button Margin="20,0" Grid.Column="4" HorizontalAlignment="Left" FontSize="15" Width="50" Height="30" Click="Button_Click_Stop">Stop</Button>
         </Grid>
-        <!--Control table half-->
-        <Grid Name="gridSide" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" Grid.Row="2" Grid.ColumnSpan="3" >
+
+
+        <!--Chart Diagram half [NOT INCLUDED IN THIS VERSION]-->
+        <!--<Grid Name="diagramSide" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Foreground="White" 
-                       Text="Switch Control Table" Margin="10,15,0,10"/>
-            <!--Scroll Viewer-->
-            <ScrollViewer Name="scroller" Grid.Row="1" VerticalContentAlignment="Stretch" 
-                          MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
-                          VerticalScrollBarVisibility="Auto">
-                <Grid Name="switchGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="White" Margin="10,0,0,10"/>
-            </ScrollViewer>
-        </Grid>
+                       Text="Switch Control Diagram" Margin="0,15,0,10"/>-->
         <!--Center gridsplitter-->
         <!--
         <GridSplitter Grid.Row ="2" VerticalAlignment="Stretch" HorizontalAlignment="Left" Grid.Column="1"
@@ -186,21 +349,12 @@
                 </LinearGradientBrush>
             </GridSplitter.Background>
         </GridSplitter>-->
-        <!--Chart table half-->
-        <Grid Name="chartSide" Grid.Row="2" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20" Foreground="White" 
-                       Text="Switch Control Diagram" Margin="0,15,0,10"/>
 
-            <!--<Border x:Name="diagramBounds" Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+        <!--Scroll Viewer-->
+        <!--<Border x:Name="diagramBounds" Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                 BorderThickness="2"
                 BorderBrush="Black">
-                -->
-            <!--Scroll Viewer-->
-            <!--
+            
                 <ScrollViewer Name="scroller2" Grid.Row="1" VerticalContentAlignment="Stretch" 
                           MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}" 
                           VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -209,8 +363,8 @@
 
 
                         -->
-            <!--CARD NOTE CONNECTOR CONFIG-->
-            <!--<diagramDesigner:DesignerItem x:Name="Parent" Width="70" Height="50" Canvas.Top="100" Canvas.Left="10"
+        <!--CARD NOTE CONNECTOR CONFIG-->
+        <!--<diagramDesigner:DesignerItem x:Name="Parent" Width="70" Height="50" Canvas.Top="100" Canvas.Left="10"
                                                       OverridesDefaultStyle="False">
                             <Grid IsHitTestVisible="False" Focusable="False">
                                 <Grid>
@@ -232,12 +386,13 @@
                                 </Grid>
                             </Grid>
                         </diagramDesigner:DesignerItem>-->
-            <!--
+        <!--
 
                     </diagramDesigner:DesignerCanvas>
                 </ScrollViewer>
             </Border>-->
-        </Grid>
+        <!--</Grid>-->
+
     </Grid>
 
 </base:WindowUIComponents>
