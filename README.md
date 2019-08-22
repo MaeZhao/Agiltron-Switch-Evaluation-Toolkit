@@ -20,7 +20,7 @@ Basic format and UI style for Agiltron Switch programs
 		  ``` 
 		  notifier.ShowSuccess(...);
 		  notifier.ShowWarning(...);
-		  notifier.ShowError(...); ```  
+		  notifier.ShowError(...);  
 	  - ``` String message ``` contains a string with the custom message, example: "Test Paused"
 	  - ``` MessageOption messageOption ``` is the custom settings set for the notifications of the window instance
 	    - In OpticalSwitchControlSequence the custom setting is the field _messageOption_
