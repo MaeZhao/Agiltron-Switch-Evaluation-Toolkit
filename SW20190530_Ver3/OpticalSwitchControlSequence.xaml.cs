@@ -24,7 +24,7 @@ namespace SW20190530_Ver3
     /// <seealso cref="System.Windows.Markup.IComponentConnector" />
     public partial class OpticalSwitchControlSequence : WindowUIComponents
     {
-        #region All Fields
+        #region All Universal Fields
         //UI fields
         private Boolean offline;
         private Notifier notifier; //From ToastNotifications v2 nuget pkg
@@ -50,7 +50,7 @@ namespace SW20190530_Ver3
         public OpticalSwitchControlSequence(MainWin input)
         {
             InitializeComponent();
-            //Initializes general notifier settings
+            //Initializes/Sets up notification settings
             Application.Current.MainWindow = this;
             notifier = new Notifier(cfg =>
             {
@@ -84,7 +84,6 @@ namespace SW20190530_Ver3
                 notifier.ShowInformation("Running in Offline Mode", messageOptions);
             }
 
-            #region Initializes/finds Switch Table specs [REGION A]
             String type = input.type.Text;
             type = System.Text.RegularExpressions.Regex.Replace(type, @"[^X0-9]", String.Empty);
 
@@ -125,19 +124,18 @@ namespace SW20190530_Ver3
             Grid.SetColumnSpan(Title, 3);
             Main.Children.Add(Title);
 
-            //initializes switchGrid:
+            #region Initializes/finds Switch Table specs [REGION A]
             steps = 1;
             LoadGrid(new int[] { });
-
             runningRow = 2;
-            #endregion
-
-            #region Initializes switch Diagram [REGION B inactive]
-            //SwitchDiagramCircleIni();
             #endregion
 
             #region Initializes switch test run specs [REGION C]
             SwitchRunControlsIni();
+            #endregion
+
+            #region Initializes switch Diagram [REGION B inactive]
+            //SwitchDiagramCircleIni();
             #endregion
 
             this.MaxWidth = GetWidth();
@@ -544,6 +542,7 @@ namespace SW20190530_Ver3
                 notifier.ShowError("Test is already running", messageOptions);
             }
         }
+
         /// <summary>
         /// Iterates through flashing animation of the graph rows and diagram arrows
         /// </summary>
@@ -642,6 +641,7 @@ namespace SW20190530_Ver3
             running = false;
             notifier.ShowInformation("Test Stopped", messageOptions);
         }
+
         /// <summary>
         /// Flashes visual diagrams.
         /// </summary>
@@ -650,6 +650,7 @@ namespace SW20190530_Ver3
             RowHighlight();
             LoadIOConnection();
         }
+
         /// <summary>
         /// UnFlashes visual diagrams.
         /// </summary>
@@ -681,6 +682,7 @@ namespace SW20190530_Ver3
             }
 
         }
+
         /// <summary>
         /// Removes the highlight on the previously highlighted row 
         /// </summary>
