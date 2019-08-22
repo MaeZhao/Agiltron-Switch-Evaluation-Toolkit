@@ -13,7 +13,7 @@ Basic format and UI style for Agiltron Switch programs
 - _ToastNotifications v2_ is an external library used to generate the live pop up notifications see: https://github.com/rafallopatka/ToastNotifications for documentation and usage.
   - General format for generating notifications used in this app is:
     - ``` Notification notifier.ShowInformation(String message, MessageOption messageOption); ```
-	  - ``` notifier ``` is the Notification object
+	  - ``` Notification notifier ``` is the Notification object
 	    - In OpticalSwitchControlSequence the custom Notification object is the field _notifier_
 	  - ``` ShowInformation ``` is one of the 4 different default styles options for the messages
 	    - The other defaults are:
