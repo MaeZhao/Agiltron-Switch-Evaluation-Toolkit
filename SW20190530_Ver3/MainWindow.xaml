@@ -9,13 +9,6 @@
                          x:Name ="MainWindow"
                          Height="580" Width="750"
                          Title="Agiltron Switch Evaluation Program">
-    <!--Backgroud Fade-->
-    <Window.Background>
-        <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
-            <GradientStop Color="#345CA0" Offset="0.1"/>
-            <GradientStop Color="#050767" Offset="0.5"/>
-        </LinearGradientBrush>
-    </Window.Background>
 
     <Grid >
         <Grid.ColumnDefinitions>

@@ -41,6 +41,8 @@ namespace SW20190530_Ver3
         //switchDiagram Specs
         List<DesignerItem> inp = new List<DesignerItem>(); //List of input Nodes
         List<DesignerItem> oup = new List<DesignerItem>(); //List of output Nodes
+
+
         #endregion
 
         /// <summary>
@@ -61,8 +63,8 @@ namespace SW20190530_Ver3
                     offsetY: WindowBar.ActualHeight);
                 cfg.DisplayOptions.TopMost = true;
                 cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                    notificationLifetime: TimeSpan.FromSeconds(10),
-                    maximumNotificationCount: MaximumNotificationCount.FromCount(5));
+                    notificationLifetime: TimeSpan.FromSeconds(4),
+                    maximumNotificationCount: MaximumNotificationCount.FromCount(10));
                 cfg.Dispatcher = Application.Current.Dispatcher;
             });
             messageOptions = new ToastNotifications.Core.MessageOptions
@@ -74,7 +76,8 @@ namespace SW20190530_Ver3
                     n.Close(); // call Close method to remove notification
                 },
             };
-
+            // Logo is not visible because it is dynamically resized
+            Logo.Visibility = Visibility.Collapsed;
             // Offline notification display
             offline = input.offlineButton.IsChecked.Value;
             input.Close();
@@ -86,43 +89,38 @@ namespace SW20190530_Ver3
 
             String type = input.type.Text;
             type = System.Text.RegularExpressions.Regex.Replace(type, @"[^X0-9]", String.Empty);
-
             outSwitchNum = System.Convert.ToInt32(type.Substring(type.IndexOf("X")).Replace("X", String.Empty));
             inChannelNum = System.Convert.ToInt32(type.Substring(0, type.IndexOf("X")));
 
-            //Title Components:
-            Grid Title = new Grid();
-            GridLength Stiff = new GridLength(2, GridUnitType.Auto);
-            RowDefinition TitleHeight = new RowDefinition
+            //Switch Title:
+            Viewbox TestRunTitle = new Viewbox
             {
-                Height = new GridLength(2, GridUnitType.Star)
+                //Text = "" + inChannelNum + " - " + outSwitchNum + " SWITCH CONTROL",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Stretch = Stretch.Uniform,
+                StretchDirection = StretchDirection.Both,
+                //FontWeight = FontWeights.ExtraBold,
+                //TextWrapping = TextWrapping.Wrap,
+                //Foreground = Brushes.White,
+                //TextDecorations = TextDecorations.Underline,
+                MaxHeight = 30
             };
-            Title.RowDefinitions.Add(TitleHeight);
-            ColumnDefinition TitleWidth = new ColumnDefinition
-            {
-                Width = new GridLength(2, GridUnitType.Star)
-            };
-            Title.ColumnDefinitions.Add(TitleWidth);
-
-            //Title
-            TextBlock TestRunTitle = new TextBlock
+            TextBlock Title = new TextBlock
             {
                 Text = "" + inChannelNum + " - " + outSwitchNum + " SWITCH CONTROL",
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                FontWeight = FontWeights.ExtraBold,
-                FontSize = 30,
+                FontWeight = FontWeights.Bold,
+                TextWrapping = TextWrapping.Wrap,
                 Foreground = Brushes.White,
-                //TextDecorations = TextDecorations.Underline,
-                Margin = new Thickness(0, -20, 0, 30)
             };
-            Grid.SetRow(TestRunTitle, 1);
-            Grid.SetColumnSpan(TestRunTitle, 2);
-            Title.Children.Add(TestRunTitle);
-            Grid.SetRow(Title, 1);
 
-            Grid.SetColumnSpan(Title, 3);
-            Main.Children.Add(Title);
+            TestRunTitle.Child = Title;
+
+            Grid.SetRow(TestRunTitle, 1);
+            Grid.SetColumn(TestRunTitle, 1);
+            WindowBar.Children.Add(TestRunTitle);
 
             #region Initializes/finds Switch Table specs [REGION A]
             steps = 1;
@@ -140,113 +138,31 @@ namespace SW20190530_Ver3
 
             this.MaxWidth = GetWidth();
             this.MaxHeight = SystemParameters.WorkArea.Height;
+
+            Logo.Height = ExitButton.ActualHeight + AppName.ActualHeight + WindowName.ActualHeight + TestRunTitle.ActualHeight - 15;
+            Logo.Visibility = Visibility.Visible;
+            this.UpdateLayout();
+            this.ShowActivated = true;
+            this.ShowInTaskbar = true;
+
         }
 
 
+        /// <summary>
+        /// Gets the width of current Window.
+        /// </summary>
+        /// <returns></returns>
         private static double GetWidth()
         {
             return SystemParameters.WorkArea.Width;
         }
     }
 
-    #region REGION A:Dynamically loads Switch ON/OFF Grid Components (before running)
-    partial class OpticalSwitchControlSequence : WindowUIComponents
+    public partial class OpticalSwitchControlSequence : WindowUIComponents
     {
-        /// <summary>Loads ON OFF button grid.</summary>
-        /// <param name="steps">The number of steps.</param>
-        /// <param name="runtime">An array of runtime times (in seconds).</param>
-        public void LoadGrid(int[] runtime)
+        private void ClickEditTruthTable(object sender, RoutedEventArgs e)
         {
-            GridLength Adjustable = new GridLength(2, GridUnitType.Star);
-            GridLength Stiff = new GridLength(2, GridUnitType.Auto);
-
-            ColumnDefinition stepNum = new ColumnDefinition
-            {
-                Width = Stiff
-            };
-            ColumnDefinition runTime = new ColumnDefinition
-            {
-                Width = Stiff
-            };
-            switchGrid.ColumnDefinitions.Add(stepNum);
-            switchGrid.ColumnDefinitions.Add(runTime);
-
-            RowDefinition chanNum = new RowDefinition
-            {
-                Height = Adjustable
-            };
-            RowDefinition outNum = new RowDefinition
-            {
-                Height = Adjustable
-            };
-            switchGrid.RowDefinitions.Add(chanNum);
-            switchGrid.RowDefinitions.Add(outNum);
-
-            //Run title
-            TextBox runT = new TextBox
-            {
-                BorderBrush = System.Windows.Media.Brushes.Black,
-                IsReadOnly = true,
-                FontSize = 14,
-                Text = "Run Times (s)"
-            };
-            Grid.SetColumn(runT, 1);
-            Grid.SetRow(runT, 0);
-            Grid.SetRowSpan(runT, 2);
-            switchGrid.Children.Add(runT);
-
-            //Step Title
-            TextBox stepT = new TextBox
-            {
-                BorderBrush = System.Windows.Media.Brushes.Black,
-                IsReadOnly = true,
-                FontSize = 14,
-                Text = "Step(s)"
-            };
-            Grid.SetColumn(stepT, 0);
-            Grid.SetRow(stepT, 0);
-            Grid.SetRowSpan(stepT, 2);
-            switchGrid.Children.Add(stepT);
-
-            //Generating Output Lables
-            int currOutSt = 1;
-            int currChanSt = 2;
-            for (int c = 0; c < inChannelNum; c++)
-            {
-                for (int o = 0; o < outSwitchNum; o++)
-                {
-                    currOutSt++;
-                    ColumnDefinition cOut = new ColumnDefinition
-                    {
-                        Width = Adjustable
-                    };
-                    switchGrid.ColumnDefinitions.Add(cOut);
-
-                    TextBox outLable = new TextBox
-                    {
-                        BorderBrush = System.Windows.Media.Brushes.Black,
-                        IsReadOnly = true,
-                        FontSize = 14,
-                        Text = (c + 1) + "-" + (o + 1)
-                    };
-                    Grid.SetColumn(outLable, currOutSt);
-                    Grid.SetRow(outLable, 1);
-                    switchGrid.Children.Add(outLable);
-                }
-                TextBox chanLable = new TextBox
-                {
-                    BorderBrush = System.Windows.Media.Brushes.Black,
-                    IsReadOnly = true,
-                    FontSize = 14,
-                    Text = "Channel " + (c + 1)
-                };
-                Grid.SetColumn(chanLable, currChanSt);
-                Grid.SetRow(chanLable, 0);
-                Grid.SetColumnSpan(chanLable, outSwitchNum);
-                switchGrid.Children.Add(chanLable);
-                currChanSt += outSwitchNum;
-            }
-            AddStepsIni(steps, outSwitchNum * inChannelNum, runtime);
+            //TODO make another Switch Table
         }
 
         /// <summary>
@@ -283,39 +199,12 @@ namespace SW20190530_Ver3
                 };
                 switchGrid.RowDefinitions.Add(nRow);
 
-                InlineUIContainer hcontrol = new InlineUIContainer();
-                Rectangle highlight = new Rectangle
+                TextBlock stepLable = new TextBlock
                 {
-                    Fill = System.Windows.Media.Brushes.Transparent,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    IsEnabled = false
-                };
-                Grid.SetRow(highlight, currRows);
-                Grid.SetColumnSpan(highlight, 2);
-                switchGrid.Children.Add(highlight);
-
-                //Highlights/unhighlights row
-                highlight.IsEnabledChanged += (sender, e) =>
-                {
-                    if (runningRow == Grid.GetRow(highlight))
-                    {
-                        highlight.Fill = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3BA00"));
-                    }
-                    else
-                    {
-                        highlight.Fill = System.Windows.Media.Brushes.Transparent;
-                    }
-                };
-
-                TextBox stepLable = new TextBox
-                {
-                    BorderBrush = System.Windows.Media.Brushes.Black,
-                    IsReadOnly = true,
-                    FontSize = 14,
                     Text = "" + (currRows - 1),
-                    Background = System.Windows.Media.Brushes.Transparent,
+                    Style = Application.Current.Resources["TextBlockLables"] as Style,
                 };
+
                 Grid.SetColumn(stepLable, 0);
                 Grid.SetRow(stepLable, currRows);
                 switchGrid.Children.Add(stepLable);
@@ -323,10 +212,9 @@ namespace SW20190530_Ver3
 
                 TextBox times = new TextBox
                 {
-                    FontSize = 14,
-                    BorderBrush = System.Windows.Media.Brushes.Black,
+
                     Text = "" + runTime.GetValue(r - 1),
-                    Background = System.Windows.Media.Brushes.Transparent,
+                    Style = Application.Current.Resources["RunTime"] as Style,
                 };
                 Grid.SetColumn(times, 1);
                 Grid.SetRow(times, currRows);
@@ -338,26 +226,20 @@ namespace SW20190530_Ver3
                     //ON OFF button generation
                     Button onOff = new Button
                     {
-                        FontSize = 17,
-                        VerticalAlignment = VerticalAlignment.Stretch,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Content = "OFF",
-                        BorderBrush = new SolidColorBrush(Colors.Black),
-                        BorderThickness = new Thickness(1),
-                        Focusable = false,
+                        Style = Application.Current.Resources["OFFButton"] as Style,
                     };
                     //ON OFF button Click UI + Logic
                     onOff.Click += (sender, e) =>
                     {
                         if ((string)onOff.Content == "OFF")
                         {
+                            onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#F3A402"));
                             onOff.Content = "ON";
-                            onOff.Background = Brushes.Green;
                         }
                         else
                         {
+                            onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#3A5894"));
                             onOff.Content = "OFF";
-                            onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#223C69"));
                         }
 
                     };
@@ -367,9 +249,10 @@ namespace SW20190530_Ver3
                     {
                         if (runningRow == Grid.GetRow(onOff))
                         {
-                            if ((string)onOff.Content != "ON")
+                            onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#F3A402"));
+                            if ((string)onOff.Content == "ON")
                             {
-                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#E3BA00"));
+                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#D50000"));
                             }
 
                         }
@@ -377,8 +260,11 @@ namespace SW20190530_Ver3
                         {
                             if ((string)onOff.Content != "ON")
                             {
-                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#223C69"));
-
+                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#3A5894"));
+                            }
+                            if ((string)onOff.Content == "ON")
+                            {
+                                onOff.Background = new System.Windows.Media.SolidColorBrush((Color)ColorConverter.ConvertFromString("#F3A402"));
                             }
                         }
                     };
@@ -392,65 +278,105 @@ namespace SW20190530_Ver3
             switchGrid.UpdateLayout();
         }
 
+    }
+
+    #region REGION A:Dynamically loads Switch ON/OFF Grid Components (before running)
+    partial class OpticalSwitchControlSequence : WindowUIComponents
+    {
+        /// <summary>Loads ON OFF button grid.</summary>
+        /// <param name="steps">The number of steps.</param>
+        /// <param name="runtime">An array of runtime times (in seconds).</param>
+        public void LoadGrid(int[] runtime)
+        {
+            GridLength Adjustable = new GridLength(2, GridUnitType.Star);
+            GridLength Stiff = new GridLength(2, GridUnitType.Auto);
+
+            ColumnDefinition stepNum = new ColumnDefinition
+            {
+                Width = Stiff
+            };
+            ColumnDefinition runTime = new ColumnDefinition
+            {
+                Width = Stiff
+            };
+            switchGrid.ColumnDefinitions.Add(stepNum);
+            switchGrid.ColumnDefinitions.Add(runTime);
+
+            RowDefinition chanNum = new RowDefinition
+            {
+                Height = Adjustable
+            };
+            RowDefinition outNum = new RowDefinition
+            {
+                Height = Adjustable
+            };
+            switchGrid.RowDefinitions.Add(chanNum);
+            switchGrid.RowDefinitions.Add(outNum);
+
+            //Run title
+            TextBlock runT = new TextBlock
+            {
+                Text = "Run Times (s)",
+                Padding = new Thickness(20),
+                Style = Application.Current.Resources["TextBlockLables"] as Style,
+            };
+            Grid.SetColumn(runT, 1);
+            Grid.SetRow(runT, 0);
+            Grid.SetRowSpan(runT, 2);
+            switchGrid.Children.Add(runT);
+
+            //Step Title
+            TextBlock stepT = new TextBlock
+            {
+                //BorderBrush = System.Windows.Media.Brushes.Black,
+                Text = "Step(s)",
+                Padding = new Thickness(20),
+                Style = Application.Current.Resources["TextBlockLables"] as Style,
+            };
+            Grid.SetColumn(stepT, 0);
+            Grid.SetRow(stepT, 0);
+            Grid.SetRowSpan(stepT, 2);
+            switchGrid.Children.Add(stepT);
+
+            //Generating Output Lables
+            int currOutSt = 1;
+            int currChanSt = 2;
+            for (int c = 0; c < inChannelNum; c++)
+            {
+                for (int o = 0; o < outSwitchNum; o++)
+                {
+                    currOutSt++;
+                    ColumnDefinition cOut = new ColumnDefinition
+                    {
+                        Width = Adjustable
+                    };
+                    switchGrid.ColumnDefinitions.Add(cOut);
+
+                    TextBlock outLable = new TextBlock
+                    {
+                        Style = Application.Current.Resources["TextBlockLables"] as Style,
+                        Text = (c + 1) + "-" + (o + 1),
+                    };
+                    Grid.SetColumn(outLable, currOutSt);
+                    Grid.SetRow(outLable, 1);
+                    switchGrid.Children.Add(outLable);
+                }
+                TextBlock chanLable = new TextBlock
+                {
+                    Style = Application.Current.Resources["TextBlockLables"] as Style,
+                    Text = "Channel " + (c + 1)
+                };
+                Grid.SetColumn(chanLable, currChanSt);
+                Grid.SetRow(chanLable, 0);
+                Grid.SetColumnSpan(chanLable, outSwitchNum);
+                switchGrid.Children.Add(chanLable);
+                currChanSt += outSwitchNum;
+            }
+            AddStepsIni(steps, outSwitchNum * inChannelNum, runtime);
+        }
+
         /* TODO:
          * Find faster way to load io and unload io taking better advantage of the dictionary*/
-        /// <summary>
-        /// Loads the arrow connection corresponding to ON buttons on runningRow into diagram window.
-        /// </summary>
-        private void LoadIOConnection()
-        {
-            int buttonRow = runningRow;
-
-            foreach (UIElement child in switchGrid.Children)
-            {
-                if (child.GetType() == typeof(Button))
-                {
-                    Button c = child as Button;
-                    if (Grid.GetRow(child) == buttonRow && (string)c.Content == "ON")
-                    {
-                        int bcol = Grid.GetColumn(c) - 2;
-                        int inBnum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2)); // Active child channel number
-                        int outBnum = bcol % outSwitchNum; // Active child switch output number
-                        //Connection arrow = Draw_Arrow(inp[inBnum], oup[outBnum]);
-                        int connectionID = int.Parse(inBnum.ToString() + outBnum.ToString()); //Unique identifier for each connection
-
-                        //runningUIconnection.Add(connectionID, arrow);
-                        //switchDiagram.UpdateLayout();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Unloads the arrow connection corresponding to ON buttons on previous runningRow into diagram window.
-        /// </summary>
-        private void UnloadIOConnection()
-        {
-            int buttonRow = runningRow - 1;
-            if (flashing == false)
-            {
-                foreach (UIElement child in switchGrid.Children)
-                {
-                    if (child is Button)
-                    {
-                        Button c = child as Button;
-
-
-                        if (Grid.GetRow(child) == buttonRow && (string)c.Content == "ON")
-                        {
-                            int bcol = Grid.GetColumn(c) - 2;
-                            int inBnum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2)); // Active child channel number
-                            int outBnum = bcol % outSwitchNum; // Active child switch output number
-
-                            int connectionID = int.Parse(inBnum.ToString() + outBnum.ToString());
-                            Connection activeArrow = runningUIconnection[connectionID];
-                            activeArrow.Visibility = Visibility.Collapsed;
-                            runningUIconnection.Remove(connectionID);
-                        }
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// Handles the UI event of the RunTimeCell value is not an integer.
@@ -477,11 +403,76 @@ namespace SW20190530_Ver3
             }
         }
 
+        /// <summary>
+        /// Event corresponding to the user clicking "Add Step" button.
+        /// Adds a step the switchGrid table.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void AddStepClick(object sender, RoutedEventArgs e)
         {
             steps++;
             AddStepsIni(1, outSwitchNum * inChannelNum, new int[] { });
         }
+
+        /// <summary>
+        /// Loads the arrow connection corresponding to ON buttons on runningRow into diagram window.
+        /// </summary>
+        //private void LoadIOConnection()
+        //{
+        //    int buttonRow = runningRow;
+
+        //    foreach (UIElement child in switchGrid.Children)
+        //    {
+        //        if (child.GetType() == typeof(Button))
+        //        {
+        //            Button c = child as Button;
+        //            if (Grid.GetRow(child) == buttonRow && (string)c.Content == "ON")
+        //            {
+        //                int bcol = Grid.GetColumn(c) - 2;
+        //                int inBnum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2)); // Active child channel number
+        //                int outBnum = bcol % outSwitchNum; // Active child switch output number
+        //                                                   //Connection arrow = Draw_Arrow(inp[inBnum], oup[outBnum]);
+        //                int connectionID = int.Parse(inBnum.ToString() + outBnum.ToString()); //Unique identifier for each connection
+
+        //                //runningUIconnection.Add(connectionID, arrow);
+        //                //switchDiagram.UpdateLayout();
+        //            }
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// Unloads the arrow connection corresponding to ON buttons on previous runningRow into diagram window.
+        /// </summary>
+        //private void UnloadIOConnection()
+        //{
+        //    int buttonRow = runningRow - 1;
+        //    if (flashing == false)
+        //    {
+        //        foreach (UIElement child in switchGrid.Children)
+        //        {
+        //            if (child is Button)
+        //            {
+        //                Button c = child as Button;
+
+
+        //                if (Grid.GetRow(child) == buttonRow && (string)c.Content == "ON")
+        //                {
+        //                    int bcol = Grid.GetColumn(c) - 2;
+        //                    int inBnum = (int)((double)bcol / (double)(switchGrid.ColumnDefinitions.Count - 2)); // Active child channel number
+        //                    int outBnum = bcol % outSwitchNum; // Active child switch output number
+
+        //                    int connectionID = int.Parse(inBnum.ToString() + outBnum.ToString());
+        //                    Connection activeArrow = runningUIconnection[connectionID];
+        //                    activeArrow.Visibility = Visibility.Collapsed;
+        //                    runningUIconnection.Remove(connectionID);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
     }
     #endregion
 
@@ -648,7 +639,7 @@ namespace SW20190530_Ver3
         private void Flash()
         {
             RowHighlight();
-            LoadIOConnection();
+            //LoadIOConnection();
         }
 
         /// <summary>
@@ -657,7 +648,7 @@ namespace SW20190530_Ver3
         private void UnFlash()
         {
             RowUnhiglight();
-            UnloadIOConnection();
+            //UnloadIOConnection();
         }
 
         /// <summary>

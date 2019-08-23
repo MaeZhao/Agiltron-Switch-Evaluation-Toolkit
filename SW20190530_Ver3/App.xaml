@@ -6,7 +6,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="WindowUIComponents.xaml"/>
+                <ResourceDictionary Source="WindowUIComponentsResources.xaml"/>
+                <ResourceDictionary Source="OpticalSwitchControlSequenceResources.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
                 <!--<ResourceDictionary Source="Imported_ResourceCodes/ShapeStencils.xaml"/>
                 <ResourceDictionary Source="Imported_ResourceCodes/FlowChartStencils.xaml"/>
@@ -18,10 +19,11 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="Button">
-                <Setter Property="Background" Value="#223C69"   />
+                <Setter Property="Background" Value="#1E61BC"   />
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="Padding" Value="5"/>
-                <Setter Property="BorderThickness" Value="0"></Setter>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderBrush" Value="White"></Setter>
             </Style>
 
             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
@@ -37,8 +39,6 @@
                 <Setter Property="FontFamily" Value="Helvetica" />
                 <Setter Property="Foreground" Value="Black" />
             </Style>
-
-
 
         </ResourceDictionary>
     </Application.Resources>

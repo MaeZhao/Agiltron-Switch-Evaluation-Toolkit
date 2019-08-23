@@ -13,5 +13,14 @@
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
         <Setter Property="Icon" Value="Images+Icons\agiltronLogo.ico"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                    <GradientStop Color="#345CA1" Offset="0.1"/>
+                    <GradientStop Color="#142B55" Offset="0.6"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
     </Style>
+
 </ResourceDictionary>
