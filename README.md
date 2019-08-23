@@ -17,9 +17,10 @@ Basic format and UI style for Agiltron Switch programs
 	    - In OpticalSwitchControlSequence the custom Notification object is the field _notifier_
 	  - ``` ShowInformation ``` is one of the 4 different default styles options for the messages
 	    - The other defaults are:
-		  ``` notifier.ShowSuccess(...);
+		  ``` 
+		  notifier.ShowSuccess(...);
 		  notifier.ShowWarning(...);
-		  notifier.ShowError(...); ```  
+		  notifier.ShowError(...);  
 	  - ``` String message ``` contains a string with the custom message, example: "Test Paused"
 	  - ``` MessageOption messageOption ``` is the custom settings set for the notifications of the window instance
 	    - In OpticalSwitchControlSequence the custom setting is the field _messageOption_
