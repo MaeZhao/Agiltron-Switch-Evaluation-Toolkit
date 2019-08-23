@@ -4,17 +4,15 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using static SW20190530_Ver3.WindowUIComponentsResources;
 
 namespace SW20190530_Ver3
 {
     /// <summary>
-    /// Basic Windows functions shared by all windows--> Create custom ControlTemplate 
+    /// Initializations shared by all custom Windows used in this app
     /// </summary>
     public partial class WindowUIComponents : Window
     {
-        /// <summary>
-        /// Initialization
-        /// </summary>
         public WindowUIComponents()
         {
             this.Style = FindResource("DefaultWindowStyle") as Style;
@@ -24,8 +22,7 @@ namespace SW20190530_Ver3
             this.MaxHeight = SystemParameters.WorkArea.Height;
         }
 
-        #region REGION: Methods used for every Window (only slightly variated) TODO: Turn these methods into an abstract class
-        #region REGION: Adjusts default pixel offset in window maximization/minimization
+        #region REGION: Default pixel offset in window maximization/minimization
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
@@ -78,72 +75,7 @@ namespace SW20190530_Ver3
         }
         #endregion
 
-        /// <summary>
-        /// Handles the Exit event of the Button_Click control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        public void Button_Click_Exit(object sender, RoutedEventArgs e) => Application.Current.Shutdown(99);
-        /// <summary>
-        /// Handles the Exit event of the Button_Min control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        public void Button_Min_Exit(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
-        /// <summary>
-        /// Handles the MouseDown event of the Window control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        public void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            RECT rect = GetWindowRectangle(this);
-            if (this.Height == SystemParameters.WorkArea.Height && this.Width == SystemParameters.WorkArea.Width && WindowState != WindowState.Maximized)
-            {
-                //WindowState = WindowState.Normal;
-                this.Height = 600;
-                this.Width = 1000;
-
-                this.Top = GetMousePositionY();
-                this.Left = (int)(GetMousePositionX() - 400);
-            }
-
-            this.DragMove();
-        }
-        #region REGION: Finds Mouse cursor positions
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
-        internal static extern bool GetCursorPos(ref Win32Point pt);
-        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-        internal struct Win32Point
-        {
-            public Int32 X;
-            public Int32 Y;
-        };
-        /// <summary>
-        /// Gets the mouse position x.
-        /// </summary>
-        /// <returns></returns>
-        public static int GetMousePositionX()
-        {
-            Win32Point w32Mouse = new Win32Point();
-            GetCursorPos(ref w32Mouse);
-            return w32Mouse.X;
-        }
-
-
-
-        /// <summary>
-        /// Gets the mouse position y.
-        /// </summary>
-        /// <returns></returns>
-        public static int GetMousePositionY()
-        {
-            Win32Point w32Mouse = new Win32Point();
-            GetCursorPos(ref w32Mouse);
-            return w32Mouse.Y;
-        }
-        #endregion
-        #endregion
     }
+
 }
+

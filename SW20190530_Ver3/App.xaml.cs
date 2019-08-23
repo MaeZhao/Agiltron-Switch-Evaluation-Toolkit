@@ -13,7 +13,7 @@ namespace SW20190530_Ver3
     /// </summary>
     public partial class App : Application
     {
-         
+
     }
-  
+
 }

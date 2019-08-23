@@ -4,8 +4,8 @@ Basic format and UI style for Agiltron Switch programs
 
 ## COMMON ERRORS/VS 2017 GLITCHES
 - ``` Partial declarations of 'WindowUIComponents' must not specify different base classes ```  
-  - If all xaml and cs files are declared correctly (ex: using WindowUIComponents instead of Window), close VS and delete _bin_ and _obj_ files in project folder. Clean and rebuild.
-
+  - If all xaml and cs files are declared correctly (ex: using WindowUIComponents instead of Window), close VS and delete _bin_ and _obj_ files in project folder. Clean and rebuild.  
+  - Visual Studio 2017 has trouble accessing Resource dictionaries in folders (i.e. Resources folder)  
 ## COMMON DOCUMENTATION SYNTAX  
 - "switchGrid" is referenced also as "switch table". Both refer to the on/off switch table displayed in OpticalControlSequence window.
 
@@ -24,3 +24,5 @@ Basic format and UI style for Agiltron Switch programs
 	  - ``` String message ``` contains a string with the custom message, example: "Test Paused"
 	  - ``` MessageOption messageOption ``` is the custom settings set for the notifications of the window instance
 	    - In OpticalSwitchControlSequence the custom setting is the field _messageOption_
+## TODO:
+- TruthTable is incomplete

@@ -88,7 +88,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="NoSwitchPopUp.xaml.cs">
+      <DependentUpon>NoSwitchPopUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TruthTable.xaml.cs">
+      <DependentUpon>TruthTable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowUIComponents.cs" />
+    <Compile Include="WindowUIComponentsResources.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,11 +108,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NoSwitchPopUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="OpticalSwitchControlSequence.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="OpticalSwitchControlSequenceResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TruthTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -243,6 +258,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images+Icons\IconEditAddStep.png" />
+    <Resource Include="Images+Icons\IconError2.png" />
+    <Resource Include="Images+Icons\IconError.png" />
     <Resource Include="Images+Icons\IconSettingsAbout.png" />
     <Resource Include="Images+Icons\IconSettingsTruth.png" />
     <Resource Include="Images+Icons\IconSettings.png" />

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary 
         xmlns:base="clr-namespace:SW20190530_Ver3"
+        x:Class="SW20190530_Ver3.WindowUIComponentsResources"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -23,4 +24,85 @@
         </Setter>
     </Style>
 
+    <Style x:Key="PopUpWindow" TargetType ="{x:Type base:WindowUIComponents}">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+        <Setter Property="Icon" Value="Images+Icons\agiltronLogo.ico"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                    <GradientStop Color="#345CA1" Offset="0.1"/>
+                    <GradientStop Color="#142B55" Offset="0.6"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <EventSetter Event="MouseDown" Handler="Window_MouseDown"/>
+    </Style>
+
+    <Style x:Key="DefaultWindowDock" TargetType="ContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate x:Name="GenDockTemplate" TargetType="ContentControl">
+                    <Grid Background="Transparent" Grid.Row="0" MouseLeftButtonDown="Window_MouseDown" Margin="0,5,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Minimise, Exit, Expand Buttons-->
+                        <Grid Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Margin="0,-10,-5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition  Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="ExitButton" Background="Transparent" Grid.Column="2" VerticalAlignment="Top"
+                                HorizontalAlignment="Right" Click="Button_Click_Exit">
+                                <Image Source="Images+Icons\IconExit.png" Height="15"/>
+                            </Button>
+                            <Button x:Name="MinButton" Background="Transparent" Grid.Column="1" VerticalAlignment="Top"
+                                        HorizontalAlignment="Right" Click="Button_Min_Exit">
+                                <Image Source="Images+Icons\IconMin.png" Height="15"/>
+                            </Button>
+                        </Grid>
+
+                        <!--Window Titles-->
+                        <Viewbox x:Name="AppName" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,0,0" MaxHeight="25" StretchDirection="Both" Stretch="Uniform">
+                            <ContentControl>
+                                <TextBlock Text="Switch Testing Tookit" Foreground="White" FontWeight="ExtraLight" />
+                            </ContentControl>
+                        </Viewbox>
+                        <Viewbox x:Name="SubName" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,15,0" MaxHeight="15" StretchDirection="Both" Stretch="Uniform">
+                            <ContentControl>
+                                <TextBlock Foreground="White" FontWeight="ExtraLight" Text="Optical Switch Control">
+                                </TextBlock>
+                            </ContentControl>
+                        </Viewbox>
+
+
+                        <!--Logo-->
+                        <Grid Grid.RowSpan ="3" Grid.Column="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,-10">
+                            <Image x:Name="Logo"  MaxHeight ="85" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <Image.Source>
+                                    <BitmapImage UriSource="Images+Icons\AgiltronBanner2.png" />
+                                </Image.Source>
+                            </Image>
+                        </Grid>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
 </ResourceDictionary>
+    
+    

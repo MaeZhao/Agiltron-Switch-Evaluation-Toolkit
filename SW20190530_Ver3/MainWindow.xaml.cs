@@ -38,13 +38,15 @@ namespace SW20190530_Ver3
     /// </summary>
     public partial class MainWin : WindowUIComponents
     {
-
+        bool switchBoardDetected;
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWin"/> class.
         /// </summary>
         public MainWin()
         {
             InitializeComponent();
+            //VALUE OF switchBoardDetected is TEMPORARY:
+            switchBoardDetected = false;
         }
     }
 
@@ -58,12 +60,24 @@ namespace SW20190530_Ver3
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click_Continue(object sender, RoutedEventArgs e)
         {
-            this.IsEnabled = false;
-            OpticalSwitchControlSequence op = new OpticalSwitchControlSequence(this);
-
-            op.Show();
+            if ((bool)offlineButton.IsChecked == false && switchBoardDetected == false)
+            {
+                NoSwitchPopUp popUp = new NoSwitchPopUp();
+                popUp.Show();
+            }
+            else
+            {
+                this.IsEnabled = false;
+                OpticalSwitchControlSequence op = new OpticalSwitchControlSequence(this);
+                op.Show();
+            }
         }
-
+        /// <summary>
+        /// Handles the Exit event of the Button_Click control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        public void Button_Click_Exit(object sender, RoutedEventArgs e) => SystemCommands.CloseWindow(this);
         /// <summary>
         /// Handles the Changed event of the Group control.
         /// </summary>

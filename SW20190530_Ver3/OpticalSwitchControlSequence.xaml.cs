@@ -14,6 +14,7 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
 
+
 namespace SW20190530_Ver3
 {
     /// <summary>
@@ -25,6 +26,7 @@ namespace SW20190530_Ver3
     public partial class OpticalSwitchControlSequence : WindowUIComponents
     {
         #region All Universal Fields
+        public MainWin mainWindowInput;
         //UI fields
         private Boolean offline;
         private Notifier notifier; //From ToastNotifications v2 nuget pkg
@@ -42,7 +44,6 @@ namespace SW20190530_Ver3
         List<DesignerItem> inp = new List<DesignerItem>(); //List of input Nodes
         List<DesignerItem> oup = new List<DesignerItem>(); //List of output Nodes
 
-
         #endregion
 
         /// <summary>
@@ -52,6 +53,7 @@ namespace SW20190530_Ver3
         public OpticalSwitchControlSequence(MainWin input)
         {
             InitializeComponent();
+            mainWindowInput = input;
             //Initializes/Sets up notification settings
             Application.Current.MainWindow = this;
             notifier = new Notifier(cfg =>
@@ -77,7 +79,7 @@ namespace SW20190530_Ver3
                 },
             };
             // Logo is not visible because it is dynamically resized
-            Logo.Visibility = Visibility.Collapsed;
+            //Logo.Visibility = Visibility.Collapsed;
             // Offline notification display
             offline = input.offlineButton.IsChecked.Value;
             input.Close();
@@ -139,8 +141,8 @@ namespace SW20190530_Ver3
             this.MaxWidth = GetWidth();
             this.MaxHeight = SystemParameters.WorkArea.Height;
 
-            Logo.Height = ExitButton.ActualHeight + AppName.ActualHeight + WindowName.ActualHeight + TestRunTitle.ActualHeight - 15;
-            Logo.Visibility = Visibility.Visible;
+            //Logo.Height = ExitButton.ActualHeight + AppName.ActualHeight + WindowName.ActualHeight + TestRunTitle.ActualHeight - 15;
+            //Logo.Visibility = Visibility.Visible;
             this.UpdateLayout();
             this.ShowActivated = true;
             this.ShowInTaskbar = true;
@@ -157,14 +159,43 @@ namespace SW20190530_Ver3
             return SystemParameters.WorkArea.Width;
         }
     }
-
+    #region REGION E: Click functions
     public partial class OpticalSwitchControlSequence : WindowUIComponents
     {
         private void ClickEditTruthTable(object sender, RoutedEventArgs e)
         {
-            //TODO make another Switch Table
+            TruthTable truthTable = new TruthTable();
+            truthTable.Show();
         }
 
+        /// <summary>
+        /// Creates new instance of OpticalSwitchControlSequence.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void NewClick(object sender, RoutedEventArgs e)
+        {
+            OpticalSwitchControlSequence newFile = new OpticalSwitchControlSequence(mainWindowInput);
+            newFile.Show();
+        }
+
+        /// <summary>
+        /// Event corresponding to the user clicking "Add Step" button.
+        /// Adds a step the switchGrid table.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void AddStepClick(object sender, RoutedEventArgs e)
+        {
+            steps++;
+            AddStepsIni(1, outSwitchNum * inChannelNum, new int[] { });
+        }
+
+    }
+    #endregion
+    #region REGION A:Dynamically loads Switch ON/OFF Grid Components (before running)
+    partial class OpticalSwitchControlSequence : WindowUIComponents
+    {
         /// <summary>
         /// initializes RunTime cell and ON OFF buttons user interface     
         /// </summary>
@@ -278,11 +309,6 @@ namespace SW20190530_Ver3
             switchGrid.UpdateLayout();
         }
 
-    }
-
-    #region REGION A:Dynamically loads Switch ON/OFF Grid Components (before running)
-    partial class OpticalSwitchControlSequence : WindowUIComponents
-    {
         /// <summary>Loads ON OFF button grid.</summary>
         /// <param name="steps">The number of steps.</param>
         /// <param name="runtime">An array of runtime times (in seconds).</param>
@@ -401,18 +427,6 @@ namespace SW20190530_Ver3
                 times.IsInactiveSelectionHighlightEnabled = false;
                 times.SelectionBrush = SystemColors.HighlightBrush;
             }
-        }
-
-        /// <summary>
-        /// Event corresponding to the user clicking "Add Step" button.
-        /// Adds a step the switchGrid table.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void AddStepClick(object sender, RoutedEventArgs e)
-        {
-            steps++;
-            AddStepsIni(1, outSwitchNum * inChannelNum, new int[] { });
         }
 
         /// <summary>
