@@ -65,10 +65,10 @@
                             </Grid.ColumnDefinitions>
                             <Button x:Name="ExitButton" Background="Transparent" Grid.Column="2" VerticalAlignment="Top"
                                 HorizontalAlignment="Right" Click="Button_Click_Exit">
-                                <Image Source="Images+Icons\IconExit.png" Height="15"/>
+                                <Image Source="Images+Icons\IconExit.png" Height="15" Margin="0,5,0,0"/>
                             </Button>
                             <Button x:Name="MinButton" Background="Transparent" Grid.Column="1" VerticalAlignment="Top"
-                                        HorizontalAlignment="Right" Click="Button_Min_Exit">
+                                        HorizontalAlignment="Right" Click="Button_Min_Exit" Margin="0,5,0,0">
                                 <Image Source="Images+Icons\IconMin.png" Height="15"/>
                             </Button>
                         </Grid>
@@ -88,7 +88,7 @@
 
 
                         <!--Logo-->
-                        <Grid Grid.RowSpan ="3" Grid.Column="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,-10">
+                        <Grid Grid.RowSpan ="3" Grid.Column="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,5,0,-10">
                             <Image x:Name="Logo"  MaxHeight ="85" HorizontalAlignment="Left" VerticalAlignment="Top">
                                 <Image.Source>
                                     <BitmapImage UriSource="Images+Icons\AgiltronBanner2.png" />

@@ -24,6 +24,6 @@ namespace SW20190530_Ver3
             InitializeComponent();
         }
 
-        public void Button_Click_OK(object sender, RoutedEventArgs e) => SystemCommands.CloseWindow(this);
+        public void Button_Click_OK(object sender, RoutedEventArgs e)=>SystemCommands.CloseWindow(this);
     }
 }

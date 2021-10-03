@@ -76,7 +76,7 @@
 
         <!--Custom Window bar-->
         <Grid Name="WindowBar" Grid.ColumnSpan="3">
-            <ContentControl Style="{StaticResource DefaultWindowDock}">
+            <ContentControl Style="{StaticResource DefaultWindowDock}" Margin="0,-10,0,10">
             </ContentControl>
         </Grid>
 
@@ -131,7 +131,7 @@
                             <ControlTemplate>
                                 <Grid HorizontalAlignment="Stretch">
                                     <Image HorizontalAlignment="Left" Source="Images+Icons\IconFileOpen.png"/>
-                                    <TextBlock HorizontalAlignment="Right" Text="Open" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Open" FontSize="15" Foreground="Gray" FontFamily="Helvetica"/>
                                 </Grid>
                             </ControlTemplate>
                         </ListBoxItem.Template>
@@ -141,7 +141,7 @@
                             <ControlTemplate>
                                 <Grid HorizontalAlignment="Stretch">
                                     <Image HorizontalAlignment="Left" Source="Images+Icons\IconFileSave.png"/>
-                                    <TextBlock HorizontalAlignment="Right" Text="Save" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Save" FontSize="15" Foreground="Gray" FontFamily="Helvetica"/>
                                 </Grid>
                             </ControlTemplate>
                         </ListBoxItem.Template>
@@ -151,7 +151,7 @@
                             <ControlTemplate>
                                 <Grid HorizontalAlignment="Stretch">
                                     <Image  HorizontalAlignment="Left" Source="Images+Icons\IconFileSaveAs.png"/>
-                                    <TextBlock HorizontalAlignment="Right" Text="Save As" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Save As" FontSize="15" Foreground="Gray" FontFamily="Helvetica"/>
                                 </Grid>
                             </ControlTemplate>
                         </ListBoxItem.Template>
@@ -176,7 +176,7 @@
                             <ControlTemplate>
                                 <Grid HorizontalAlignment="Stretch">
                                     <Image  HorizontalAlignment="Left" Source="Images+Icons\IconEditLoadSteps.png"/>
-                                    <TextBlock HorizontalAlignment="Right" Text="Load Steps" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Load Steps" FontSize="15" Foreground="Gray" FontFamily="Helvetica"/>
                                 </Grid>
                             </ControlTemplate>
                         </ListBoxItem.Template>
@@ -196,7 +196,7 @@
                             <ControlTemplate>
                                 <Grid HorizontalAlignment="Stretch">
                                     <Image HorizontalAlignment="Left" Source="Images+Icons\IconEditDeleteStep.png"/>
-                                    <TextBlock HorizontalAlignment="Right" Text="Delete Step" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Delete Step" FontSize="15" Foreground="Gray" FontFamily="Helvetica"/>
                                 </Grid>
                             </ControlTemplate>
                         </ListBoxItem.Template>
@@ -220,7 +220,7 @@
                             <ControlTemplate>
                                 <Grid HorizontalAlignment="Stretch">
                                     <Image  HorizontalAlignment="Left" Source="Images+Icons\IconSettingsTruth.png"/>
-                                    <TextBlock HorizontalAlignment="Right" Text="Edit Truth Table" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="Edit Truth Table" FontSize="15" Foreground="Gray" FontFamily="Helvetica"/>
                                 </Grid>
                             </ControlTemplate>
                         </ListBoxItem.Template>
@@ -230,7 +230,7 @@
                             <ControlTemplate>
                                 <Grid HorizontalAlignment="Stretch">
                                     <Image  HorizontalAlignment="Left" Source="Images+Icons\IconSettingsAbout.png"/>
-                                    <TextBlock HorizontalAlignment="Right" Text="About" FontSize="15" Foreground="White" FontFamily="Helvetica"/>
+                                    <TextBlock HorizontalAlignment="Right" Text="About" FontSize="15" Foreground="Gray" FontFamily="Helvetica"/>
                                 </Grid>
                             </ControlTemplate>
                         </ListBoxItem.Template>
