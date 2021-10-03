@@ -4,7 +4,7 @@ Basic format and UI style for Agiltron Switch programs
 
 ## TO RUN:
 - Install Visual Studio 2017 using .Net 4.7.1
-- Download  <a href="https://github.com/MaeZhao/SW20190530_Ver3">git project</a> and run SW20190530_Ver3.exe
+- Download  <a href="https://github.com/MaeZhao/SW20190530_Ver3">git project</a> and run <a href="https://github.com/MaeZhao/SW20190530_Ver3/blob/Without_Diagrams/SW20190530_Ver3/bin/Debug/SW20190530_Ver3.exe">SW20190530_Ver3.exe</a> at ```../SW20190530_Ver3/bin/Debug/SW20190530_Ver3.exe```
 
 ## COMPLETED MILESTONES:
 - 
