@@ -2,6 +2,13 @@
 *Agiltron Switch Evaluation Toolkit*  
 Basic format and UI style for Agiltron Switch programs
 
+## TO RUN:
+- Install Visual Studio 2017 using .Net 4.7.1
+- Download  <a href="https://github.com/MaeZhao/SW20190530_Ver3">git project</a> and run SW20190530_Ver3.exe
+
+## COMPLETED MILESTONES:
+- 
+
 ## COMMON ERRORS/VS 2017 GLITCHES
 - ``` Partial declarations of 'WindowUIComponents' must not specify different base classes ```  
   - If all xaml and cs files are declared correctly (ex: using WindowUIComponents instead of Window), close VS and delete _bin_ and _obj_ files in project folder. Clean and rebuild.  
@@ -24,5 +31,3 @@ Basic format and UI style for Agiltron Switch programs
 	  - ``` String message ``` contains a string with the custom message, example: "Test Paused"
 	  - ``` MessageOption messageOption ``` is the custom settings set for the notifications of the window instance
 	    - In OpticalSwitchControlSequence the custom setting is the field _messageOption_
-## TODO:
-- TruthTable is incomplete

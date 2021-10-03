@@ -1,0 +1,328 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SW20190530_Ver3</name>
+    </assembly>
+    <members>
+        <member name="T:SW20190530_Ver3.NoSwitchPopUp">
+            <summary>
+            Interaction logic for NoSwitchPopUp.xaml
+            </summary>
+            <summary>
+            NoSwitchPopUp
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.NoSwitchPopUp.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:SW20190530_Ver3.TruthTable">
+            <summary>
+            Interaction logic for TruthTale.xaml
+            </summary>
+            <summary>
+            TruthTable
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.TruthTable.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:SW20190530_Ver3.WindowUIComponents">
+            <summary>
+            Initializations shared by all custom Windows used in this app
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.WindowUIComponents.Window_Loaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Loaded event of the Initial Window State control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="T:SW20190530_Ver3.WindowUIComponentsResources">
+            <summary>
+            WindowUIComponentsResources
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.WindowUIComponentsResources.Window_Loaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Loaded event of the Initial Window State control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.WindowUIComponentsResources.Button_Click_Exit(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Exit event of the Button_Click control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.WindowUIComponentsResources.Button_Min_Exit(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the event of the Button_Min control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.WindowUIComponentsResources.Window_MouseDown(System.Object,System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Handles the MouseDown event of the Window control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.WindowUIComponentsResources.GetMousePositionX">
+            <summary>
+            Gets the mouse position x.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SW20190530_Ver3.WindowUIComponentsResources.GetMousePositionY">
+            <summary>
+            Gets the mouse position y.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SW20190530_Ver3.WindowUIComponentsResources.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:SW20190530_Ver3.App">
+            <summary>
+            Interaction logic for App.xaml
+            </summary>
+            <summary>
+            App
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.App.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="T:SW20190530_Ver3.MainWin">
+            <summary>
+            Interaction logic for MainWindow.xaml
+            </summary>
+            <summary>
+            MainWin
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.MainWin.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SW20190530_Ver3.MainWin"/> class.
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.MainWin.Button_Click_Continue(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Continue event of the Button_Click control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.MainWin.Button_Click_Exit(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Exit event of the Button_Click control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.MainWin.Group_Changed(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Changed event of the Group control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.MainWin.Add_Items(System.Windows.Controls.ComboBox,System.String[])">
+            <summary>
+            Adds String array elements into Combobox        
+            </summary>
+            <param name="c">The c.</param>
+            <param name="l">The l.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.MainWin.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:SW20190530_Ver3.OpticalSwitchControlSequence">
+            <summary>
+            Interaction logic for OpticalSwitchControlSequence.xaml.
+            Contains code for grid on/off table, MenuItem controls (incomplete) as well as loads diagram formation.
+            </summary>
+            <seealso cref="T:SW20190530_Ver3.WindowUIComponents" />
+            <seealso cref="T:System.Windows.Markup.IComponentConnector" />
+            <summary>
+            OpticalSwitchControlSequence
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.#ctor(SW20190530_Ver3.MainWin)">
+            <summary>
+            Initialization of OpticalSwitchControlSequence
+            </summary>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.GetWidth">
+            <summary>
+            Gets the width of current Window.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.NewClick(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Creates new instance of OpticalSwitchControlSequence.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.AddStepClick(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Event corresponding to the user clicking "Add Step" button.
+            Adds a step the switchGrid table.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.AddStepsIni(System.Int32,System.Int32,System.Int32[])">
+            <summary>
+            initializes RunTime cell and ON OFF buttons user interface     
+            </summary>
+            <param name="rows">The rows.</param>
+            <param name="col">The col.</param>
+            <param name="runTime">The run times.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.LoadGrid(System.Int32[])">
+            <summary>Loads ON OFF button grid.</summary>
+            <param name="steps">The number of steps.</param>
+            <param name="runtime">An array of runtime times (in seconds).</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.RunTimeCell_UI(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the UI event of the RunTimeCell value is not an integer.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.SwitchRunControlsIni">
+            <summary>
+            Initializes fields used for run/pause/stop/loop abilities during testing
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.ProgressBar_ValueChanged(System.Object,System.Windows.RoutedPropertyChangedEventArgs{System.Double})">
+            <summary>
+            Handles the ValueChanged event of the ProgressBar control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.Button_Click_Run(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Run event of the Button_Click control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.Animate(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Iterates through flashing animation of the graph rows and diagram arrows
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.Button_Click_Pause(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Pause event of the Button_Click control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.Button_Click_Stop(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles the Stop event of the Button_Click control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.Flash">
+            <summary>
+            Flashes visual diagrams.
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.UnFlash">
+            <summary>
+            UnFlashes visual diagrams.
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.RowHighlight">
+            <summary>
+            Highlights the runningRow
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.RowUnhiglight">
+            <summary>
+            Removes the highlight on the previously highlighted row 
+            </summary>
+        </member>
+        <member name="M:SW20190530_Ver3.OpticalSwitchControlSequence.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:SW20190530_Ver3.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SW20190530_Ver3.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SW20190530_Ver3.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>
