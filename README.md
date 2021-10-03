@@ -7,8 +7,15 @@ Basic format and UI style for Agiltron Switch programs
 
 ## TO DEBUG:
 - Install Visual Studio 2017 using .Net 4.7.1
+
 ## COMPLETED MILESTONES:
-- 
+- Completed UI for:
+	- New Switch Control Creation
+	- Add Step
+	- Run Step Animations
+	- Pause/Go Animations
+	- Stop Animations
+	- Progress Bar
 
 ## COMMON ERRORS/VS 2017 GLITCHES
 - ``` Partial declarations of 'WindowUIComponents' must not specify different base classes ```  
