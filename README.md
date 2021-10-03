@@ -9,6 +9,7 @@ Basic format and UI style for Agiltron Switch programs
 - Install Visual Studio 2017 using .Net 4.7.1
 
 ## COMPLETED MILESTONES:
+- Created all application functions and interfaces from scratch based on a previous switch control application coded in C++
 - Completed UI for:
 	- New Switch Control Creation
 	- Add Step
